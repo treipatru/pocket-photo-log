@@ -1,5 +1,6 @@
-import type { RecordService } from 'pocketbase';
-import PocketBase from 'pocketbase';
+import type { RecordService } from "pocketbase";
+import PocketBase from "pocketbase";
+import { getEnvVar } from "./get-env-var";
 
 export interface Tag {
 	id: string;
@@ -27,7 +28,7 @@ export interface Pages {
 	title: string;
 }
 
-type ConstKeys = 'SITE_TITLE' | 'SITE_DESCRIPTION';
+type ConstKeys = "SITE_TITLE" | "SITE_DESCRIPTION";
 
 export interface Const {
 	name: ConstKeys;
@@ -36,24 +37,24 @@ export interface Const {
 
 interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService; // default fallback for any other collection
-	collection(idOrName: 'tags'): RecordService<Tag>;
-	collection(idOrName: 'posts'): RecordService<Post>;
-	collection(idOrName: 'consts'): RecordService<Const>;
-	collection(idOrName: 'pages'): RecordService<Pages>;
+	collection(idOrName: "tags"): RecordService<Tag>;
+	collection(idOrName: "posts"): RecordService<Post>;
+	collection(idOrName: "consts"): RecordService<Const>;
+	collection(idOrName: "pages"): RecordService<Pages>;
 }
 
 export const pb = new PocketBase(
-	'https://p34rev.planet34.org',
+	"https://p34rev.planet34.org"
 ) as TypedPocketBase;
 await pb
-	.collection('users')
-	.authWithPassword(import.meta.env.API_USER, import.meta.env.API_KEY);
+	.collection("users")
+	.authWithPassword(getEnvVar("API_USER"), getEnvVar("API_KEY"));
 
 if (!pb.authStore.isValid) {
-	throw new Error('Invalid credentials');
+	throw new Error("Invalid credentials");
 }
 
-pb.beforeSend = function(url, options) {
+pb.beforeSend = function (url, options) {
 	options.headers = Object.assign({}, options.headers, {
 		Authorization: `${pb.authStore.token}`,
 	});
@@ -61,12 +62,12 @@ pb.beforeSend = function(url, options) {
 	return { url, options };
 };
 
-export type ImageSize = '650x650f' | '900x900f' | '1200x1200f';
+export type ImageSize = "650x650f" | "900x900f" | "1200x1200f";
 
 export const getImgUrl = (
 	recordId: string,
 	filename: string,
-	thumbSize?: ImageSize,
+	thumbSize?: ImageSize
 ) => {
 	const url = `https://p34rev.planet34.org/api/files/posts/${recordId}/${filename}`;
 	return thumbSize ? `${url}?thumb=${thumbSize}` : url;
