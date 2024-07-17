@@ -1,0 +1,47 @@
+services:
+  pocket-photo-log-dev:
+    build:
+      context: .
+      target: pocket-photo-log-dev
+    container_name: pocket-photo-log-dev
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - .node_modules/
+        - action: rebuild
+          path: package.json
+    env_file:
+      - .env.development
+    environment:
+        - NODE_ENV=development
+    networks:
+      - pocket-photo-log
+    ports:
+      - 4321:4321
+    profiles:
+      - development
+
+  pocket-photo-log-prod:
+    build:
+      context: .
+      target: pocket-photo-log-prod
+    container_name: pocket-photo-log-prod
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
+    networks:
+      - pocket-photo-log
+    ports:
+      - 4321:4321
+    profiles:
+      - production
+
+networks:
+  pocket-photo-log:
+    driver: bridge
