@@ -1,0 +1,30 @@
+---
+import { type Tag } from "../lib/pb";
+
+interface Props {
+	tags: Tag[];
+}
+
+const { tags } = Astro.props;
+const selectedTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
+---
+
+{
+	tags.length && (
+		<ul class="list-none flex flex-wrap gap-2">
+			{tags.map((tag) => (
+				<li class="text-xs text-muted">
+					<a
+						class:list={[
+							{ "text-accent bg-accent-background": selectedTagId === tag.id },
+							"p-1",
+						]}
+						href={`/tags/${tag.id}`}
+					>
+						#{tag.name}
+					</a>
+				</li>
+			))}
+		</ul>
+	)
+}

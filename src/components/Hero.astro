@@ -1,0 +1,26 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+interface Props {
+	subtitle?: string;
+}
+
+const { subtitle } = Astro.props;
+---
+
+<section
+	slot="hero"
+	class="relative uppercase flex items-center flex-col bg-accent-background text-accent py-8 mt-2 mb-12 md:mb-32"
+>
+	<h1
+		class="text-7xl md:text-9xl font-bold tracking-wide semibold font-condensed"
+	>
+		{SITE_TITLE}
+	</h1>
+
+	<span
+		class="md:text-xl uppercase block leading-none absolute bottom-6 md:bottom-8"
+	>
+		{subtitle ?? SITE_DESCRIPTION}
+	</span>
+</section>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { pb } from "../../lib/pb";
+import TimelineItem from "../../components/TimelineItem.astro";
+
+const id = Astro.params.id;
+
+const post = await pb.collection("posts").getFirstListItem(`id="${id}"`, {
+	expand: "tags",
+});
+---
+
+<BaseLayout>
+	<TimelineItem post={post} size="1200x1200f" />
+</BaseLayout>

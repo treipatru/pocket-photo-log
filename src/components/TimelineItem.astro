@@ -1,0 +1,32 @@
+---
+import { getImgUrl } from "../lib/pb";
+import type { Post } from "../lib/pb";
+import { type ImageSize } from "../lib/pb";
+import TagList from "./TagList.astro";
+
+interface Props {
+	post: Post;
+	size: ImageSize;
+}
+
+const {
+	post: { alt, expand, id, file, caption },
+	size,
+} = Astro.props;
+---
+
+<article class="flex flex-col items-center text-center">
+	<figure class="mb-2">
+		<a href={`/posts/${id}`} aria-label={"Post"}>
+			<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
+		</a>
+
+		{
+			caption && (
+				<figcaption class="mt-2 text-lg leading-tight" set:html={caption} />
+			)
+		}
+	</figure>
+
+	{expand?.tags && <TagList tags={expand.tags} />}
+</article>

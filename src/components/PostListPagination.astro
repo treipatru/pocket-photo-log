@@ -1,0 +1,17 @@
+---
+interface Props {
+	page: number;
+	totalItems: number;
+	url: string;
+}
+
+const { page, totalItems, url } = Astro.props;
+
+const displayPreviousPage = page > 1;
+const displayNextPage = totalItems > page * 20;
+---
+
+<nav class="flex items-center justify-center mt-10 gap-x-4">
+	{displayPreviousPage && <a href={`${url}?page=${page - 1}`}>Previous Page</a>}
+	{displayNextPage && <a href={`${url}?page=${page + 1}`}>Next Page</a>}
+</nav>

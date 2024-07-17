@@ -1,0 +1,14 @@
+---
+import { type Post, getImgUrl } from "../lib/pb";
+import TimelineItem from "./TimelineItem.astro";
+
+interface Props {
+	posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="flex flex-col gap-y-24 md:gap-y-32">
+	{posts.map((post) => <TimelineItem post={post} size="650x650f" />)}
+</div>

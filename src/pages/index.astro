@@ -1,0 +1,22 @@
+---
+import { pb } from "../lib/pb";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostListPagination from "../components/PostListPagination.astro";
+import PostList from "../components/PostList.astro";
+import Hero from "../components/Hero.astro";
+
+const posts = await pb.collection("posts").getList(1, 20, {
+	sort: "-created",
+	expand: "tags",
+});
+
+const { items, ...pagination } = posts;
+---
+
+<BaseLayout>
+	<Hero slot="hero" />
+
+	<PostList posts={posts.items} />
+
+	<PostListPagination {...pagination} url="/posts" />
+</BaseLayout>

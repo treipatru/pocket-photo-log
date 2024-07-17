@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { pb } from "../../lib/pb";
+
+const slug = Astro.params.slug;
+const about = await pb.collection("pages").getFirstListItem(`slug="${slug}"`);
+---
+
+<BaseLayout>
+	<div set:html={about.content} />
+</BaseLayout>
