@@ -1,0 +1,11 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+---
+
+<BaseLayout showFooter showHeader>
+	<slot name="hero" />
+
+	<main class="px-4 container max-w-screen-lg">
+		<slot />
+	</main>
+</BaseLayout>

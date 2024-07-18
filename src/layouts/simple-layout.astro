@@ -1,0 +1,11 @@
+---
+import BaseLayout from "./base-layout.astro";
+---
+
+<BaseLayout>
+	<slot name="head" slot="head" />
+
+	<main class="px-4 mt-8 md:mt-32 container max-w-screen-sm">
+		<slot />
+	</main>
+</BaseLayout>

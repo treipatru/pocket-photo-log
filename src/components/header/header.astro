@@ -1,0 +1,33 @@
+---
+import { pb } from "@/lib/pb";
+import HeaderLink from "@/components/header/header-link.astro";
+
+const { isAuthenticated } = Astro.locals;
+const displayLogin = !isAuthenticated && import.meta.env.DEV;
+
+const articles = await pb.collection("pages").getFullList({
+	sort: "title",
+});
+---
+
+<header class="">
+	<nav class="flex items-center justify-center uppercase gap-x-4 py-4">
+		<HeaderLink href="/">home</HeaderLink>
+		{
+			articles.map((article) => (
+				<HeaderLink href={`/pages/${article.slug}`}>{article.name}</HeaderLink>
+			))
+		}
+
+		{displayLogin && <HeaderLink href="/auth/login">Login</HeaderLink>}
+
+		{
+			isAuthenticated && (
+				<>
+					<HeaderLink href="/cms/new/post">New post</HeaderLink>
+					<HeaderLink href="/auth/logout">Logout</HeaderLink>
+				</>
+			)
+		}
+	</nav>
+</header>

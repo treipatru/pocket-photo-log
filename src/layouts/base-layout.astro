@@ -1,0 +1,68 @@
+---
+import "@/styles/global.css";
+import "@fontsource-variable/montserrat";
+import "@fontsource/bebas-neue";
+import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import Header from "@/components/header/header.astro";
+
+interface Props {
+	showFooter?: boolean;
+	showHeader?: boolean;
+}
+
+const { showFooter = false, showHeader = false } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// TODO: Add a default image
+const image = "";
+---
+
+<!doctype html>
+<html lang="en" data-theme="lofi">
+	<head>
+		<!-- Global Metadata -->
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+
+		<!-- Canonical URL -->
+		<link rel="canonical" href={canonicalURL} />
+
+		<!-- Primary Meta Tags -->
+		<title>{SITE_TITLE}</title>
+		<meta name="title" content={SITE_TITLE} />
+		<meta name="description" content={SITE_DESCRIPTION} />
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={SITE_TITLE} />
+		<meta property="og:description" content={SITE_DESCRIPTION} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={Astro.url} />
+		<meta property="twitter:title" content={SITE_TITLE} />
+		<meta property="twitter:description" content={SITE_DESCRIPTION} />
+		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+		<slot name="head" />
+	</head>
+
+	<body class="bg-primary-background text-primary font-body font-medium">
+		{showHeader && <Header />}
+
+		<slot />
+
+		{
+			showFooter && (
+				<footer class="text-center pt-8 pb-2 text-sm">
+					&copy; 2010-{new Date().getFullYear()} planet34.org All rights
+					reserved.
+				</footer>
+			)
+		}
+	</body>
+</html>
