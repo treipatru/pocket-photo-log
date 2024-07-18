@@ -11,7 +11,7 @@
  * @param {string} key
  * @return {*}  {string}
  */
-export function getEnvVar(key: string): string {
+export function getEnvVar(key: ENV_KEYS): string {
 	let value: string | undefined = "";
 
 	if (process.env.NODE_ENV === "production") {
