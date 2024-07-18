@@ -35,7 +35,7 @@ export interface Const {
 	value: string;
 }
 
-interface TypedPocketBase extends PocketBase {
+export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService; // default fallback for any other collection
 	collection(idOrName: "tags"): RecordService<Tag>;
 	collection(idOrName: "posts"): RecordService<Post>;
@@ -43,9 +43,7 @@ interface TypedPocketBase extends PocketBase {
 	collection(idOrName: "pages"): RecordService<Pages>;
 }
 
-export const pb = new PocketBase(
-	"https://p34rev.planet34.org"
-) as TypedPocketBase;
+export const pb = new PocketBase(getEnvVar("API_URL")) as TypedPocketBase;
 await pb
 	.collection("users")
 	.authWithPassword(getEnvVar("API_USER"), getEnvVar("API_KEY"));
