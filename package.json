@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"scripts": {
 		"astro": "astro",
-		"build": "astro check && astro build",
+		"build": "rm -rf dist && astro check && astro build",
 		"dev": "astro dev",
 		"preview": "astro preview",
 		"start": "astro dev"
