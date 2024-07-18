@@ -1,0 +1,35 @@
+---
+import CmsLayout from "@/layouts/cms-layout.astro";
+import FileInput from "@/components/ui/file-input.astro";
+import Input from "@/components/ui/input.astro";
+import Textarea from "@/components/ui/textarea.astro";
+import Toggle from "@/components/ui/toggle.astro";
+---
+
+<CmsLayout>
+	<h1 aria-label="Create post"></h1>
+
+	<section class="max-w-sm m-auto">
+		<form
+			class="flex flex-col gap-1"
+			hx-encoding="multipart/form-data"
+			hx-post="/partials/cms/create-post"
+			hx-target="#form-error"
+			id="create-post"
+			method="POST"
+			name="create-post"
+		>
+			<FileInput classes="mb-8" label="Image" name="file" required />
+
+			<Input label="Alt" type="text" name="alt" />
+			<Input label="Tags" type="text" name="tags" />
+			<Textarea label="Caption" name="caption" />
+
+			<Toggle label="Publish" name="published" />
+
+			<button class="btn mt-1">Submit</button>
+		</form>
+
+		<div id="form-error" class="mt-4"></div>
+	</section>
+</CmsLayout>

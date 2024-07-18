@@ -1,0 +1,25 @@
+---
+import Alert from "@/components/ui/alert.astro";
+
+const { pbClient } = Astro.locals;
+const method = Astro.request.method;
+
+if (method !== "POST") {
+	return;
+}
+
+let errorMessage = "";
+const data = await Astro.request.formData();
+const formData = Object.fromEntries(data.entries());
+
+formData.published = formData.published === "on" ? "true" : "false";
+
+try {
+	await pbClient.collection("posts").create(formData);
+	Astro.response.headers.set("HX-Redirect", "/");
+} catch (error) {
+	errorMessage = "Failed to create post.";
+}
+---
+
+{errorMessage && <Alert type="error" content={errorMessage} />}

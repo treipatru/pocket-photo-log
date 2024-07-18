@@ -18,11 +18,15 @@ const authentication = defineMiddleware(async (context, next) => {
 	return next();
 });
 
+const privateRoutes = ["/cms/*", "/partials/cms"];
+const urlMatcher = (url: string, patterns: string[]) =>
+	patterns.some((pattern) =>
+		new RegExp("^" + pattern.replace(/\*/g, ".*") + "$").test(url)
+	);
+
 const authorization = defineMiddleware(async (context, next) => {
 	const { isAuthenticated } = context.locals;
-
-	const privateRoutes = ["/new"];
-	const isPrivateRoute = privateRoutes.includes(context.url.pathname);
+	const isPrivateRoute = urlMatcher(context.url.pathname, privateRoutes);
 
 	if (isPrivateRoute && !isAuthenticated) {
 		return context.redirect("/");
