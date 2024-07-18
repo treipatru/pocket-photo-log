@@ -13,5 +13,9 @@ export default defineConfig({
 		htmx(),
 	],
 	output: 'server',
+	prefetch: true,
+	security: {
+		checkOrigin: true,
+	},
 	site: 'https://revelator.planet34.org',
 });
