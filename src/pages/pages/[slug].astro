@@ -1,11 +1,11 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { pb } from "../../lib/pb";
+import { pb } from "@/lib/pb";
+import BlogLayout from "@/layouts/blog-layout.astro";
 
 const slug = Astro.params.slug;
 const about = await pb.collection("pages").getFirstListItem(`slug="${slug}"`);
 ---
 
-<BaseLayout>
+<BlogLayout>
 	<div set:html={about.content} />
-</BaseLayout>
+</BlogLayout>

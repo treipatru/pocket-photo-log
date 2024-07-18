@@ -1,8 +1,6 @@
 ---
-import { getImgUrl } from "../lib/pb";
-import type { Post } from "../lib/pb";
-import { type ImageSize } from "../lib/pb";
-import TagList from "./TagList.astro";
+import { getImgUrl, type Post, type ImageSize } from "@/lib/pb";
+import TagList from "@/components/tag-list.astro";
 
 interface Props {
 	post: Post;
@@ -23,7 +21,10 @@ const {
 
 		{
 			caption && (
-				<figcaption class="mt-2 text-lg leading-tight" set:html={caption} />
+				<figcaption
+					class="prose mt-2 text-lg leading-tight"
+					set:html={caption}
+				/>
 			)
 		}
 	</figure>

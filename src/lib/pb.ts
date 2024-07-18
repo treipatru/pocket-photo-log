@@ -1,6 +1,6 @@
-import type { RecordService } from "pocketbase";
-import PocketBase from "pocketbase";
 import { getEnvVar } from "./get-env-var";
+import PocketBase from "pocketbase";
+import type { RecordService } from "pocketbase";
 
 export interface Tag {
 	id: string;

@@ -1,9 +1,9 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import PostList from "../../components/PostList.astro";
-import { pb } from "../../lib/pb";
-import PostListPagination from "../../components/PostListPagination.astro";
-import Hero from "../../components/Hero.astro";
+import { pb } from "@/lib/pb";
+import BlogLayout from "@/layouts/blog-layout.astro";
+import Hero from "@/components/hero.astro";
+import PostList from "@/components/post-list/post-list.astro";
+import PostListPagination from "@/components/post-list/post-list-pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const id = Astro.params.id;
@@ -19,10 +19,10 @@ const tag = await pb.collection("tags").getFirstListItem(`id="${id}"`);
 const { items, ...pagination } = posts;
 ---
 
-<BaseLayout>
+<BlogLayout>
 	<Hero slot="hero" subtitle=`on #${tag.name}` />
 
 	<PostList posts={posts.items} />
 
 	<PostListPagination {...pagination} url=`/tags/${id}` />
-</BaseLayout>
+</BlogLayout>
