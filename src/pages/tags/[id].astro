@@ -2,8 +2,8 @@
 import { pb } from "@/lib/pb";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
-import PostList from "@/components/post-list/post-list.astro";
-import PostListPagination from "@/components/post-list/post-list-pagination.astro";
+import PostList from "@/components/posts/post-list.astro";
+import PostListPagination from "@/components/posts/post-list-pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const id = Astro.params.id;
