@@ -1,0 +1,23 @@
+---
+interface Props {
+	label: string;
+	name: string;
+	placeholder?: string;
+	required?: boolean;
+	type: "text" | "password" | "email";
+}
+
+const { label, name, placeholder, required, type = "text" } = Astro.props;
+---
+
+<label class="input input-bordered flex items-center gap-2">
+	{label}
+
+	<input
+		class="grow"
+		name={name}
+		placeholder={placeholder}
+		required={required}
+		type={type}
+	/>
+</label>

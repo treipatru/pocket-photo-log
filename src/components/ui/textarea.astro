@@ -1,0 +1,22 @@
+---
+interface Props {
+	label: string;
+	name: string;
+	placeholder?: string;
+	required?: boolean;
+}
+
+const { label, name, placeholder, required } = Astro.props;
+---
+
+<label class="form-control">
+	<div class="label">
+		<span class="label-text">{label}</span>
+	</div>
+
+	<textarea
+		class="textarea textarea-bordered h-24"
+		name={name}
+		placeholder={placeholder}
+		required={required}></textarea>
+</label>

@@ -1,0 +1,16 @@
+---
+interface Props {
+	content: string;
+	type: "error";
+}
+
+const { content, type } = Astro.props;
+---
+
+<div
+	aria-live="polite"
+	class:list={["alert", { "alert-error": type === "error" }]}
+	role="alert"
+>
+	<span>{content}</span>
+</div>
