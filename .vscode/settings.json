@@ -4,8 +4,12 @@
 		"astrojs",
 		"Bebas",
 		"consts",
+		"daisyui",
+		"htmx",
+		"lofi",
 		"Neue",
 		"pocketbase",
-		"tailwindcss"
+		"tailwindcss",
+		"tsconfigs"
 	]
 }

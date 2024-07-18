@@ -28,5 +28,10 @@ export default {
 			center: true,
 		},
 	},
-	plugins: [],
+	plugins: [
+		require('daisyui'),
+	],
+	daisyui: {
+		themes: ["lofi"],
+	},
 };

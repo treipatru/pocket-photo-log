@@ -1,14 +1,17 @@
 import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
-
 import node from '@astrojs/node';
+import htmx from 'astro-htmx';
 
 // https://astro.build/config
 export default defineConfig({
-	integrations: [tailwind()],
-	site: 'https://revelator.planet34.org',
-	output: 'server',
 	adapter: node({
-		mode: 'standalone',
+		mode: 'standalone'
 	}),
+	integrations: [
+		tailwind(),
+		htmx(),
+	],
+	output: 'server',
+	site: 'https://revelator.planet34.org',
 });
