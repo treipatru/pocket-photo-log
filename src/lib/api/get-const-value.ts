@@ -1,6 +1,6 @@
-import { type Const, type ConstKeys } from "@/lib/api/types";
+import { type Settings, type SettingsKeys } from "@/entities/settings";
 
-export const getConstValue = (key: ConstKeys, collection: Const[]) => {
+export const getConstValue = (key: SettingsKeys, collection: Settings[]) => {
 	const record = collection.find((record) => record.name === key);
 
 	if (!record) {

@@ -1,6 +1,6 @@
 import TagBadge from '@/components/tags/tag-form-control/tag-badge';
 import TagPicker from '@/components/tags/tag-form-control/tag-picker';
-import { type Tag } from '@/lib/api/types';
+import { type Tag } from '@/entities/tags';
 import { useState } from 'preact/hooks';
 
 interface Props {

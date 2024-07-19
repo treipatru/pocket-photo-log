@@ -1,4 +1,4 @@
-import { type TypedPocketBase } from "@/lib/api/types";
+import { type TypedPocketBase } from "@/entities/api-client";
 import PocketBase from "pocketbase";
 import { getEnvVar } from "@/lib/get-env-var";
 

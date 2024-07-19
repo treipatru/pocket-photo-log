@@ -1,4 +1,4 @@
-import { type Tag } from '@/lib/api/types';
+import { type Tag } from '@/entities/tags';
 
 interface Props {
 	tag: Tag;
