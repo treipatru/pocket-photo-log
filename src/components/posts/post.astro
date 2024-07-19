@@ -14,7 +14,7 @@ const {
 } = Astro.props;
 ---
 
-<article class="flex flex-col items-center text-center">
+<article class="flex flex-col items-center md:items-center md:text-center">
 	<figure class="mb-2">
 		<a href={`/posts/${id}`} aria-label={"Post"}>
 			<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
