@@ -32,6 +32,6 @@ export default {
 		require('daisyui'),
 	],
 	daisyui: {
-		themes: ["lofi"],
+		themes: ['lofi'],
 	},
 };

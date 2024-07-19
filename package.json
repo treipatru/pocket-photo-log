@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@astrojs/check": "^0.8.1",
 		"@astrojs/node": "^8.3.2",
+		"@astrojs/preact": "^3.5.1",
 		"@astrojs/tailwind": "^5.1.0",
 		"@fontsource-variable/montserrat": "^5.0.19",
 		"@fontsource/bebas-neue": "^5.0.20",
@@ -19,6 +20,7 @@
 		"astro-htmx": "^1.0.6",
 		"htmx.org": "^2.0.1",
 		"pocketbase": "^0.21.3",
+		"preact": "^10.22.1",
 		"typescript": "^5.5.3",
 		"zod": "^3.23.8"
 	},
