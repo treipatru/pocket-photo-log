@@ -1,9 +1,11 @@
 ---
-import { pb } from "@/lib/pb";
+import { apiClient } from "@/lib/api/api-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 
 const slug = Astro.params.slug;
-const about = await pb.collection("pages").getFirstListItem(`slug="${slug}"`);
+const about = await apiClient
+	.collection("pages")
+	.getFirstListItem(`slug="${slug}"`);
 ---
 
 <BlogLayout>

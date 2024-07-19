@@ -1,11 +1,11 @@
 ---
-import { pb } from "@/lib/pb";
+import { apiClient } from "@/lib/api/api-client";
 import HeaderLink from "@/components/header/header-link.astro";
 
 const { isAuthenticated } = Astro.locals;
 const displayLogin = !isAuthenticated && import.meta.env.DEV;
 
-const articles = await pb.collection("pages").getFullList({
+const articles = await apiClient.collection("pages").getFullList({
 	sort: "title",
 });
 ---

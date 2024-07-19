@@ -4,6 +4,11 @@ import FileInput from "@/components/ui/file-input.astro";
 import Input from "@/components/ui/input.astro";
 import Textarea from "@/components/ui/textarea.astro";
 import Toggle from "@/components/ui/toggle.astro";
+import { apiClient } from "@/lib/api/api-client";
+
+const tags = await apiClient.collection("tags").getFullList({
+	sort: "name",
+});
 ---
 
 <CmsLayout>

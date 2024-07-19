@@ -1,13 +1,15 @@
 ---
-import { pb } from "@/lib/pb";
+import { apiClient } from "@/lib/api/api-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import TimelineItem from "@/components/posts/post.astro";
 
 const id = Astro.params.id;
 
-const post = await pb.collection("posts").getFirstListItem(`id="${id}"`, {
-	expand: "tags",
-});
+const post = await apiClient
+	.collection("posts")
+	.getFirstListItem(`id="${id}"`, {
+		expand: "tags",
+	});
 ---
 
 <BlogLayout>

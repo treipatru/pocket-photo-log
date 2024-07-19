@@ -1,5 +1,5 @@
+import { type TypedPocketBase } from "@/lib/api/types";
 import { getEnvVar } from "@/lib/get-env-var";
-import { type TypedPocketBase } from "@/lib/pb";
 import PocketBase from "pocketbase";
 
 export const getUserApiClient = async (

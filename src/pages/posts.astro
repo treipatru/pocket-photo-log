@@ -1,5 +1,5 @@
 ---
-import { pb } from "@/lib/pb";
+import { apiClient } from "@/lib/api/api-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import PostList from "@/components/posts/post-list.astro";
@@ -7,7 +7,7 @@ import PostListPagination from "@/components/posts/post-list-pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 
-const posts = await pb.collection("posts").getList(page, 20, {
+const posts = await apiClient.collection("posts").getList(page, 20, {
 	sort: "-created",
 	expand: "tags",
 });
