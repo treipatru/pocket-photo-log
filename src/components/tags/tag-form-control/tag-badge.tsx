@@ -15,12 +15,12 @@ export default function TagBadge({
 
 	return (
 		<button
-			class="btn-sm p-0"
+			className="btn-sm p-0"
 			onClick={() => handleDelete(tag)}
 			type="button"
 		>
-			<div class="input input-bordered input-primary input-sm">
-				<span class="mr-1">
+			<div className="input input-bordered input-primary input-sm">
+				<span className="mr-1">
 					{tag.name}
 				</span>
 
@@ -28,12 +28,12 @@ export default function TagBadge({
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
-					class="inline-block h-4 w-4 stroke-current"
+					className="inline-block h-4 w-4 stroke-current"
 				>
 					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						strokeWidth="2"
 						d="M6 18L18 6M6 6l12 12"
 					>
 					</path>

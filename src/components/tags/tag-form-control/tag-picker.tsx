@@ -3,7 +3,7 @@ import {
 	useEffect,
 	useRef,
 	useState,
-} from 'preact/hooks';
+} from 'react';
 
 interface Props {
 	onInput: (str: string) => void;
@@ -38,7 +38,7 @@ export default function TagPicker({
 		}
 	}, [isFocused]);
 
-	const handleKeyDown = (e: KeyboardEvent) => {
+	const handleKeyDown = (e: React.KeyboardEvent) => {
 		const submitKeys = ['Enter', 'Tab', 'Space'];
 
 		if (submitKeys.includes(e.key)) {
@@ -62,7 +62,7 @@ export default function TagPicker({
 			{!isFocused
 				? (
 					<button
-						class="btn btn-outline btn-sm"
+						className="btn btn-outline btn-sm"
 						onClick={toggleFocused}
 						onFocus={toggleFocused}
 						type="button"
@@ -71,27 +71,27 @@ export default function TagPicker({
 					</button>
 				)
 				: (
-					<div class="dropdown dropdown-open">
+					<div className="dropdown dropdown-open">
 						<span
-							autofocus
-							class="input input-bordered input-primary input-sm inline-block"
-							contenteditable
+							autoFocus
+							className="input input-bordered input-primary input-sm inline-block"
+							contentEditable
 							onInput={e => handleInput(e.currentTarget.innerHTML)}
 							onKeyDown={e => handleKeyDown(e)}
 							ref={inputRef}
 							role="textbox"
-							tabindex={0}
+							tabIndex={0}
 						>
 						</span>
 
 						{options.length > 0
 							&& (
-								<ul tabindex={0} class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+								<ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
 									{options
 										.toSpliced(5)
 										.map((option) => {
 											return (
-												<li>
+												<li key={option.name}>
 													<a onClick={() => handleSelect(option)}>
 														{option.name}
 													</a>

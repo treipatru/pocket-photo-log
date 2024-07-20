@@ -60,6 +60,7 @@ export default function TagFormControl({
 		<div class="flex gap-2 flex-wrap my-4">
 			{selectedTags.map(tag => (
 				<TagBadge
+					key={tag.name}
 					tag={tag}
 					onDelete={handleDelete}
 				/>

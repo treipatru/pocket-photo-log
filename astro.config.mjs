@@ -1,16 +1,15 @@
 import node from '@astrojs/node';
-import preact from '@astrojs/preact';
 import tailwind from '@astrojs/tailwind';
-import htmx from 'astro-htmx';
 import { defineConfig } from 'astro/config';
+import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
 	adapter: node({
-		mode: 'standalone',
+		mode: 'standalone'
 	}),
-	integrations: [tailwind(), htmx(), preact()],
+	integrations: [tailwind(), react()],
 	output: 'server',
 	prefetch: true,
-	site: 'https://revelator.planet34.org',
+	site: 'https://revelator.planet34.org'
 });
