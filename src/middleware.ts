@@ -1,6 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { getUserApiClient } from "@/lib/auth/get-user-api-client";
 import { sequence } from "astro:middleware";
+import { urlMatcher } from "@/utils/url-matcher";
 
 const authentication = defineMiddleware(async (context, next) => {
 	const jwt = context.cookies.get("pb_auth")?.value;
@@ -18,11 +19,7 @@ const authentication = defineMiddleware(async (context, next) => {
 	return next();
 });
 
-const privateRoutes = ["/cms/*", "/partials/cms"];
-const urlMatcher = (url: string, patterns: string[]) =>
-	patterns.some((pattern) =>
-		new RegExp("^" + pattern.replace(/\*/g, ".*") + "$").test(url)
-	);
+const privateRoutes = ["!/api/auth", "/api/*", "/auth/logout", "/cms/*"];
 
 const authorization = defineMiddleware(async (context, next) => {
 	const { isAuthenticated } = context.locals;
