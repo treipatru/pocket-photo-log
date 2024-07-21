@@ -9,7 +9,7 @@
  * @param {string[]} patterns
  * @return {*}
  */
-export function urlMatcher(url: string, patterns: string[]) {
+export function urlMatcher(url: string, patterns: string[]): boolean {
 	// Separate positive and negative patterns
 	const positivePatterns = patterns.filter(
 		(pattern) => !pattern.startsWith("!")
