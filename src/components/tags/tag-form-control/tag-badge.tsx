@@ -1,5 +1,3 @@
-import { type Tag } from '@/entities/tags';
-
 interface Props {
 	tag: string;
 	onDelete: (tag: string) => void;
