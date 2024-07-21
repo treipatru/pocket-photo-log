@@ -22,15 +22,14 @@ export default function Toggle(props: Props) {
 				{props.required && <span>*</span>}
 
 				<input
+					{...inputProps}
 					aria-errormessage={`${props.name}-error`}
 					aria-invalid={!!props.error}
 					checked={props.value}
 					className="toggle"
 					id={props.name}
-					name={props.name}
 					required={props.required}
 					type="checkbox"
-					onChange={props.onChange}
 				/>
 			</label>
 
