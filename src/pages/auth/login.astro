@@ -1,5 +1,5 @@
 ---
-import Input from "@/components/ui/input.astro";
+import LoginForm from "@/components/auth/login-form";
 import SimpleLayout from "@/layouts/simple-layout.astro";
 ---
 
@@ -7,19 +7,6 @@ import SimpleLayout from "@/layouts/simple-layout.astro";
 	<h1 aria-label="Login"></h1>
 
 	<section class="max-w-sm m-auto">
-		<div id="form-error" class="mb-4"></div>
-
-		<form
-			class="flex flex-col gap-1"
-			hx-post="/partials/auth/login"
-			hx-target="#form-error"
-			method="POST"
-			name="login"
-		>
-			<Input label="Email" type="text" required name="email" />
-			<Input label="Password" type="password" required name="password" />
-
-			<button class="btn mt-1">Submit</button>
-		</form>
+		<LoginForm client:load />
 	</section>
 </SimpleLayout>
