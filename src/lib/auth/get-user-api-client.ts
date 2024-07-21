@@ -3,12 +3,8 @@ import { getEnvVar } from "@/lib/get-env-var";
 import PocketBase from "pocketbase";
 
 export const getUserApiClient = async (
-	jwt?: string
-): Promise<TypedPocketBase | null> => {
-	if (!jwt) {
-		return null;
-	}
-
+	jwt: string
+): Promise<TypedPocketBase> => {
 	const pbClient = new PocketBase(getEnvVar("API_URL"));
 
 	/**

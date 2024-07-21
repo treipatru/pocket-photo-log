@@ -11,7 +11,7 @@ interface ImportMeta {
 
 declare namespace App {
 	interface Locals {
-		pbClient: import("@/entities/api-client").TypedPocketBase | null;
+		pbClient: import("@/entities/api-client").TypedPocketBase;
 		isAuthenticated: boolean;
 	}
 }

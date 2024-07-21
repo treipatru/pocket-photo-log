@@ -7,7 +7,6 @@ const authentication = defineMiddleware(async (context, next) => {
 	const jwt = context.cookies.get("pb_auth")?.value;
 
 	if (!jwt) {
-		context.locals.pbClient = null;
 		context.locals.isAuthenticated = false;
 		return next();
 	}
