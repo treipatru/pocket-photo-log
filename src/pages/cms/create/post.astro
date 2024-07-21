@@ -1,11 +1,7 @@
 ---
-import CmsLayout from "@/layouts/cms-layout.astro";
-import FileInput from "@/components/ui/file-input.astro";
-import Input from "@/components/ui/input.astro";
-import Textarea from "@/components/ui/textarea.astro";
-import Toggle from "@/components/ui/toggle.astro";
-import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import { apiClient } from "@/lib/api/api-client";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import PostCreateForm from "@/components/posts/post-create-form";
 
 const tags = await apiClient.collection("tags").getFullList({
 	sort: "name",
@@ -16,26 +12,6 @@ const tags = await apiClient.collection("tags").getFullList({
 	<h1 aria-label="Create post"></h1>
 
 	<section class="max-w-sm m-auto">
-		<form
-			class="flex flex-col gap-1"
-			hx-encoding="multipart/form-data"
-			hx-post="/partials/cms/create-post"
-			hx-target="#form-error"
-			id="create-post"
-			method="POST"
-			name="create-post"
-		>
-			<FileInput classes="mb-8" label="Image" name="file" required />
-
-			<Textarea label="Caption" name="caption" />
-			<Input label="Alt" type="text" name="alt" />
-
-			<TagFormControl client:load allTags={tags} name="tags" />
-			<Toggle label="Publish" name="published" />
-
-			<button class="btn mt-1">Submit</button>
-		</form>
-
-		<div id="form-error" class="mt-4"></div>
+		<PostCreateForm client:load tags={tags.map((t) => t.name)} />
 	</section>
 </CmsLayout>
