@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FormError from "@/components/ui/form-error";
 
 interface Props {
 	classes?: string;
@@ -12,7 +13,7 @@ interface Props {
 
 export default function FileInput(props: Props) {
 	const { value, label, error, onChange, ...inputProps } = props;
-	const [imagePreview, setImagePreview] = useState('')
+	const [imagePreview, setImagePreview] = useState<string | null>(null)
 
 	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target?.files?.[0];
@@ -25,7 +26,7 @@ export default function FileInput(props: Props) {
 			};
 			reader.readAsDataURL(file);
 		} else {
-			setImagePreview('');
+			setImagePreview(null);
 		}
 	};
 
@@ -38,15 +39,15 @@ export default function FileInput(props: Props) {
 
 				<input
 					{...inputProps}
-					type="file"
-					onChange={handleImageChange}
-					className="file-input grow file-input-bordered w-full max-w-xs"
 					accept="image/*"
+					className="file-input grow file-input-bordered w-full max-w-xs"
+					onChange={handleImageChange}
+					type="file"
 				/>
 			</label>
 
 			<div className="bg-muted w-full min-h-60">
-				{!!imagePreview.length && (
+				{imagePreview && (
 					<img
 						id="imagePreview"
 						src={imagePreview}
@@ -54,6 +55,8 @@ export default function FileInput(props: Props) {
 					/>
 				)}
 			</div>
+
+			{error && <FormError error={error} name={inputProps.name} />}
 		</>
 	)
 }
