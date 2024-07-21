@@ -1,15 +1,15 @@
 import { type Tag } from '@/entities/tags';
 
 interface Props {
-	tag: Tag;
-	onDelete: (tag: Tag) => void;
+	tag: string;
+	onDelete: (tag: string) => void;
 }
 
 export default function TagBadge({
 	onDelete,
 	tag,
 }: Props) {
-	const handleDelete = (tag: Tag) => {
+	const handleDelete = (tag: string) => {
 		onDelete(tag);
 	};
 
@@ -21,7 +21,7 @@ export default function TagBadge({
 		>
 			<div className="input input-bordered input-primary input-sm">
 				<span className="mr-1">
-					{tag.name}
+					{tag}
 				</span>
 
 				<svg

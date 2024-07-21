@@ -1,4 +1,3 @@
-import type { Tag } from '@/entities/tags';
 import {
 	useEffect,
 	useRef,
@@ -7,8 +6,8 @@ import {
 
 interface Props {
 	onInput: (str: string) => void;
-	onSelect: (tag: Tag) => void;
-	options: Tag[];
+	onSelect: (tag: string) => void;
+	options: string[];
 }
 
 export default function TagPicker({
@@ -19,7 +18,7 @@ export default function TagPicker({
 	const [isFocused, setIsFocused] = useState(false);
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const handleSelect = (tag: Tag) => {
+	const handleSelect = (tag: string) => {
 		onSelect(tag);
 		setIsFocused(false);
 	};
@@ -50,10 +49,7 @@ export default function TagPicker({
 			}
 
 			const query = inputRef.current?.innerHTML;
-			handleSelect({
-				id: '',
-				name: query || '',
-			});
+			handleSelect(query || '');
 		}
 	};
 
@@ -91,9 +87,9 @@ export default function TagPicker({
 										.toSpliced(5)
 										.map((option) => {
 											return (
-												<li key={option.name}>
+												<li key={option}>
 													<a onClick={() => handleSelect(option)}>
-														{option.name}
+														{option}
 													</a>
 												</li>
 											);

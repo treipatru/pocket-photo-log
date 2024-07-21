@@ -1,41 +1,43 @@
+import { type Tag } from '@/entities/tags';
+import { useState } from 'react'
 import TagBadge from '@/components/tags/tag-form-control/tag-badge';
 import TagPicker from '@/components/tags/tag-form-control/tag-picker';
-import { type Tag } from '@/entities/tags';
-import { useState } from 'preact/hooks';
 
 interface Props {
-	name: string;
-	allTags: Tag[];
+	allTags: string[];
+	error?: string;
+	onChange: (tags: string[]) => void;
+	value: string[];
 }
 
 export default function TagFormControl({
-	name,
 	allTags,
+	onChange,
+	value,
 }: Props) {
-	const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-	const [validOptions, setValidOptions] = useState<Tag[]>(allTags);
+	const [validOptions, setValidOptions] = useState<string[]>(allTags);
 
-	const handleSelect = (tag: Tag) => {
+	const handleSelect = (tag: string) => {
 		// Prevent creation of empty tags
-		if (tag.name === '') {
+		if (tag === '') {
 			setValidOptions(allTags);
 			return;
 		}
 
 		// Prevent duplicate tags
 		// This concerns new tags only, as existing tags are already filtered out
-		if (selectedTags.some(t => t.name === tag.name)) {
+		if (value.some(t => t === tag)) {
 			return;
 		}
 
-		setSelectedTags([...selectedTags, tag]);
-		setValidOptions(validOptions.filter(t => t.name !== tag.name));
+		onChange([...value, tag]);
+		setValidOptions(validOptions.filter(t => t !== tag));
 	};
 
-	const handleDelete = (tag: Tag) => {
-		setSelectedTags(selectedTags.filter(t => t.name !== tag.name));
+	const handleDelete = (tag: string) => {
+		onChange(value.filter(t => t !== tag));
 		setValidOptions([...validOptions, tag]
-			.toSorted((a, b) => a.name.localeCompare(b.name)));
+			.toSorted((a, b) => a.localeCompare(b)));
 	};
 
 	const handleInput = (str: string) => {
@@ -47,9 +49,9 @@ export default function TagFormControl({
 
 		const newList = allTags.filter(tag => {
 			// Filter in tags that match the input
-			const isMatch = tag.name.toLowerCase().includes(str.toLowerCase());
+			const isMatch = tag.toLowerCase().includes(str.toLowerCase());
 			// Filter out tags that are already selected
-			const isNotSelected = !selectedTags.some(t => t.name === tag.name);
+			const isNotSelected = !value.some(t => t === tag);
 			return isMatch && isNotSelected;
 		});
 
@@ -57,10 +59,10 @@ export default function TagFormControl({
 	};
 
 	return (
-		<div class="flex gap-2 flex-wrap my-4">
-			{selectedTags.map(tag => (
+		<div className="flex gap-2 flex-wrap my-4">
+			{value.map(tag => (
 				<TagBadge
-					key={tag.name}
+					key={tag}
 					tag={tag}
 					onDelete={handleDelete}
 				/>
@@ -70,20 +72,6 @@ export default function TagFormControl({
 				options={validOptions}
 				onSelect={handleSelect}
 				onInput={handleInput}
-			/>
-
-			<input
-				type="hidden"
-				name={name}
-				value={selectedTags.map(t => t.id).join(',')}
-			/>
-
-			<input
-				type="hidden"
-				name={`${name}new`}
-				value={selectedTags
-					.filter(t => t.id === '')
-					.map(t => t.name).join(',')}
 			/>
 		</div>
 	);
