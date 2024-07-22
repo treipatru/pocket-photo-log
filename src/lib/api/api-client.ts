@@ -31,7 +31,7 @@ export const createApiClient = async (
 };
 
 export const apiClient = await createApiClient(
-	getEnvVar("API_URL"),
+	getEnvVar("PUBLIC_API_URL"),
 	getEnvVar("API_USER"),
 	getEnvVar("API_KEY")
 );

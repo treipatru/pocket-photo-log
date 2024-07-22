@@ -7,6 +7,6 @@ export const getImgUrl = (
 	filename: string,
 	thumbSize?: ImageSize
 ) => {
-	const url = `${getEnvVar("API_URL")}/api/files/posts/${recordId}/${filename}`;
+	const url = `${getEnvVar("PUBLIC_API_URL")}/api/files/posts/${recordId}/${filename}`;
 	return thumbSize ? `${url}?thumb=${thumbSize}` : url;
 };

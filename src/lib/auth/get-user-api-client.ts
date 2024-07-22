@@ -5,7 +5,7 @@ import PocketBase from "pocketbase";
 export const getUserApiClient = async (
 	jwt: string
 ): Promise<TypedPocketBase> => {
-	const pbClient = new PocketBase(getEnvVar("API_URL"));
+	const pbClient = new PocketBase(getEnvVar("PUBLIC_API_URL"));
 
 	/**
 	 * Load the cookie into the client and do a first local check

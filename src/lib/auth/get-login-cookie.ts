@@ -6,7 +6,7 @@ import PocketBase from "pocketbase";
  * Gets a JWT cookie for a user.
  */
 export const getLoginCookie = async (email: string, password: string) => {
-	const pbClient = new PocketBase(getEnvVar("API_URL"));
+	const pbClient = new PocketBase(getEnvVar("PUBLIC_API_URL"));
 
 	try {
 		await pbClient.collection("users").authWithPassword(email, password);
