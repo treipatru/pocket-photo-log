@@ -12,6 +12,18 @@ const displayNextPage = totalItems > page * 20;
 ---
 
 <nav class="flex items-center justify-center mt-10 gap-x-4">
-	{displayPreviousPage && <a href={`${url}?page=${page - 1}`}>Previous Page</a>}
-	{displayNextPage && <a href={`${url}?page=${page + 1}`}>Next Page</a>}
+	{
+		displayPreviousPage && (
+			<a class="link link-hover" href={`${url}?page=${page - 1}`}>
+				Previous Page
+			</a>
+		)
+	}
+	{
+		displayNextPage && (
+			<a class="link link-hover" href={`${url}?page=${page + 1}`}>
+				Next Page
+			</a>
+		)
+	}
 </nav>

@@ -54,15 +54,29 @@ const image = "";
 	<body class="bg-primary-background text-primary font-body font-medium">
 		{showHeader && <Header />}
 
-		<slot />
+		<div transition:animate="fade">
+			<slot />
 
-		{
-			showFooter && (
-				<footer class="text-center pt-8 pb-2 text-xs text-muted">
-					&copy; 2010-{new Date().getFullYear()} planet34.org All rights
-					reserved.
-				</footer>
-			)
-		}
+			{
+				showFooter && (
+					<footer class="text-center pt-8 pb-2 text-xs text-muted">
+						<span>
+							&copy; 2010-{new Date().getFullYear()} planet34.org All rights
+							reserved.
+						</span>
+
+						<span class="block">
+							Running on{" "}
+							<a
+								class="link link-hover"
+								href="https://github.com/treipatru/pocket-photo-log"
+							>
+								Pocket Photo Log.
+							</a>
+						</span>
+					</footer>
+				)
+			}
+		</div>
 	</body>
 </html>

@@ -4,11 +4,13 @@ import { getImgUrl, type ImageSize } from "@/lib/api/get-img-url";
 import TagList from "@/components/tag-list.astro";
 
 interface Props {
+	isLink: boolean;
 	post: Post;
 	size: ImageSize;
 }
 
 const {
+	isLink,
 	post: { alt, expand, id, file, caption },
 	size,
 } = Astro.props;
@@ -16,9 +18,15 @@ const {
 
 <article class="flex flex-col items-center md:items-center md:text-center">
 	<figure class="mb-2">
-		<a href={`/posts/${id}`} aria-label={"Post"}>
-			<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
-		</a>
+		{
+			isLink ? (
+				<a href={`/posts/${id}`} aria-label={"Post"}>
+					<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
+				</a>
+			) : (
+				<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
+			)
+		}
 
 		{
 			caption && (

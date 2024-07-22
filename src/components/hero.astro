@@ -10,12 +10,14 @@ const { subtitle } = Astro.props;
 
 <section
 	slot="hero"
-	class="relative uppercase flex items-center flex-col bg-accent-background text-accent py-8 mt-2 mb-12 md:mb-32"
+	class="relative uppercase flex items-center flex-col bg-accent-background text-accent py-8 mt-2 mb-12"
 >
 	<h1
 		class="text-7xl md:text-9xl font-bold tracking-wide semibold font-condensed"
 	>
-		{SITE_TITLE}
+		<a href="/">
+			{SITE_TITLE}
+		</a>
 	</h1>
 
 	<span

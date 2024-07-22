@@ -7,17 +7,18 @@ interface Props {
 
 const { tags } = Astro.props;
 const selectedTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
+const sortedTags = tags.toSorted((a, b) => a.name.localeCompare(b.name));
 ---
 
 {
-	tags.length && (
+	sortedTags.length && (
 		<ul class="list-none flex flex-wrap gap-2">
-			{tags.map((tag) => (
+			{sortedTags.map((tag) => (
 				<li class="text-xs text-muted">
 					<a
 						class:list={[
 							{ "text-accent bg-accent-background": selectedTagId === tag.id },
-							"p-1",
+							"p-1 link link-hover",
 						]}
 						href={`/tags/${tag.id}`}
 					>
