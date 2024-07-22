@@ -4,7 +4,6 @@ import TagPicker from '@/components/tags/tag-form-control/tag-picker';
 
 interface Props {
 	allTags: string[];
-	error?: string;
 	onChange: (tags: string[]) => void;
 	value: string[];
 }
@@ -58,20 +57,26 @@ export default function TagFormControl({
 	};
 
 	return (
-		<div className="flex gap-2 flex-wrap my-4">
-			{value.map(tag => (
-				<TagBadge
-					key={tag}
-					tag={tag}
-					onDelete={handleDelete}
-				/>
-			))}
+		<div className="form-control w-full">
+			<div className="label">
+				<span className="label-text">Tags</span>
+			</div>
 
-			<TagPicker
-				options={validOptions}
-				onSelect={handleSelect}
-				onInput={handleInput}
-			/>
+			<div className="flex flex-wrap gap-2">
+				{value.map(tag => (
+					<TagBadge
+						key={tag}
+						tag={tag}
+						onDelete={handleDelete}
+					/>
+				))}
+
+				<TagPicker
+					options={validOptions}
+					onSelect={handleSelect}
+					onInput={handleInput}
+				/>
+			</div>
 		</div>
 	);
 }

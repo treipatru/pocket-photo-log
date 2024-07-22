@@ -17,27 +17,26 @@ export default function Input(props: Props) {
 	const { value, label, error, ...inputProps } = props;
 
 	return (
-		<div>
-			<label
-				htmlFor={props.name}
-				className="input input-bordered flex items-center gap-2"
-			>
-				{props.label} {props.required && <span>*</span>}
+		<label
+			className="form-control w-full"
+			htmlFor={props.name}
+		>
+			<div className="label">
+				<span className="label-text">{props.label} {props.required && <span>*</span>}</span>
+			</div>
 
-				<input
-					{...inputProps}
-					className="grow"
-					name={props.name}
-					placeholder={props.placeholder}
-					aria-errormessage={`${props.name}-error`}
-					aria-invalid={!!props.error}
-					id={props.name}
-					value={props.value || ''}
-				/>
-
-			</label>
+			<input
+				{...inputProps}
+				className="input input-bordered w-full"
+				name={props.name}
+				placeholder={props.placeholder}
+				aria-errormessage={`${props.name}-error`}
+				aria-invalid={!!props.error}
+				id={props.name}
+				value={props.value || ''}
+			/>
 
 			<FormError name={props.name} error={props.error} />
-		</div>
+		</label>
 	);
 }
