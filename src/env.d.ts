@@ -13,5 +13,6 @@ declare namespace App {
 	interface Locals {
 		pbClient: import("@/entities/api-client").TypedPocketBase;
 		isAuthenticated: boolean;
+		postPayload: Record<string, any>;
 	}
 }
