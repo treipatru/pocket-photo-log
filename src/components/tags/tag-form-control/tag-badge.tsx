@@ -7,14 +7,10 @@ export default function TagBadge({
 	onDelete,
 	tag,
 }: Props) {
-	const handleDelete = (tag: string) => {
-		onDelete(tag);
-	};
-
 	return (
 		<button
 			className="btn-sm p-0"
-			onClick={() => handleDelete(tag)}
+			onClick={() => onDelete(tag)}
 			type="button"
 		>
 			<div className="input input-bordered input-primary input-sm">
