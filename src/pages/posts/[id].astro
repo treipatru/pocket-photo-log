@@ -1,8 +1,11 @@
 ---
 import { apiClient } from "@/lib/api/api-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
+import Hero from "@/components/hero.astro";
+import PostMenu from "@/components/posts/post-menu.astro";
 import TimelineItem from "@/components/posts/post.astro";
 
+const { isAuthenticated } = Astro.locals;
 const id = Astro.params.id;
 
 const post = await apiClient
@@ -10,8 +13,18 @@ const post = await apiClient
 	.getFirstListItem(`id="${id}"`, {
 		expand: "tags",
 	});
+
+const postDate = new Date(post.created).toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
 ---
 
 <BlogLayout>
-	<TimelineItem post={post} size="1200x1200f" />
+	<Hero slot="hero" subtitle={`on ${postDate}`} />
+
+	{isAuthenticated && <PostMenu />}
+
+	<TimelineItem post={post} size="1200x1200f" isLink={false} />
 </BlogLayout>

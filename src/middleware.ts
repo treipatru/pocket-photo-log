@@ -54,7 +54,7 @@ const payload = defineMiddleware(async (context, next) => {
 	 */
 	const isApiRoute = urlMatcher(context.url.pathname, [
 		"/api/*",
-		"!/api/posts", // Posts use multipart/form-data.
+		"!/api/posts*", // Posts use multipart/form-data.
 	]);
 	if (!isApiRoute) {
 		return next();
