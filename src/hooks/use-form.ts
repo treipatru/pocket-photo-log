@@ -1,52 +1,99 @@
 import { type ZodSchema } from "zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export function useForm<T>(schema: ZodSchema, initialData: T) {
+type FormState<T> = {
+	formData: {
+		errors: {
+			[K in keyof T]?: string;
+		};
+		values: T;
+	};
+	hasErrors: boolean;
+	isValid: boolean;
+	updateField: <K extends keyof T>(field: K, value: T[K]) => void;
+	validate: () => void;
+};
+
+export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 	type K = keyof T;
+	type Errors = { [L in keyof T]?: string };
 
 	/**
-	 * Create the form state and updater
+	 * Internal value to keep track of whether the form has had attempted
+	 * validation.
 	 */
-	const [formData, setFormData] = useState<T>(initialData);
+	const [hasValidated, setHasValidated] = useState(false);
 
+	/**
+	 * Form values
+	 */
+	const [formValues, setFormValues] = useState<T>(initialData);
+
+	/**
+	 * Update form value
+	 */
 	const updateField = <K extends keyof T>(field: K, value: T[K]) => {
-		setFormData((prev) => ({ ...prev, [field]: value }));
+		setFormValues((prev) => ({ ...prev, [field]: value }));
 	};
 
 	/**
-	 * Create the validation state and updater
+	 * Form errors
 	 */
-	const [validationErrors, setValidationErrors] = useState<
-		Partial<Record<K, string>>
-	>({});
+	const [formErrors, setFormErrors] = useState<Errors>({});
 
+	/**
+	 * Helper to determine if the form has any errors.
+	 */
+	const [hasErrors, setHasErrors] = useState(false);
+	useEffect(() => {
+		setHasErrors(Object.keys(formErrors).length > 0);
+	}, [formErrors]);
+
+	/**
+	 * Form validity
+	 */
+	const [isValid, setIsValid] = useState(false);
+	useEffect(() => {
+		setIsValid(!hasErrors && hasValidated);
+	}, [hasErrors, hasValidated]);
+
+	/**
+	 * Validate form
+	 */
 	const validate = () => {
-		const data = formData;
+		const data = formValues;
 		const validation = schema.safeParse(data);
+		setHasValidated(true);
 
 		if (validation.success) {
-			setValidationErrors({});
-			return {};
+			setFormErrors({});
+			setIsValid(true);
+			return;
 		}
+
 		const fieldErrors = validation.error.flatten().fieldErrors;
-		const errors: Partial<Record<K, string>> = {};
+		const errors: Errors = {};
 
 		for (const key in fieldErrors) {
 			const error = fieldErrors[key];
 
 			if (error) {
-				// We only get the first error message
+				// Get the first error message only.
 				errors[key as K] = error[0];
 			}
 		}
 
-		setValidationErrors(errors);
+		setFormErrors(errors);
 	};
 
 	return {
-		formData,
+		formData: {
+			errors: formErrors,
+			values: formValues,
+		},
+		hasErrors,
+		isValid,
 		updateField,
 		validate,
-		validationErrors,
 	};
 }
