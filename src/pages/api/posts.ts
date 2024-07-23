@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { separateTags } from "@/pages/api/_utils/separate-tags";
 import { postSchemaCreateFormData } from "@/entities/posts";
 
 export const POST: APIRoute = async ({ locals, request }) => {
@@ -19,52 +20,41 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			{ status: 400 }
 		);
 	}
-
-	// Verify that post tags are unique
-	const tags = data.tags.split(",");
-	const uniqueTags = new Set(tags);
-
-	if (tags.length !== uniqueTags.size) {
-		return new Response(
-			JSON.stringify({
-				message: "Post tags must be unique",
-			}),
-			{ status: 400 }
-		);
-	}
+	const { pbClient } = locals;
 
 	/**
 	 * Get the tag ids and create new ones if necessary
 	 */
-	const tagIds: string[] = [];
 
-	try {
+	const tagIds = [];
+	if (data.tags) {
 		const allTags = await locals.pbClient.collection("tags").getFullList();
-		const postTags = data.tags.split(",");
-
-		await Promise.all(
-			postTags.map(async (tag) => {
-				const tagId = allTags.find((item) => item.name === tag)?.id;
-
-				if (!!tagId) {
-					tagIds.push(tagId);
-					return;
-				}
-
-				const newTag = await locals.pbClient
-					.collection("tags")
-					.create({ name: tag });
-				console.log("\ncreated ", newTag.id);
-				tagIds.push(newTag.id);
-			})
+		const { existingTagIds, newTagNames } = separateTags(
+			allTags,
+			data.tags.split(",")
 		);
-	} catch (_) {
-		return new Response(
-			JSON.stringify({
-				message: "Failed to handle post tags.",
-			}),
-			{ status: 500 }
-		);
+		tagIds.push(...existingTagIds);
+
+		/**
+		 * Create new tags if necessary
+		 */
+		try {
+			await Promise.all(
+				newTagNames.map(async (tag) => {
+					const newTag = await pbClient
+						.collection("tags")
+						.create({ name: tag });
+					tagIds.push(newTag.id);
+				})
+			);
+		} catch (error) {
+			return new Response(
+				JSON.stringify({
+					message: "Failed to create new tags",
+				}),
+				{ status: 500 }
+			);
+		}
 	}
 
 	/**
