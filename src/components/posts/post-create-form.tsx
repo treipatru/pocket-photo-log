@@ -1,26 +1,24 @@
 import {
-	type PostCreate,
-	postDto,
-	postSchemaCreate
+	type PostForm,
+	postSchemaForm
 } from "@/entities/posts";
+import { createPost } from "@/services/client-api/posts";
+import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
 import FileInput from "@/components/ui/file-input";
 import Input from "@/components/ui/input";
+import QueryWrapper from "../query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
 
-interface Props {
-	tags: string[]
-}
-
-export default function PostCreateForm({
-	tags
-}: Props) {
-	const [formError, setFormError] = useState<string | null>(null);
-	const { formData, updateField, validate, validationErrors } = useForm<PostCreate>(postSchemaCreate, {
+function Component() {
+	/**
+	 * Form
+	 */
+	const { formData, isValid, updateField, validate } = useForm<PostForm>(postSchemaForm, {
 		alt: '',
 		caption: '',
 		file: new File([], ''),
@@ -30,32 +28,27 @@ export default function PostCreateForm({
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		setFormError(null);
 		validate();
-
-		const hasErrors = Object.keys(validationErrors).length > 0;
-		if (hasErrors) {
-			return;
-		}
-
-		const body = postDto.create.transformToServer(formData);
-
-		try {
-			const response = await fetch('/api/posts', {
-				method: 'POST',
-				body
-			});
-
-			if (!response.ok) {
-				const { message } = await response.json();
-				throw new Error(message)
-			}
-
-			window.location.href = '/'
-		} catch (_) {
-			setFormError('Failed to create post.');
-		}
 	}
+
+	/**
+	 * Query
+	 */
+	const { error, isFetching, isSuccess } = useQuery({
+		enabled: isValid,
+		queryFn: () => createPost(formData.values),
+		queryKey: ['posts'],
+		retry: false,
+	});
+
+	/**
+	 * On success, redirect to home page.
+	 */
+	useEffect(() => {
+		if (isSuccess) {
+			window.location.href = '/'
+		}
+	}, [isSuccess])
 
 	return (
 		<form
@@ -66,50 +59,57 @@ export default function PostCreateForm({
 			onSubmit={handleSubmit}
 		>
 
-			{formError && <Alert className="mb-4" type="error" content={formError} />}
+			{error && <Alert className="mb-4" type="error" content={error.message} />}
 
 			<FileInput
-				classes="mb-8"
-				error={validationErrors.file}
+				error={formData.errors.file}
 				label="Image"
 				name='file'
 				onChange={v => updateField('file', v)}
 				required
-				value={formData.file}
+				value={formData.values.file}
 			/>
 
 			<Textarea
-				error={validationErrors.caption}
+				error={formData.errors.caption}
 				label="Caption"
 				name='caption'
 				onInput={v => updateField('caption', v.currentTarget.value)}
-				value={formData.caption}
+				value={formData.values.caption}
 			/>
 
 			<Input
-				error={validationErrors.alt}
+				error={formData.values.alt}
 				label="Alt"
 				name='alt'
 				onInput={v => updateField('alt', v.currentTarget.value)}
 				type="text"
-				value={formData.alt}
+				value={formData.errors.alt}
 			/>
 
 			<TagFormControl
-				allTags={tags}
-				error={validationErrors.tags}
 				onChange={v => updateField('tags', v)}
-				value={formData.tags}
+				value={formData.values.tags}
 			/>
 
 			<Toggle
 				name='published'
-				value={formData.published}
+				value={formData.values.published}
 				label="Publish"
 				onChange={v => updateField('published', v.currentTarget.checked)}
 			/>
 
-			<button className="btn mt-1" type='submit'>Create</button>
+			<button
+				className="btn mt-1"
+				type='submit'
+				disabled={isFetching}
+			>
+				Create
+			</button>
 		</form>
 	);
+}
+
+export default function PostCreateForm() {
+	return <QueryWrapper><Component /></QueryWrapper>
 }

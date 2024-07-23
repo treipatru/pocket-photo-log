@@ -19,7 +19,10 @@ export const postSchema = z.object({
 
 const MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
 
-export const postSchemaCreate = z.object({
+/**
+ * Schema for frontend form validation when creating or updating a post.
+ */
+export const postSchemaForm = z.object({
 	alt: z.string(),
 	caption: z.string(),
 	tags: z.array(z.string()),
@@ -29,32 +32,14 @@ export const postSchemaCreate = z.object({
 	}, "File size must be less than 10MB"),
 });
 
-export const postSchemaCreateFormData = postSchemaCreate.extend({
+/**
+ * Schema for backend data validation when creating or updating a post.
+ */
+export const postSchemaFormData = postSchemaForm.extend({
 	tags: z.string(),
 	published: z.string(),
 });
 
 export type Post = z.infer<typeof postSchema>;
-export type PostCreate = z.infer<typeof postSchemaCreate>;
-
-export const postDto = {
-	create: {
-		transformToServer: (post: PostCreate) => {
-			const { data, error } = postSchemaCreate.safeParse(post);
-
-			if (error) {
-				throw new Error("Invalid post data. Unable to transform to server DTO");
-			}
-
-			const formData = new FormData();
-
-			formData.append("alt", data.alt);
-			formData.append("caption", data.caption);
-			formData.append("published", data.published.toString());
-			formData.append("file", data.file);
-			formData.append("tags", data.tags.join(","));
-
-			return formData;
-		},
-	},
-};
+export type PostForm = z.infer<typeof postSchemaForm>;
+export type PostFormData = z.infer<typeof postSchemaFormData>;

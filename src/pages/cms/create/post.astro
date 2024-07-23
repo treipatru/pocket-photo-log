@@ -1,17 +1,12 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
 import CmsLayout from "@/layouts/cms-layout.astro";
 import PostCreateForm from "@/components/posts/post-create-form";
-
-const tags = await apiClient.collection("tags").getFullList({
-	sort: "name",
-});
 ---
 
 <CmsLayout>
 	<h1 aria-label="Create post"></h1>
 
 	<section class="max-w-sm m-auto">
-		<PostCreateForm client:load tags={tags.map((t) => t.name)} />
+		<PostCreateForm client:load />
 	</section>
 </CmsLayout>

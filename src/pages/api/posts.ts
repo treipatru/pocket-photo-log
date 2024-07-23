@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
-import { postSchemaCreateFormData } from "@/entities/posts";
+import { postSchemaFormData } from "@/entities/posts";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**
@@ -10,7 +10,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 	const formData = await request.formData();
 	const parsed = Object.fromEntries(formData.entries());
 
-	const { data, error } = postSchemaCreateFormData.safeParse(parsed);
+	const { data, error } = postSchemaFormData.safeParse(parsed);
 
 	if (error) {
 		return new Response(
@@ -28,7 +28,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
 	const tagIds = [];
 	if (data.tags) {
-		const allTags = await locals.pbClient.collection("tags").getFullList();
+		const allTags = await pbClient.collection("tags").getFullList();
 		const { existingTagIds, newTagNames } = separateTags(
 			allTags,
 			data.tags.split(",")
@@ -66,7 +66,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			tags: tagIds, // PB expects an array of tag ids, not a string
 		};
 
-		await locals.pbClient.collection("posts").create(payload);
+		await pbClient.collection("posts").create(payload);
 	} catch (_) {
 		return new Response(
 			JSON.stringify({
