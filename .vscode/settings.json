@@ -12,6 +12,7 @@
 		"pocketbase",
 		"preact",
 		"tailwindcss",
+		"tanstack",
 		"tsconfigs"
 	]
 }
