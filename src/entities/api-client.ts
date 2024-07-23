@@ -1,3 +1,5 @@
+import z, { ZodSchema } from "zod";
+
 import PocketBase from "pocketbase";
 import type { RecordService } from "pocketbase";
 import { type Pages } from "@/entities/pages";
@@ -12,3 +14,12 @@ export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: "settings"): RecordService<Settings>;
 	collection(idOrName: "pages"): RecordService<Pages>;
 }
+
+export const paginatedCollection = (schema: ZodSchema) =>
+	z.object({
+		items: z.array(schema),
+		page: z.number(),
+		perPage: z.number(),
+		totalItems: z.number(),
+		totalPages: z.number(),
+	});
