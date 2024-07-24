@@ -14,9 +14,13 @@ const authentication = defineMiddleware(async (context, next) => {
 		return next();
 	}
 
-	const pbClient = await getUserApiClient(jwt);
-	context.locals.pbClient = pbClient;
-	context.locals.isAuthenticated = !!pbClient?.authStore.isValid;
+	try {
+		const pbClient = await getUserApiClient(jwt);
+		context.locals.pbClient = pbClient;
+		context.locals.isAuthenticated = !!pbClient?.authStore.isValid;
+	} catch (error) {
+		context.locals.isAuthenticated = false;
+	}
 
 	return next();
 });
