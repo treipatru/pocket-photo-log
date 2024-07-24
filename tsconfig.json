@@ -2,7 +2,9 @@
   "extends": "astro/tsconfigs/strict",
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+		// Exclude the editor because of tinyMCE
+		"./**/pages-editor.tsx"
   ],
   "compilerOptions": {
     "baseUrl": "./",
