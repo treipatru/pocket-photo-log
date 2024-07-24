@@ -1,4 +1,4 @@
-import { type PostForm } from "@/entities/posts";
+import { type PostForm, type PostFormDelete } from "@/entities/posts";
 
 export async function createPost(body: PostForm) {
 	/**
@@ -20,6 +20,18 @@ export async function createPost(body: PostForm) {
 
 	if (!res.ok) {
 		return Promise.reject({ message: "Failed to create post." });
+	}
+
+	return Promise.resolve({});
+}
+
+export async function deletePost(body: PostFormDelete) {
+	const res = await fetch(`/api/posts/${body.id}`, {
+		method: "DELETE",
+	});
+
+	if (!res.ok) {
+		return Promise.reject({ message: "Failed to delete post." });
 	}
 
 	return Promise.resolve({});

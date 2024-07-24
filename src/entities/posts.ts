@@ -40,6 +40,11 @@ export const postSchemaFormData = postSchemaForm.extend({
 	published: z.string(),
 });
 
+export const postSchemaFormDelete = z.object({
+	id: z.string(),
+});
+
 export type Post = z.infer<typeof postSchema>;
 export type PostForm = z.infer<typeof postSchemaForm>;
 export type PostFormData = z.infer<typeof postSchemaFormData>;
+export type PostFormDelete = z.infer<typeof postSchemaFormDelete>;

@@ -2,6 +2,37 @@ import { postSchemaFormData } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
 import type { APIRoute } from "astro";
 
+export const DELETE: APIRoute = async ({ locals, params }) => {
+	const postId = params.id;
+
+	if (!postId) {
+		return new Response(
+			JSON.stringify({
+				message: "Invalid post id",
+			}),
+			{ status: 400 }
+		);
+	}
+
+	try {
+		await locals.pbClient.collection("posts").delete(postId);
+	} catch (error) {
+		return new Response(
+			JSON.stringify({
+				message: "Failed to delete post.",
+			}),
+			{ status: 500 }
+		);
+	}
+
+	return new Response(
+		JSON.stringify({
+			message: "Success!",
+		}),
+		{ status: 200 }
+	);
+};
+
 export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	const formData = await request.formData();
 	const parsed = Object.fromEntries(formData.entries());
