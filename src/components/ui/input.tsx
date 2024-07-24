@@ -1,24 +1,26 @@
 import FormError from '@/components/ui/form-error';
+import clsx from 'clsx';
 import type React from 'react';
 
 type Props = {
-	name: string;
-	type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'date';
-	label: string;
-	placeholder?: string;
-	value: string | undefined;
+	className?: string;
 	error?: string;
-	required?: boolean;
-	onInput: React.ChangeEventHandler<HTMLInputElement>;
+	label: string;
+	name: string;
 	onChange?: React.ChangeEventHandler<HTMLInputElement>;
-};
+	onInput: React.ChangeEventHandler<HTMLInputElement>;
+	placeholder?: string;
+	required?: boolean;
+	type: 'text' | 'email' | 'tel' | 'password' | 'url' | 'date';
+	value: string | undefined;
+}
 
 export default function Input(props: Props) {
-	const { value, label, error, ...inputProps } = props;
+	const { className, value, label, error, ...inputProps } = props;
 
 	return (
 		<label
-			className="form-control w-full"
+			className={clsx("form-control w-full", className)}
 			htmlFor={props.name}
 		>
 			<div className="label">
