@@ -79,12 +79,12 @@ function Component() {
 			/>
 
 			<Input
-				error={formData.values.alt}
+				error={formData.errors.alt}
 				label="Alt"
 				name='alt'
 				onInput={v => updateField('alt', v.currentTarget.value)}
 				type="text"
-				value={formData.errors.alt}
+				value={formData.values.alt}
 			/>
 
 			<TagFormControl
