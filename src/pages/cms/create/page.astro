@@ -1,0 +1,12 @@
+---
+import CmsLayout from "@/layouts/cms-layout.astro";
+import PageCreateForm from "@/components/pages/page-create-form";
+---
+
+<CmsLayout>
+	<h1 aria-label="Create page"></h1>
+
+	<section>
+		<PageCreateForm client:only />
+	</section>
+</CmsLayout>
