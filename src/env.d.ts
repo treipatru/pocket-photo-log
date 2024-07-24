@@ -1,14 +1,6 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
-type ENV_KEYS = "API_USER" | "API_KEY" | "PUBLIC_API_URL";
-
-interface ImportMetaEnv extends Record<ENV_KEYS, string> {}
-
-interface ImportMeta {
-	readonly env: ImportMetaEnv;
-}
-
 declare namespace App {
 	interface Locals {
 		pbClient: import("@/entities/api-client").TypedPocketBase;
@@ -16,3 +8,12 @@ declare namespace App {
 		postPayload: Record<string, any>;
 	}
 }
+
+declare var process: {
+	env: {
+		API_KEY: string;
+		API_USER: string;
+		PUBLIC_API_URL: string;
+		PUBLIC_SITE_URL: string;
+	};
+};

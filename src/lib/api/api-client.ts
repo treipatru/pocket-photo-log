@@ -1,6 +1,5 @@
 import { type TypedPocketBase } from "@/entities/api-client";
 import PocketBase from "pocketbase";
-import { getEnvVar } from "@/lib/get-env-var";
 
 export const createApiClient = async (
 	url: string,
@@ -13,7 +12,7 @@ export const createApiClient = async (
 		await pb.collection("users").authWithPassword(user, key);
 
 		if (!pb.authStore.isValid) {
-			throw new Error("Invalid credentials");
+			throw new Error("Invalid user.");
 		}
 	} catch (_) {
 		throw new Error("Invalid credentials");
@@ -31,7 +30,7 @@ export const createApiClient = async (
 };
 
 export const apiClient = await createApiClient(
-	getEnvVar("PUBLIC_API_URL"),
-	getEnvVar("API_USER"),
-	getEnvVar("API_KEY")
+	process.env.PUBLIC_API_URL,
+	process.env.API_USER,
+	process.env.API_KEY
 );

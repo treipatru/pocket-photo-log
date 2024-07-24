@@ -1,11 +1,10 @@
 import { type TypedPocketBase } from "@/entities/api-client";
-import { getEnvVar } from "@/lib/get-env-var";
 import PocketBase from "pocketbase";
 
 export const getUserApiClient = async (
 	jwt: string
 ): Promise<TypedPocketBase> => {
-	const pbClient = new PocketBase(getEnvVar("PUBLIC_API_URL"));
+	const pbClient = new PocketBase(process.env.PUBLIC_API_URL);
 
 	/**
 	 * Load the cookie into the client and do a first local check
