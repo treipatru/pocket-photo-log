@@ -1,0 +1,40 @@
+---
+import HeaderLink from "@/components/header/header-link.astro";
+const slug = Astro.params.slug;
+const id = Astro.params.id;
+---
+
+<div class="dropdown">
+	<div tabindex="0" role="button" class="btn btn-sm">Admin</div>
+	<ul
+		class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+	>
+		<li>
+			<h2 class="menu-title">Post</h2>
+			<ul>
+				<HeaderLink href="/cms/create/post" label="Create"/>
+				{
+					id && (
+						<HeaderLink href={`/posts/${id}/update`} label="Update"/>
+						<HeaderLink href={`/posts/${id}/delete`} label="Delete"/>
+					)
+				}
+			</ul>
+		</li>
+
+		<li>
+			<h2 class="menu-title">Page</h2>
+			<ul>
+				<HeaderLink  href="/cms/create/page" label="Create"/>
+				{
+					slug && (
+						<HeaderLink href={`/pages/${slug}/update`} label="Update"/>
+						<HeaderLink href={`/pages/${slug}/delete`} label="Delete"/>
+					)
+				}
+			</ul>
+		</li>
+
+		<HeaderLink href="/auth/logout" label="Logout"/>
+	</ul>
+</div>
