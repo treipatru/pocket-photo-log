@@ -1,33 +1,30 @@
 ---
 import { apiClient } from "@/lib/api/api-client";
 import HeaderLink from "@/components/header/header-link.astro";
+import AdminMenu from "@/components/header/admin-menu.astro";
 
 const { isAuthenticated } = Astro.locals;
 const displayLogin = !isAuthenticated && import.meta.env.DEV;
 
 const articles = await apiClient.collection("pages").getFullList({
-	sort: "title",
+	sort: "name",
 });
 ---
 
-<header class="">
-	<nav class="flex items-center justify-center uppercase gap-x-4 py-4">
-		<HeaderLink href="/">home</HeaderLink>
+<header class="flex flex-row items-center justify-center">
+	<nav
+		class="menu menu-sm menu-horizontal rounded-box uppercase flex items-center gap-x-4"
+	>
+		<HeaderLink href="/" label="Home" />
+
 		{
 			articles.map((article) => (
-				<HeaderLink href={`/pages/${article.slug}`}>{article.name}</HeaderLink>
+				<HeaderLink href={`/pages/${article.slug}`} label={article.name} />
 			))
 		}
 
-		{displayLogin && <HeaderLink href="/auth/login">Login</HeaderLink>}
+		{displayLogin && <HeaderLink href="/auth/login" label="Login" />}
 
-		{
-			isAuthenticated && (
-				<>
-					<HeaderLink href="/cms/create/post">New post</HeaderLink>
-					<HeaderLink href="/auth/logout">Logout</HeaderLink>
-				</>
-			)
-		}
+		{isAuthenticated && <AdminMenu />}
 	</nav>
 </header>
