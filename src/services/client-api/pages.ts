@@ -28,3 +28,18 @@ export async function deletePage(body: PageFormDelete) {
 	return Promise.resolve({});
 }
 
+export async function updatePage(body: PageForm, id: string) {
+	const res = await fetch(`/api/pages/${id}`, {
+		method: "PATCH",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(body),
+	});
+
+	if (!res.ok) {
+		return Promise.reject({ message: "Failed to update page." });
+	}
+
+	return Promise.resolve({});
+}

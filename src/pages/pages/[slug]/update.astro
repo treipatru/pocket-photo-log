@@ -1,0 +1,19 @@
+---
+import { apiClient } from "@/lib/api/api-client";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import PageUpdateForm from "@/components/pages/page-update-form";
+
+const slug = Astro.params.slug;
+
+const page = await apiClient
+	.collection("pages")
+	.getFirstListItem(`slug="${slug}"`);
+---
+
+<CmsLayout>
+	<h1 aria-label="Edit post"></h1>
+
+	<section>
+		<PageUpdateForm page={page} client:only />
+	</section>
+</CmsLayout>
