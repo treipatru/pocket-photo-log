@@ -45,18 +45,15 @@ const payload = defineMiddleware(async (context, next) => {
 	/**
 	 * Ignore everything but GET.
 	 */
-	if (context.request.method === "GET") {
+	if (request.method === "GET" || request.method === "DELETE") {
 		return next();
 	}
 
 	/**
-	 * Only check for API routes.
+	 * Posts API is always multipart.
 	 */
-	const isApiRoute = urlMatcher(context.url.pathname, [
-		"/api/*",
-		"!/api/posts*", // Posts use multipart/form-data.
-	]);
-	if (!isApiRoute) {
+	const isMultipartPath = urlMatcher(context.url.pathname, ["/api/posts*"]);
+	if (isMultipartPath) {
 		return next();
 	}
 

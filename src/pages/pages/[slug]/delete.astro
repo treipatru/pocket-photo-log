@@ -1,0 +1,19 @@
+---
+import { apiClient } from "@/lib/api/api-client";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import PageDeleteForm from "@/components/pages/page-delete-form";
+
+const slug = Astro.params.slug;
+
+const page = await apiClient
+	.collection("pages")
+	.getFirstListItem(`slug="${slug}"`);
+---
+
+<CmsLayout>
+	<h1 aria-label="Delete post"></h1>
+
+	<section class="max-w-md m-auto">
+		<PageDeleteForm page={page} client:load />
+	</section>
+</CmsLayout>
