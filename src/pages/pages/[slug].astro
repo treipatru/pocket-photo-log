@@ -3,11 +3,11 @@ import { apiClient } from "@/lib/api/api-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 
 const slug = Astro.params.slug;
-const about = await apiClient
+const page = await apiClient
 	.collection("pages")
 	.getFirstListItem(`slug="${slug}"`);
 ---
 
 <BlogLayout>
-	<div set:html={about.content} />
+	<div set:html={page.content} class="prose prose-slate max-w-none" />
 </BlogLayout>
