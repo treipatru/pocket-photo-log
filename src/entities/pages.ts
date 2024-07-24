@@ -13,7 +13,11 @@ export const pageSchema = z.object({
 });
 
 export const pageSchemaForm = pageSchema.omit({ id: true });
+
+export const pageSchemaFormDelete = z.object({
+	id: z.string(),
 });
 
 export type Page = z.infer<typeof pageSchema>;
 export type PageForm = z.infer<typeof pageSchemaForm>;
+export type PageFormDelete = z.infer<typeof pageSchemaFormDelete>;
