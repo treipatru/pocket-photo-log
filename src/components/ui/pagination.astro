@@ -1,0 +1,67 @@
+---
+interface Props {
+	itemsPerPage: number;
+	page: number;
+	totalItems: number;
+	url: string;
+}
+
+const { page, totalItems, url, itemsPerPage } = Astro.props;
+
+/**
+ * Create a new URLSearchParams object excluding the "page" parameter.
+ */
+const allParams = new URLSearchParams(Astro.url.search);
+const newParams = new URLSearchParams();
+
+allParams.forEach((value, key) => {
+	if (key !== "page") {
+		newParams.append(key, value);
+	}
+});
+
+/**
+ * Create the URL for previous page
+ */
+const showPrev = page > 1;
+const prevUrl = () => {
+	if (!showPrev) {
+		return "";
+	}
+
+	const prevParams = new URLSearchParams(newParams);
+	prevParams.set("page", (page - 1).toString());
+	return `${url}?${prevParams.toString()}`;
+};
+
+/**
+ * Create the URL for next page
+ */
+const showNext = totalItems > page * itemsPerPage;
+const nextUrl = () => {
+	if (!showNext) {
+		return "";
+	}
+
+	const nextParams = new URLSearchParams(newParams);
+	nextParams.set("page", (page + 1).toString());
+	return `${url}?${nextParams.toString()}`;
+};
+---
+
+<nav class="flex items-center justify-center mt-10 gap-x-4">
+	{
+		showPrev && (
+			<a class="link link-hover" href={prevUrl()}>
+				Previous Page
+			</a>
+		)
+	}
+	{
+		showNext && (
+			<a class="link link-hover" href={nextUrl()}>
+				Next Page
+			</a>
+		)
+	}
+</nav>
