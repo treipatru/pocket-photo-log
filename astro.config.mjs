@@ -20,5 +20,5 @@ export default defineConfig({
 	integrations: [tailwind(), react()],
 	output: 'server',
 	prefetch: true,
-	site: "revelator.planet34.org"
+	site: "http://revelator.planet34.org"
 });
