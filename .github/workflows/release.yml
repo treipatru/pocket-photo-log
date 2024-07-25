@@ -60,4 +60,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: treipatru/pocket-photo-log:latest
+          tags: treipatru/pocket-photo-log:${{  github.ref_name }},treipatru/pocket-photo-log:latest
