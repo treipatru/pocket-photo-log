@@ -1,5 +1,5 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import PostList from "@/components/posts/post-list.astro";
@@ -8,13 +8,15 @@ import PostListPagination from "@/components/posts/post-list-pagination.astro";
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const id = Astro.params.id;
 
-const posts = await apiClient.collection("posts").getList(page, 20, {
+const posts = await pocketClient.collection("posts").getList(page, 20, {
 	filter: `tags.id?="${id}"`,
 	sort: "-created",
 	expand: "tags",
 });
 
-const tag = await apiClient.collection("tags").getFirstListItem(`id="${id}"`);
+const tag = await pocketClient
+	.collection("tags")
+	.getFirstListItem(`id="${id}"`);
 
 const { items, ...pagination } = posts;
 ---

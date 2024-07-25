@@ -1,9 +1,9 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 
 const slug = Astro.params.slug;
-const page = await apiClient
+const page = await pocketClient
 	.collection("pages")
 	.getFirstListItem(`slug="${slug}"`);
 ---

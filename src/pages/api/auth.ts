@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getLoginCookie } from "@/lib/auth/get-login-cookie";
+import { getLoginCookie } from "@/services/auth/get-login-cookie";
 import { userLoginSchema } from "@/entities/users";
 
 export const POST: APIRoute = async ({ locals }) => {

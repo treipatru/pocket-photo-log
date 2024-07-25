@@ -1,5 +1,5 @@
 import { deletePost } from "@/services/client-api/posts";
-import { getImgUrl } from "@/lib/api/get-img-url"
+import { getImgUrl } from "@/lib/get-img-url"
 import { type Post, postSchemaFormDelete, type PostFormDelete } from "@/entities/posts"
 import { useEffect } from "react"
 import { useForm } from "@/hooks/use-form"

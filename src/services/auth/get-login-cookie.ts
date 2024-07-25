@@ -1,4 +1,4 @@
-import { deserializeCookie } from "@/lib/auth/deserialize-cookie";
+import { deserializeCookie } from "@/services/auth/deserialize-cookie";
 import PocketBase from "pocketbase";
 
 /**

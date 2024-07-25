@@ -1,4 +1,4 @@
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import type { APIRoute } from "astro";
 import z from "zod";
 
@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ locals }) => {
 	}
 
 	try {
-		const tags = await apiClient.collection("tags").getList(1, 10, {
+		const tags = await pocketClient.collection("tags").getList(1, 10, {
 			filter: `name ~ "${data.query}"`,
 		});
 

@@ -1,12 +1,12 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import HeaderLink from "@/components/header/header-link.astro";
 import AdminMenu from "@/components/header/admin-menu.astro";
 
 const { isAuthenticated } = Astro.locals;
 const displayLogin = !isAuthenticated && import.meta.env.DEV;
 
-const articles = await apiClient.collection("pages").getFullList({
+const articles = await pocketClient.collection("pages").getFullList({
 	sort: "name",
 });
 ---

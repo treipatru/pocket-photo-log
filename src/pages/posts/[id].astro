@@ -1,12 +1,12 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import TimelineItem from "@/components/posts/post.astro";
 
 const id = Astro.params.id;
 
-const post = await apiClient
+const post = await pocketClient
 	.collection("posts")
 	.getFirstListItem(`id="${id}"`, {
 		expand: "tags",

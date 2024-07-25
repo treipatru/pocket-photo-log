@@ -4,7 +4,7 @@ import {
 	postSchemaForm,
 } from "@/entities/posts";
 import { updatePost } from "@/services/client-api/posts";
-import { getImgUrl } from "@/lib/api/get-img-url";
+import { getImgUrl } from "@/lib/get-img-url";
 import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
 import { useQuery } from "@tanstack/react-query";

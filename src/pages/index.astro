@@ -1,11 +1,11 @@
 ---
-import { apiClient } from "@/lib/api/api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import PostList from "@/components/posts/post-list.astro";
 import PostListPagination from "@/components/posts/post-list-pagination.astro";
 
-const posts = await apiClient.collection("posts").getList(1, 20, {
+const posts = await pocketClient.collection("posts").getList(1, 20, {
 	sort: "-created",
 	expand: "tags",
 });
