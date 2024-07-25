@@ -21,7 +21,7 @@ export default {
 			},
 			fontFamily: {
 				condensed: ['Bebas Neue', ...defaultTheme.fontFamily.sans],
-				body: ['Montserrat Variable', ...defaultTheme.fontFamily.sans],
+				body: ['Montserrat', ...defaultTheme.fontFamily.sans],
 			},
 		},
 		container: {

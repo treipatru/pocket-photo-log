@@ -3,6 +3,30 @@
 @tailwind utilities;
 
 @layer base {
+	@font-face {
+		font-family: 'Bebas Neue';
+		src: url('/fonts/bebas-neue-latin-400-normal.woff') format('woff');
+		font-weight: 400;
+		font-style: normal;
+		font-display: block;
+	}
+
+	@font-face {
+		font-family: 'Montserrat';
+		src: url('/fonts/montserrat-latin-400-normal.woff') format('woff');
+		font-weight: 400;
+		font-style: normal;
+		font-display: block;
+	}
+
+	@font-face {
+		font-family: 'Montserrat';
+		src: url('/fonts/montserrat-latin-700-normal.woff') format('woff');
+		font-weight: 700;
+		font-style: normal;
+		font-display: block;
+	}
+
 	:root {
 		--primary: 0deg 0% 0%;
 		--primary-background: 0deg 0% 100%;

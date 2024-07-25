@@ -14,8 +14,6 @@
 		"@astrojs/node": "^8.3.2",
 		"@astrojs/react": "^3.6.0",
 		"@astrojs/tailwind": "^5.1.0",
-		"@fontsource-variable/montserrat": "^5.0.19",
-		"@fontsource/bebas-neue": "^5.0.20",
 		"@tanstack/react-query": "^5.51.11",
 		"@tinymce/tinymce-react": "^5.1.1",
 		"@types/react": "^18.3.3",
