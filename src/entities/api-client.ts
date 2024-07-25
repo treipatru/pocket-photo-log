@@ -9,10 +9,11 @@ import { type Settings } from "@/entities/settings";
 
 export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: string): RecordService; // default fallback for any other collection
-	collection(idOrName: "tags"): RecordService<Tag>;
+	collection(idOrName: "pages"): RecordService<Page>;
 	collection(idOrName: "posts"): RecordService<Post>;
 	collection(idOrName: "settings"): RecordService<Settings>;
-	collection(idOrName: "pages"): RecordService<Page>;
+	collection(idOrName: "tags_with_posts"): RecordService<Tag>;
+	collection(idOrName: "tags"): RecordService<Tag>;
 }
 
 export const paginatedCollection = (schema: ZodSchema) =>

@@ -1,0 +1,69 @@
+---
+import CmsLayout from "@/layouts/cms-layout.astro";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import Pagination from "@/components/ui/pagination.astro";
+
+const page = parseInt(Astro.url.searchParams.get("page") || "1");
+const query = Astro.url.searchParams.get("query");
+
+const tags = await pocketClient
+	.collection("tags_with_posts")
+	.getList(page, 20, {
+		...(query && { filter: `name ~ "${query}"` }),
+		sort: "-post_count",
+	});
+---
+
+<CmsLayout>
+	<h1 aria-label="Tags" class="text-lg text-center">Tags</h1>
+
+	<form
+		action="/cms/tags"
+		method="GET"
+		class="max-w-sm m-auto my-5 flex items-center justify-center gap-x-4"
+	>
+		<input
+			type="search"
+			name="query"
+			placeholder="Search tags"
+			value={query}
+			class="input input-bordered"
+		/>
+		<button type="submit" class="btn">Search</button>
+	</form>
+
+	<div class="overflow-x-auto max-w-md m-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Name</th>
+					<th>Count</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{
+					tags.items.map((tag) => (
+						<tr>
+							<th> </th>
+							<td>
+								<a class="link link-hover" href={`/tags/${tag.id}`}>
+									{tag.name}
+								</a>
+							</td>
+							<td>{tag.post_count}</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+
+		<Pagination
+			itemsPerPage={20}
+			page={page}
+			totalItems={tags.totalItems}
+			url="/cms/tags"
+		/>
+	</div>
+</CmsLayout>
