@@ -19,32 +19,23 @@ export default function TagLocationDate({
 }: Props) {
 	const { pl, co, yr } = structuredTags;
 
-	const showFirstSeparator = pl && (co || yr);
-	const showSecondSeparator = showFirstSeparator && yr;
-
 	return (
 		<ul className="flex gap-x-2 items-center text-sm">
-			{
-				pl && (
-					<li className="text-xs">
-						<a
-							href={`/tags/${pl.id}`}
-							className={clsx(getClasses(pl.id, selectedTagId), 'capitalize')}
-						>
-							{pl.name}
-						</a>
-					</li>
-				)
-			}
+			{pl && (
+				<li className="text-xs">
+					<a
+						href={`/tags/${pl.id}`}
+						className={clsx(getClasses(pl.id, selectedTagId), 'capitalize')}
+					>
+						{pl.name}
+					</a>
+				</li>
+			)}
 
-			{
-				showFirstSeparator && (
-					<span>-</span>
-				)
-			}
+			{co && (
+				<>
+					{pl && <span>-</span>}
 
-			{
-				co && (
 					<li className="text-xs">
 						<a
 							href={`/tags/${co.id}`}
@@ -53,24 +44,23 @@ export default function TagLocationDate({
 							{co.name}
 						</a>
 					</li>
-				)
-			}
 
-			{
-				showSecondSeparator && (
-					<span>-</span>
-				)
-			}
+				</>
+			)}
 
 			{yr && (
-				<li className="text-xs">
-					<a
-						href={`/tags/${yr.id}`}
-						className={clsx(getClasses(yr.id, selectedTagId), 'uppercase')}
-					>
-						{yr.name}
-					</a>
-				</li>
+				<>
+					{co && <span>-</span>}
+
+					<li className="text-xs">
+						<a
+							href={`/tags/${yr.id}`}
+							className={clsx(getClasses(yr.id, selectedTagId), 'uppercase')}
+						>
+							{yr.name}
+						</a>
+					</li>
+				</>
 			)}
 		</ul>
 	)
