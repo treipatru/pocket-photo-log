@@ -2,6 +2,7 @@ services:
   pocket-photo-log-dev:
     build:
       context: .
+      dockerfile: ./docker/Dockerfile.app
       target: pocket-photo-log-dev
     container_name: pocket-photo-log-dev
     develop:
@@ -17,17 +18,24 @@ services:
       - .env.development
     environment:
         - NODE_ENV=development
+    extra_hosts:
+      # When both the app and the pb are running in the same compose, the app
+      # can't load images from pb using the container name. This exposes
+      # the pb container to the app container using the host network.
+      - "localhost:host-gateway"
     networks:
       - pocket-photo-log
     ports:
       - 4321:4321
     profiles:
       - development
+    restart: unless-stopped
 
   pocket-photo-log-prod:
     build:
       context: .
       target: pocket-photo-log-prod
+      dockerfile: ./docker/Dockerfile.app
     container_name: pocket-photo-log-prod
     env_file:
       - .env.production
@@ -41,7 +49,36 @@ services:
       - 4321:4321
     profiles:
       - production
+    restart: unless-stopped
+
+  pocket-photo-log-pb-dev:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile.pb
+      target: pocket-photo-log-pb-dev
+    container_name: pocket-photo-log-pb-dev
+    env_file:
+      - .env.development
+    environment:
+        - NODE_ENV=development
+    networks:
+      - pocket-photo-log
+    ports:
+      - 8080:8080
+    profiles:
+      - development
+    restart: unless-stopped
+    volumes:
+      # Persistent volume for PB data
+      - pb:/pb/pb_data
+      # Mapped volume for PB hooks
+      - ./pb/pb_hooks:/pb/pb_hooks:rw
+      # Mapped volume for PB migrations
+      - ./pb/pb_migrations:/pb/pb_migrations:rw
 
 networks:
   pocket-photo-log:
     driver: bridge
+
+volumes:
+  pb:

@@ -27,9 +27,21 @@ export const postSchemaForm = z.object({
 	caption: z.string(),
 	tags: z.array(z.string()),
 	published: z.boolean(),
-	file: z.instanceof(File).refine((file) => {
-		return !file || file.size <= MAX_FILE_SIZE;
-	}, "File size must be less than 10MB"),
+	file: z
+		.instanceof(File)
+		.refine((file) => {
+			const allowedExtensions = ["jpg", "jpeg", "png", "bmp", "webp", "avif"];
+			const extension = file.name.split(".").pop();
+
+			if (!extension) {
+				return false;
+			}
+
+			return allowedExtensions.includes(extension);
+		}, "File type is unsupported.")
+		.refine((file) => {
+			return !file || file.size <= MAX_FILE_SIZE;
+		}, "File size must be less than 10MB."),
 });
 
 /**
