@@ -20,13 +20,36 @@ export default function TagBox({ tags, activeTagId }: Props) {
 			<TagLocationDate activeTagId={activeTagId} structuredTags={structuredTags} />
 
 			<ul className="flex items-center gap-x-1 flex-wrap mt-1">
-				<TagLink tag={structuredTags.camera} category="camera" activeTagId={activeTagId} />
-				<TagLink tag={structuredTags.form} category="form" activeTagId={activeTagId} />
-				<TagLink tag={structuredTags.format} category="format" activeTagId={activeTagId} />
-				<TagLink tag={structuredTags.film} category="film" activeTagId={activeTagId} />
+				<TagLink
+					tag={structuredTags.camera}
+					category="camera"
+					activeTagId={activeTagId}
+				/>
+
+				<TagLink
+					tag={structuredTags.form}
+					category="form"
+					activeTagId={activeTagId}
+				/>
+
+				<TagLink
+					tag={structuredTags.format}
+					category="format"
+					activeTagId={activeTagId}
+				/>
+
+				<TagLink
+					tag={structuredTags.film}
+					category="film"
+					activeTagId={activeTagId}
+				/>
 
 				{structuredTags.other.map((tag) => (
-					<TagLink tag={tag} activeTagId={activeTagId} />
+					<TagLink
+						key={tag.id}
+						tag={tag}
+						activeTagId={activeTagId}
+					/>
 				))}
 			</ul>
 		</div>
