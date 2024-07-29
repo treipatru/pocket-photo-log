@@ -23,7 +23,8 @@ function Component() {
 		caption: '',
 		file: new File([], ''),
 		published: true,
-		tags: []
+		shot_on: '',
+		tags: [],
 	});
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -85,6 +86,15 @@ function Component() {
 				onInput={v => updateField('alt', v.currentTarget.value)}
 				type="text"
 				value={formData.values.alt}
+			/>
+
+			<Input
+				error={formData.errors.shot_on}
+				label="Shot on"
+				name='shot_on'
+				onInput={v => updateField('shot_on', v.currentTarget.value)}
+				type="date"
+				value={formData.values.shot_on?.substring(0, 10)}
 			/>
 
 			<TagFormControl

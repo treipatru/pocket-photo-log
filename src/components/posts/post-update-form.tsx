@@ -31,6 +31,7 @@ function Component({
 		caption: post.caption,
 		file: new File([], ''),
 		published: post.published,
+		shot_on: post.shot_on,
 		tags: post.expand?.tags.map(tag => tag.name) || [],
 	});
 
@@ -93,6 +94,15 @@ function Component({
 				onInput={v => updateField('alt', v.currentTarget.value)}
 				type="text"
 				value={formData.values.alt}
+			/>
+
+			<Input
+				error={formData.errors.shot_on}
+				label="Shot on"
+				name='shot_on'
+				onInput={v => updateField('shot_on', v.currentTarget.value)}
+				type="date"
+				value={formData.values.shot_on?.substring(0, 10)}
 			/>
 
 			<TagFormControl

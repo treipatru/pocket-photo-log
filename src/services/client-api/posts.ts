@@ -13,6 +13,10 @@ export async function createPost(body: PostForm) {
 	formData.append("published", body.published.toString());
 	formData.append("tags", body.tags.join(","));
 
+	if (body.shot_on) {
+		formData.append("shot_on", body.shot_on);
+	}
+
 	const res = await fetch("/api/posts", {
 		method: "POST",
 		body: formData,
@@ -51,12 +55,19 @@ export async function updatePost(body: PostForm, id: string) {
 	formData.append("tags", body.tags.join(","));
 
 	/**
-	 * Only attach the file if it's not empty.
+	 * Optional fields
 	 */
+	if (body.shot_on) {
+		formData.append("shot_on", body.shot_on);
+	}
+
 	if (body.file.size > 0) {
 		formData.append("file", body.file);
 	}
 
+	/**
+	 * Call API
+	 */
 	const res = await fetch(`/api/posts/${id}`, {
 		method: "PATCH",
 		body: formData,
