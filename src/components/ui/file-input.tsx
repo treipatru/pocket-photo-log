@@ -48,7 +48,7 @@ export default function FileInput(props: Props) {
 				<div className='flex items-center justify-between'>
 					<input
 						{...inputProps}
-						accept="image/*"
+						accept=".jpg,.jpeg,.png,.webp,.avif"
 						className="file-input file-input-bordered max-w-xs inline-block"
 						onChange={handleImageChange}
 						type="file"
