@@ -41,7 +41,21 @@ const categoryKeys: TagCategory[] = [
 
 export function structuredTagMapper(tags: Tag[]): StructuredTags {
 	const structuredTags: StructuredTags = {
-		other: tags.filter((t) => /^(?!.*: ).*/.test(t.name)),
+		/**
+		 * Filter out tags which are already categorized.
+		 * This means that anything starting with the category key will
+		 * not be in the `other` array.
+		 *
+		 * Tags which use the same format as the category keys but have different
+		 * values will be included.
+		 *
+		 * Example:
+		 * - 'camera: 35mm' will not be included
+		 * - 'my-property: my-value' will be included
+		 */
+		other: tags.filter(
+			(tag) => !categoryKeys.some((key) => tag.name.startsWith(key))
+		),
 	};
 
 	for (const category of categoryKeys) {
