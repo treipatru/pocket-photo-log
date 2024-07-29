@@ -1,4 +1,4 @@
-import { type ZodSchema } from "zod";
+import { set, type ZodSchema } from "zod";
 import { useState, useEffect } from "react";
 
 type FormState<T> = {
@@ -45,17 +45,11 @@ export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 	 * Helper to determine if the form has any errors.
 	 */
 	const [hasErrors, setHasErrors] = useState(false);
-	useEffect(() => {
-		setHasErrors(Object.keys(formErrors).length > 0);
-	}, [formErrors]);
 
 	/**
 	 * Form validity
 	 */
 	const [isValid, setIsValid] = useState(false);
-	useEffect(() => {
-		setIsValid(!hasErrors && hasValidated);
-	}, [hasErrors, hasValidated]);
 
 	/**
 	 * Validate form
@@ -83,8 +77,24 @@ export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 			}
 		}
 
+		setIsValid(false);
 		setFormErrors(errors);
 	};
+
+	/**
+	 * React to data changes
+	 */
+	useEffect(() => {
+		// Only run if there has been a validation attempt.
+		if (!hasValidated) {
+			return;
+		}
+
+		const errorCount = Object.keys(formErrors).length;
+
+		setHasErrors(errorCount > 0);
+		setIsValid(errorCount === 0);
+	}, [hasValidated, formErrors]);
 
 	return {
 		formData: {
