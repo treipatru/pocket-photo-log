@@ -31,7 +31,7 @@ export const postSchemaForm = z.object({
 	file: z.instanceof(File).refine((file) => {
 		return !file || file.size <= MAX_FILE_SIZE;
 	}, "File size must be less than 10MB"),
-	shot_on: z.string().date().optional(),
+	shot_on: z.string().optional(),
 });
 
 /**

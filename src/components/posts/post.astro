@@ -1,13 +1,15 @@
 ---
 import { type Post } from "@/entities/posts";
 import { getImgUrl, type ImageSize } from "@/lib/get-img-url";
-import TagList from "@/components/tag-list.astro";
+import TagBox from "@/components/tags/tag-box/tag-box";
 
 interface Props {
 	isLink: boolean;
 	post: Post;
 	size: ImageSize;
 }
+
+const activeTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
 
 const {
 	isLink,
@@ -16,13 +18,15 @@ const {
 } = Astro.props;
 ---
 
-<article class="m-auto inline-flex flex-col text-left">
+<article
+	class="bg-muted-background m-auto inline-flex flex-col text-left rounded-b-sm"
+>
 	<figure>
 		{
 			isLink ? (
 				<a href={`/posts/${id}`} aria-label={"Post"}>
 					<img
-						class="rounded-sm"
+						class="rounded-t-sm"
 						src={getImgUrl(id, file, size)}
 						alt={alt}
 						loading="lazy"
@@ -30,7 +34,7 @@ const {
 				</a>
 			) : (
 				<img
-					class="rounded-sm max-h-[700px]"
+					class="rounded-t-sm max-h-[700px]"
 					src={getImgUrl(id, file, size)}
 					alt={alt}
 					loading="lazy"
@@ -40,13 +44,10 @@ const {
 
 		{
 			caption && (
-				<figcaption
-					class="prose max-w-none text-base py-2"
-					set:html={caption}
-				/>
+				<figcaption class="text-base px-2 mt-2 ml-1">{caption}</figcaption>
 			)
 		}
 	</figure>
 
-	{expand?.tags && <TagList tags={expand.tags} />}
+	<TagBox tags={expand?.tags} activeTagId={activeTagId} />
 </article>

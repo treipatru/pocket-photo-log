@@ -19,10 +19,13 @@ const tag = await pocketClient
 	.getFirstListItem(`id="${id}"`);
 
 const { items, ...pagination } = posts;
+
+// Clear any categories from name
+const tagName = tag.name.replace(/^[^:]*: /, "");
 ---
 
 <BlogLayout>
-	<Hero slot="hero" subtitle=`on #${tag.name}` />
+	<Hero slot="hero" subtitle=`on #${tagName}` />
 
 	<PostList posts={posts.items} />
 
