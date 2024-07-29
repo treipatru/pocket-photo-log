@@ -33,13 +33,23 @@ export const postSchemaForm = z.object({
 });
 
 /**
- * Schema for backend data validation when creating or updating a post.
+ * Schema for backend data validation for post CREATE
  */
 export const postSchemaFormData = postSchemaForm.extend({
 	tags: z.string(),
 	published: z.string(),
 });
 
+/**
+ * Schema for backend data validation for post UPDATE
+ */
+export const postSchemaFormUpdate = postSchemaFormData.partial({
+	file: true,
+});
+
+/**
+ * Schema for backend data validation for post DELETE
+ */
 export const postSchemaFormDelete = z.object({
 	id: z.string(),
 });

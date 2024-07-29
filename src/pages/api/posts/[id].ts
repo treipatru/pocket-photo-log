@@ -1,4 +1,4 @@
-import { postSchemaFormData } from "@/entities/posts";
+import { postSchemaFormUpdate } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
 import type { APIRoute } from "astro";
 
@@ -38,7 +38,7 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	const parsed = Object.fromEntries(formData.entries());
 	const postId = params.id;
 
-	const { data, error } = postSchemaFormData.safeParse(parsed);
+	const { data, error } = postSchemaFormUpdate.safeParse(parsed);
 
 	if (error || !postId) {
 		return new Response(

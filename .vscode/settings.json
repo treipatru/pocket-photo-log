@@ -14,7 +14,8 @@
 		"tailwindcss",
 		"tanstack",
 		"tinymce",
-		"tsconfigs"
+		"tsconfigs",
+		"webp"
 	],
 	"cSpell.ignorePaths": [
 		"package-lock.json",

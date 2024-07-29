@@ -26,6 +26,7 @@ export async function createPost(body: PostForm) {
 }
 
 export async function deletePost(body: PostFormDelete) {
+	console.log("deleting from frontend");
 	const res = await fetch(`/api/posts/${body.id}`, {
 		method: "DELETE",
 	});
@@ -46,9 +47,15 @@ export async function updatePost(body: PostForm, id: string) {
 
 	formData.append("alt", body.alt);
 	formData.append("caption", body.caption);
-	formData.append("file", body.file);
 	formData.append("published", body.published.toString());
 	formData.append("tags", body.tags.join(","));
+
+	/**
+	 * Only attach the file if it's not empty.
+	 */
+	if (body.file.size > 0) {
+		formData.append("file", body.file);
+	}
 
 	const res = await fetch(`/api/posts/${id}`, {
 		method: "PATCH",
