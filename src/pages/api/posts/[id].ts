@@ -64,14 +64,10 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 		 * Create new tags if necessary
 		 */
 		try {
-			await Promise.all(
-				newTagNames.map(async (tag) => {
-					const newTag = await pbClient
-						.collection("tags")
-						.create({ name: tag });
-					tagIds.push(newTag.id);
-				})
-			);
+			for (const tag of newTagNames) {
+				const newTag = await pbClient.collection("tags").create({ name: tag });
+				tagIds.push(newTag.id);
+			}
 		} catch (error) {
 			return new Response(
 				JSON.stringify({
@@ -90,7 +86,7 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 		const { file, tags, ...rest } = data;
 		await pbClient.collection("posts").update(postId, {
 			...rest,
-			...(data.file.size > 0 && { file: data.file }),
+			...(data.file && data.file.size > 0 && { file: data.file }),
 			tags: tagIds,
 		});
 	} catch (error) {

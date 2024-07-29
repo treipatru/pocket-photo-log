@@ -39,14 +39,10 @@ export const POST: APIRoute = async ({ locals, request }) => {
 		 * Create new tags if necessary
 		 */
 		try {
-			await Promise.all(
-				newTagNames.map(async (tag) => {
-					const newTag = await pbClient
-						.collection("tags")
-						.create({ name: tag });
-					tagIds.push(newTag.id);
-				})
-			);
+			for (const tag of newTagNames) {
+				const newTag = await pbClient.collection("tags").create({ name: tag });
+				tagIds.push(newTag.id);
+			}
 		} catch (error) {
 			return new Response(
 				JSON.stringify({
