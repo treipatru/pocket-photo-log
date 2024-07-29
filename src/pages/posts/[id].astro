@@ -12,11 +12,14 @@ const post = await pocketClient
 		expand: "tags",
 	});
 
-const postDate = new Date(post.created).toLocaleDateString("en-US", {
-	year: "numeric",
-	month: "long",
-	day: "numeric",
-});
+const postDate = new Date(post.shot_on || post.created).toLocaleDateString(
+	"en-US",
+	{
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	}
+);
 ---
 
 <PostLayout>
