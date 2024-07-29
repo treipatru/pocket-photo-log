@@ -1,4 +1,4 @@
-export type ImageSize = "650x650f" | "900x900f" | "1200x1200f";
+export type ImageSize = "650x650f" | "900x900f";
 
 const apiUrl = process.env.PUBLIC_API_URL;
 

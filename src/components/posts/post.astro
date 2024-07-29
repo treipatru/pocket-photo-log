@@ -16,22 +16,32 @@ const {
 } = Astro.props;
 ---
 
-<article class="flex flex-col items-center md:items-center md:text-center">
-	<figure class="mb-2">
+<article class="m-auto inline-flex flex-col text-left">
+	<figure>
 		{
 			isLink ? (
 				<a href={`/posts/${id}`} aria-label={"Post"}>
-					<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
+					<img
+						class="rounded-sm"
+						src={getImgUrl(id, file, size)}
+						alt={alt}
+						loading="lazy"
+					/>
 				</a>
 			) : (
-				<img src={getImgUrl(id, file, size)} alt={alt} loading="lazy" />
+				<img
+					class="rounded-sm max-h-[700px]"
+					src={getImgUrl(id, file, size)}
+					alt={alt}
+					loading="lazy"
+				/>
 			)
 		}
 
 		{
 			caption && (
 				<figcaption
-					class="prose mt-2 text-lg leading-tight"
+					class="prose max-w-none text-base py-2"
 					set:html={caption}
 				/>
 			)

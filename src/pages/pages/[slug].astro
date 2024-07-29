@@ -1,6 +1,6 @@
 ---
 import { pocketClient } from "@/services/pocket/pocket-client";
-import BlogLayout from "@/layouts/blog-layout.astro";
+import PostLayout from "@/layouts/post-layout.astro";
 
 const slug = Astro.params.slug;
 const page = await pocketClient
@@ -8,6 +8,6 @@ const page = await pocketClient
 	.getFirstListItem(`slug="${slug}"`);
 ---
 
-<BlogLayout>
+<PostLayout>
 	<div set:html={page.content} class="prose prose-slate max-w-none" />
-</BlogLayout>
+</PostLayout>

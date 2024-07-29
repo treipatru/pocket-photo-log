@@ -1,6 +1,6 @@
 ---
 import { pocketClient } from "@/services/pocket/pocket-client";
-import BlogLayout from "@/layouts/blog-layout.astro";
+import PostLayout from "@/layouts/post-layout.astro";
 import Hero from "@/components/hero.astro";
 import TimelineItem from "@/components/posts/post.astro";
 
@@ -19,8 +19,8 @@ const postDate = new Date(post.created).toLocaleDateString("en-US", {
 });
 ---
 
-<BlogLayout>
+<PostLayout>
 	<Hero slot="hero" subtitle={`on ${postDate}`} />
 
-	<TimelineItem post={post} size="1200x1200f" isLink={false} />
-</BlogLayout>
+	<TimelineItem post={post} size="900x900f" isLink={false} />
+</PostLayout>
