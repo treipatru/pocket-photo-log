@@ -1,6 +1,11 @@
 export type ImageSize = "650x650f" | "900x900f";
 
-const apiUrl = process.env.PUBLIC_API_URL;
+/**
+ * TODO: This can't be process.env as it is not available in the browser.
+ * Verify that the value is not baked in the docker image at build time.
+ */
+
+const apiUrl = import.meta.env.PUBLIC_API_URL;
 
 export const getImgUrl = (
 	recordId: string,
