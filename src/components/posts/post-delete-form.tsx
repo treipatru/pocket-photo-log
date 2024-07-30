@@ -56,7 +56,7 @@ function Component({ post }: Props) {
 				<p className="text-xl">Are you sure you want to delete this post?</p>
 
 				<img
-					src={getImgUrl(post.id, post.file, '650x650f')}
+					src={getImgUrl(post, 'medium')}
 					alt={post.alt}
 				/>
 

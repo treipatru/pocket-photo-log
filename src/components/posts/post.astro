@@ -27,7 +27,7 @@ const {
 				<a href={`/posts/${id}`} aria-label={"Post"}>
 					<img
 						class="rounded-t-sm"
-						src={getImgUrl(id, file, size)}
+						src={getImgUrl({ id, file }, size)}
 						alt={alt}
 						loading="lazy"
 					/>
@@ -35,7 +35,7 @@ const {
 			) : (
 				<img
 					class="rounded-t-sm max-h-[700px]"
-					src={getImgUrl(id, file, size)}
+					src={getImgUrl({ id, file }, size)}
 					alt={alt}
 					loading="lazy"
 				/>

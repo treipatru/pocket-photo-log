@@ -71,7 +71,7 @@ function Component({
 			{error && <Alert className="mb-4" type="error" content={error.message} />}
 
 			<FileInput
-				defaultImgUrl={getImgUrl(post.id, post.file, '650x650f')}
+				defaultImgUrl={getImgUrl(post, 'medium')}
 				error={formData.errors.file}
 				label="Image"
 				name='file'

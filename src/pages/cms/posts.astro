@@ -47,7 +47,7 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 								<a href={`/posts/${post.id}`}>
 									<img
 										class="rounded-t-sm w-[100px]"
-										src={getImgUrl(post.id, post.file, "100x0f")}
+										src={getImgUrl(post, "thumb")}
 										alt={post.alt}
 										loading="lazy"
 									/>
