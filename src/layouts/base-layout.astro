@@ -1,6 +1,7 @@
 ---
 import "@/styles/global.css";
 import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+import { ViewTransitions } from "astro:transitions";
 import Header from "@/components/header/header.astro";
 
 interface Props {
@@ -46,7 +47,10 @@ const image = "";
 		<meta property="twitter:title" content={SITE_TITLE} />
 		<meta property="twitter:description" content={SITE_DESCRIPTION} />
 		<meta property="twitter:image" content={new URL(image, Astro.url)} />
+
 		<slot name="head" />
+
+		<ViewTransitions />
 	</head>
 
 	<body class="bg-primary-background text-primary font-body font-medium">
