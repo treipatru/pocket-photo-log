@@ -91,7 +91,7 @@ function Component({
 
 	return (
 		<QueryWrapper>
-			<details className="dropdown" open={isListVisible}>
+			<details className="dropdown dropdown-top md:dropdown-bottom" open={isListVisible}>
 				<summary
 					autoFocus
 					tabIndex={-1}
