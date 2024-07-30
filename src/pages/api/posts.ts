@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
 import { postSchemaFormCreate } from "@/entities/posts";
 import { z } from "zod";
+import { sanitizeTagNames } from "@/entities/tags";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**
@@ -41,7 +42,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 		const allTags = await pbClient.collection("tags").getFullList();
 		const { existingTagIds, newTagNames } = separateTags(
 			allTags,
-			data.tags.split(",")
+			sanitizeTagNames(data.tags, "arr")
 		);
 		tagIds.push(...existingTagIds);
 

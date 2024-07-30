@@ -1,6 +1,11 @@
-import { type PostForm, type PostFormDelete } from "@/entities/posts";
+import {
+	type PostFormCreate,
+	type PostFormDelete,
+	type PostFormUpdate,
+} from "@/entities/posts";
+import { sanitizeTagNames } from "@/entities/tags";
 
-export async function createPost(body: PostForm) {
+export async function createPost(body: PostFormCreate) {
 	/**
 	 * Transform the JSON body to FormData as the server expects it due to
 	 * the file upload.
@@ -11,7 +16,7 @@ export async function createPost(body: PostForm) {
 	formData.append("caption", body.caption);
 	formData.append("file", body.file);
 	formData.append("published", body.published.toString());
-	formData.append("tags", body.tags.join(","));
+	formData.append("tags", sanitizeTagNames(body.tags, "str"));
 
 	if (body.shot_on) {
 		formData.append("shot_on", body.shot_on);
@@ -42,26 +47,36 @@ export async function deletePost(body: PostFormDelete) {
 	return Promise.resolve({});
 }
 
-export async function updatePost(body: PostForm, id: string) {
+export async function updatePost(body: PostFormUpdate, id: string) {
 	/**
 	 * Transform the JSON body to FormData as the server expects it due to
 	 * the file upload.
+	 *
+	 * Since everything is optional, add
 	 */
 	const formData = new FormData();
 
-	formData.append("alt", body.alt);
-	formData.append("caption", body.caption);
-	formData.append("published", body.published.toString());
-	formData.append("tags", body.tags.join(","));
+	if (body.alt) {
+		formData.append("alt", body.alt);
+	}
 
-	/**
-	 * Optional fields
-	 */
+	if (body.caption) {
+		formData.append("caption", body.caption);
+	}
+
+	if (body.published) {
+		formData.append("published", body.published.toString());
+	}
+
+	if (body.tags) {
+		formData.append("tags", sanitizeTagNames(body.tags, "str"));
+	}
+
 	if (body.shot_on) {
 		formData.append("shot_on", body.shot_on);
 	}
 
-	if (body.file.size > 0) {
+	if (body.file?.size && body.file.size > 0) {
 		formData.append("file", body.file);
 	}
 
