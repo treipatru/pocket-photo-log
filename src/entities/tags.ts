@@ -2,7 +2,7 @@ import z from "zod";
 
 export const tagSchema = z.object({
 	id: z.string(),
-	name: z.string().regex(/^[a-zA-Z0-9\- :]+$/),
+	name: z.string(),
 	post_count: z.number().optional(),
 });
 

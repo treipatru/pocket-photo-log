@@ -1,6 +1,7 @@
 import { postSchemaFormUpdate } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
 import type { APIRoute } from "astro";
+import { z } from "zod";
 
 export const DELETE: APIRoute = async ({ locals, params }) => {
 	const postId = params.id;
@@ -38,7 +39,16 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	const parsed = Object.fromEntries(formData.entries());
 	const postId = params.id;
 
-	const { data, error } = postSchemaFormUpdate.safeParse(parsed);
+	/**
+	 * Since the form data is not typed, everything is a string so we need to
+	 * update the schema to reflect that.
+	 */
+	const { data, error } = postSchemaFormUpdate
+		.extend({
+			published: z.string().optional(),
+			tags: z.string().optional(),
+		})
+		.safeParse(parsed);
 
 	if (error || !postId) {
 		return new Response(

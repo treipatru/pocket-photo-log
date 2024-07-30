@@ -1,7 +1,7 @@
 import {
-	type PostForm,
+	postSchemaFormUpdate,
 	type Post,
-	postSchemaForm,
+	type PostFormUpdate,
 } from "@/entities/posts";
 import { updatePost } from "@/services/client-api/posts";
 import { getImgUrl } from "@/lib/get-img-url";
@@ -26,7 +26,7 @@ function Component({
 	/**
 	 * Form
 	 */
-	const { formData, isValid, updateField, validate } = useForm<PostForm>(postSchemaForm, {
+	const { formData, isValid, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
 		alt: post.alt,
 		caption: post.caption,
 		file: new File([], ''),

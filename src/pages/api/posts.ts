@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
-import { postSchemaFormData } from "@/entities/posts";
+import { postSchemaFormCreate } from "@/entities/posts";
+import { z } from "zod";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**
@@ -10,7 +11,16 @@ export const POST: APIRoute = async ({ locals, request }) => {
 	const formData = await request.formData();
 	const parsed = Object.fromEntries(formData.entries());
 
-	const { data, error } = postSchemaFormData.safeParse(parsed);
+	/**
+	 * Since the form data is not typed, everything is a string so we need to
+	 * update the schema to reflect that.
+	 */
+	const { data, error } = postSchemaFormCreate
+		.extend({
+			published: z.string().optional(),
+			tags: z.string().optional(),
+		})
+		.safeParse(parsed);
 
 	if (error) {
 		return new Response(

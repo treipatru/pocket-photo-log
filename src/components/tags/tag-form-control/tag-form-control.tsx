@@ -3,12 +3,12 @@ import TagPicker from '@/components/tags/tag-form-control/tag-picker';
 
 interface Props {
 	onChange: (tags: string[]) => void;
-	value: string[];
+	value?: string[];
 }
 
 export default function TagFormControl({
 	onChange,
-	value,
+	value = [],
 }: Props) {
 	const handleSelect = (tag: string) => {
 		onChange([...value, tag]);

@@ -20,10 +20,7 @@ export const postSchema = z.object({
 
 const MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
 
-/**
- * Schema for frontend form validation when creating or updating a post.
- */
-export const postSchemaForm = z.object({
+export const postSchemaFormCreate = z.object({
 	alt: z.string(),
 	caption: z.string(),
 	tags: z.array(z.string()),
@@ -34,29 +31,13 @@ export const postSchemaForm = z.object({
 	shot_on: z.string().optional(),
 });
 
-/**
- * Schema for backend data validation for post CREATE
- */
-export const postSchemaFormData = postSchemaForm.extend({
-	tags: z.string(),
-	published: z.string(),
-});
-
-/**
- * Schema for backend data validation for post UPDATE
- */
-export const postSchemaFormUpdate = postSchemaFormData.partial({
-	file: true,
-});
-
-/**
- * Schema for backend data validation for post DELETE
- */
 export const postSchemaFormDelete = z.object({
 	id: z.string(),
 });
 
+export const postSchemaFormUpdate = postSchemaFormCreate.partial();
+
 export type Post = z.infer<typeof postSchema>;
-export type PostForm = z.infer<typeof postSchemaForm>;
-export type PostFormData = z.infer<typeof postSchemaFormData>;
+export type PostFormCreate = z.infer<typeof postSchemaFormCreate>;
 export type PostFormDelete = z.infer<typeof postSchemaFormDelete>;
+export type PostFormUpdate = z.infer<typeof postSchemaFormUpdate>;

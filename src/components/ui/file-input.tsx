@@ -10,7 +10,7 @@ interface Props {
 	onChange: (file: InstanceType<typeof File>) => void;
 	defaultImgUrl?: string;
 	required?: boolean;
-	value: InstanceType<typeof File>;
+	value?: InstanceType<typeof File>;
 }
 
 export default function FileInput(props: Props) {
@@ -54,7 +54,7 @@ export default function FileInput(props: Props) {
 						type="file"
 					/>
 
-					{!!value.name && (
+					{!!value?.name && (
 						<button className="btn btn-square btn-outline" onClick={handleImageReset}>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"

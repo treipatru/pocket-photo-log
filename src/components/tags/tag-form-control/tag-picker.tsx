@@ -31,7 +31,10 @@ export default function TagPicker({
 					</button>
 				)
 				: (
-					<TagDropdown onSelect={handleSelect} onCancel={() => setShowDropdown(false)} value={value} />
+					<TagDropdown
+						onCancel={() => setShowDropdown(false)} value={value}
+						onSelect={handleSelect}
+					/>
 				)
 			}
 		</>

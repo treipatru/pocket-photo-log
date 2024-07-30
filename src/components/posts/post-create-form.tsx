@@ -1,6 +1,6 @@
 import {
-	type PostForm,
-	postSchemaForm
+	type PostFormCreate,
+	postSchemaFormCreate
 } from "@/entities/posts";
 import { createPost } from "@/services/client-api/posts";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ function Component() {
 	/**
 	 * Form
 	 */
-	const { formData, isValid, updateField, validate } = useForm<PostForm>(postSchemaForm, {
+	const { formData, isValid, updateField, validate } = useForm<PostFormCreate>(postSchemaFormCreate, {
 		alt: '',
 		caption: '',
 		file: new File([], ''),
