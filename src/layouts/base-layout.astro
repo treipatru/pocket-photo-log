@@ -53,32 +53,30 @@ const image = "";
 		<ViewTransitions />
 	</head>
 
-	<body class="bg-primary-background text-primary font-body font-medium">
+	<body class="bg-primary-background text-primary font-body font-medium pb-14">
 		{showHeader && <Header />}
 
-		<div transition:animate="fade">
-			<slot />
+		<slot />
 
-			{
-				showFooter && (
-					<footer class="text-center pt-8 pb-2 text-xs text-muted">
-						<span>
-							&copy; 2010-{new Date().getFullYear()} planet34.org All rights
-							reserved.
-						</span>
+		{
+			showFooter && (
+				<footer class="text-center pt-14 pb-2 text-xs text-muted">
+					<span>
+						&copy; 2010-{new Date().getFullYear()} planet34.org All rights
+						reserved.
+					</span>
 
-						<span class="block">
-							Running on{" "}
-							<a
-								class="link link-hover"
-								href="https://github.com/treipatru/pocket-photo-log"
-							>
-								Pocket Photo Log.
-							</a>
-						</span>
-					</footer>
-				)
-			}
-		</div>
+					<span class="block">
+						Running on{" "}
+						<a
+							class="link link-hover"
+							href="https://github.com/treipatru/pocket-photo-log"
+						>
+							Pocket Photo Log.
+						</a>
+					</span>
+				</footer>
+			)
+		}
 	</body>
 </html>
