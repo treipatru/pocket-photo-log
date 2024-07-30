@@ -1,0 +1,69 @@
+---
+import { format } from "date-fns";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import Pagination from "@/components/ui/pagination.astro";
+import { getImgUrl } from "@/lib/get-img-url";
+import PostTagUpdateForm from "@/components/posts/post-tag-update-form";
+
+const page = parseInt(Astro.url.searchParams.get("page") || "1");
+
+const posts = await pocketClient.collection("posts").getList(page, 20, {
+	expand: "tags",
+	sort: "-created",
+});
+---
+
+<CmsLayout>
+	<h1 aria-label="Posts" class="text-lg text-center">
+		<a href="/cms/posts"> Posts </a>
+	</h1>
+
+	<div class="overflow-x-auto m-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th style={{ width: "100px" }}>Created</th>
+					<th>Tags</th>
+					<th style={{ width: "100px" }}></th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{
+					posts.items.map((post) => (
+						<tr>
+							<td>{format(post.created, "yyyy.MM.dd")}</td>
+
+							<td class="text-xs">
+								<PostTagUpdateForm
+									client:load
+									tags={post.expand?.tags || []}
+									postId={post.id}
+								/>
+							</td>
+
+							<td>
+								<a href={`/posts/${post.id}`}>
+									<img
+										class="rounded-t-sm w-[100px]"
+										src={getImgUrl(post.id, post.file, "100x0f")}
+										alt={post.alt}
+										loading="lazy"
+									/>
+								</a>
+							</td>
+						</tr>
+					))
+				}
+			</tbody>
+		</table>
+
+		<Pagination
+			itemsPerPage={20}
+			page={page}
+			totalItems={posts.totalItems}
+			url="/cms/posts"
+		/>
+	</div>
+</CmsLayout>
