@@ -1,7 +1,8 @@
-import node from '@astrojs/node';
-import tailwind from '@astrojs/tailwind';
 import { defineConfig } from 'astro/config';
+import node from '@astrojs/node';
 import react from "@astrojs/react";
+import sentry from "@sentry/astro";
+import tailwind from '@astrojs/tailwind';
 
 /**
  * TODO: Dynamic site name
@@ -17,7 +18,17 @@ export default defineConfig({
 	adapter: node({
 		mode: 'standalone'
 	}),
-	integrations: [tailwind(), react()],
+	integrations: [
+		tailwind(),
+		react(),
+		sentry({
+			dsn: process.env.SENTRY_DSN,
+			sourceMapsUploadOptions: {
+				project: process.env.SENTRY_PROJECT,
+				authToken: process.env.SENTRY_AUTH_TOKEN,
+			},
+		}),
+	],
 	output: 'server',
 	prefetch: true,
 	site: "http://revelator.planet34.org"
