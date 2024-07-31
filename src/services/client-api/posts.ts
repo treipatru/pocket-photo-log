@@ -56,25 +56,11 @@ export async function updatePost(body: PostFormUpdate, id: string) {
 	 */
 	const formData = new FormData();
 
-	if (body.alt) {
-		formData.append("alt", body.alt);
-	}
-
-	if (body.caption) {
-		formData.append("caption", body.caption);
-	}
-
-	if (body.published) {
-		formData.append("published", body.published.toString());
-	}
-
-	if (body.tags) {
-		formData.append("tags", sanitizeTagNames(body.tags, "str"));
-	}
-
-	if (body.shot_on) {
-		formData.append("shot_on", body.shot_on);
-	}
+	formData.append("alt", body.alt ?? "");
+	formData.append("caption", body.caption ?? "");
+	formData.append("published", body.published?.toString() ?? "");
+	formData.append("shot_on", body.shot_on ?? "");
+	formData.append("tags", sanitizeTagNames(body.tags, "str") ?? "");
 
 	if (body.file?.size && body.file.size > 0) {
 		formData.append("file", body.file);
