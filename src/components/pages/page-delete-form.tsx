@@ -52,7 +52,8 @@ function Component({ page }: Readonly<Props>) {
 			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
 			<p className="text-xl">Are you sure you want to delete this page?</p>
-			<p className="text-lg">This will delete the page <strong>{page.name}</strong> permanently. You cannot undo this action.</p>
+
+			<p>This will delete the page <strong>{page.name}</strong> permanently. You cannot undo this action.</p>
 
 			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
 				<a

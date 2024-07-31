@@ -52,14 +52,15 @@ function Component({ post }: Readonly<Props>) {
 		>
 			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
-			<p className="text-xl">Are you sure you want to delete this post?</p>
 
 			<img
 				src={getImgUrl(post, 'medium')}
 				alt={post.alt}
 			/>
 
-			<p className="text-lg">This will delete the post permanently. You cannot undo this action.</p>
+			<p className="text-xl">Are you sure you want to delete this post?</p>
+
+			<p>This will delete the data permanently. You cannot undo this action.</p>
 
 			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
 				<a
