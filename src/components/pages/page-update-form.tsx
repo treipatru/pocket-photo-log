@@ -47,61 +47,59 @@ function Component({ page }: Props) {
 	}, [isSuccess])
 
 	return (
-		<>
-			<form
-				className="grid gap-4 grid-cols-2"
-				id="update-page"
-				name="update-page"
-				onSubmit={handleSubmit}
-			>
-				<Input
-					className="col-span-1"
-					error={formData.errors.name}
-					label="Name"
-					name="name"
-					onInput={v => updateField('name', v.currentTarget.value)}
-					type="text"
-					value={formData.values.name}
-				/>
+		<form
+			className="grid gap-4 grid-cols-2"
+			id="update-page"
+			name="update-page"
+			onSubmit={handleSubmit}
+		>
+			<Input
+				className="col-span-1"
+				error={formData.errors.name}
+				label="Name"
+				name="name"
+				onInput={v => updateField('name', v.currentTarget.value)}
+				type="text"
+				value={formData.values.name}
+			/>
 
-				<Input
-					className="col-span-1"
-					error={formData.errors.slug}
-					label="Slug"
-					name="slug"
-					onInput={v => updateField('slug', v.currentTarget.value)}
-					type="text"
-					value={formData.values.slug}
-				/>
+			<Input
+				className="col-span-1"
+				error={formData.errors.slug}
+				label="Slug"
+				name="slug"
+				onInput={v => updateField('slug', v.currentTarget.value)}
+				type="text"
+				value={formData.values.slug}
+			/>
 
-				<PagesEditor
-					className="col-span-2"
-					onInput={v => updateField('content', v)}
-					value={formData.values.content}
-				/>
+			<PagesEditor
+				className="col-span-2"
+				onInput={v => updateField('content', v)}
+				value={formData.values.content}
+			/>
 
 
-				{error && <Alert className="col-span-2" type="error" content={error.message} />}
+			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
-				<div className="col-span-2 flex items-center justify-center gap-x-12 mt-1 pt-4 border-t">
-					<a
-						className="link link-hover"
-						href={`/pages/${page.slug}`}
-					>
-						Cancel
-					</a>
+			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-1 pt-4 border-t">
+				<a
+					className="link link-hover"
+					href={`/pages/${page.slug}`}
+				>
+					Cancel
+				</a>
 
-					<button
-						className="btn btn-primary"
-						disabled={isFetching}
-						type='submit'
-					>
-						{isFetching && <span className="loading loading-spinner"></span>}
-						Update
-					</button>
-				</div>
-			</form>
-		</>
+				<button
+					className="btn btn-primary"
+					disabled={isFetching}
+					type='submit'
+				>
+					{isFetching && <span className="loading loading-spinner"></span>}
+					Update
+				</button>
+			</div>
+		</form>
 	)
 }
 

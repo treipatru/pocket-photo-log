@@ -43,36 +43,34 @@ function Component({ page }: Props) {
 	}, [isSuccess])
 
 	return (
-		<>
-			<form
-				className="flex flex-col gap-4"
-				id="delete-page"
-				name="delete-page"
-				onSubmit={handleSubmit}
-			>
-				{error && <Alert className="col-span-2" type="error" content={error.message} />}
+		<form
+			className="flex flex-col gap-4"
+			id="delete-page"
+			name="delete-page"
+			onSubmit={handleSubmit}
+		>
+			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
-				<p className="text-xl">Are you sure you want to delete this page?</p>
-				<p className="text-lg">This will delete the page <strong>{page.name}</strong> permanently. You cannot undo this action.</p>
+			<p className="text-xl">Are you sure you want to delete this page?</p>
+			<p className="text-lg">This will delete the page <strong>{page.name}</strong> permanently. You cannot undo this action.</p>
 
-				<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
-					<a
-						className="link link-hover"
-						href={`/pages/${page.slug}`}
-					>
-						Cancel
-					</a>
+			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
+				<a
+					className="link link-hover"
+					href={`/pages/${page.slug}`}
+				>
+					Cancel
+				</a>
 
-					<button
-						className="btn btn-error"
-						disabled={isFetching}
-						type='submit'
-					>
-						Delete
-					</button>
-				</div>
-			</form>
-		</>
+				<button
+					className="btn btn-error"
+					disabled={isFetching}
+					type='submit'
+				>
+					Delete
+				</button>
+			</div>
+		</form>
 	)
 }
 

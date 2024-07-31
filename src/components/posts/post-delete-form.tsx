@@ -44,42 +44,40 @@ function Component({ post }: Props) {
 	}, [isSuccess])
 
 	return (
-		<>
-			<form
-				className="flex flex-col gap-4"
-				id="delete-post"
-				name="delete-post"
-				onSubmit={handleSubmit}
-			>
-				{error && <Alert className="col-span-2" type="error" content={error.message} />}
+		<form
+			className="flex flex-col gap-4"
+			id="delete-post"
+			name="delete-post"
+			onSubmit={handleSubmit}
+		>
+			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
-				<p className="text-xl">Are you sure you want to delete this post?</p>
+			<p className="text-xl">Are you sure you want to delete this post?</p>
 
-				<img
-					src={getImgUrl(post, 'medium')}
-					alt={post.alt}
-				/>
+			<img
+				src={getImgUrl(post, 'medium')}
+				alt={post.alt}
+			/>
 
-				<p className="text-lg">This will delete the post permanently. You cannot undo this action.</p>
+			<p className="text-lg">This will delete the post permanently. You cannot undo this action.</p>
 
-				<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
-					<a
-						className="link link-hover"
-						href={`/posts/${post.id}`}
-					>
-						Cancel
-					</a>
+			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
+				<a
+					className="link link-hover"
+					href={`/posts/${post.id}`}
+				>
+					Cancel
+				</a>
 
-					<button
-						className="btn btn-error"
-						disabled={isFetching}
-						type='submit'
-					>
-						Delete
-					</button>
-				</div>
-			</form>
-		</>
+				<button
+					className="btn btn-error"
+					disabled={isFetching}
+					type='submit'
+				>
+					Delete
+				</button>
+			</div>
+		</form>
 	)
 }
 
