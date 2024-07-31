@@ -13,7 +13,7 @@ interface Props {
 	value?: InstanceType<typeof File>;
 }
 
-export default function FileInput(props: Props) {
+export default function FileInput(props: Readonly<Props>) {
 	const { value, label, error, onChange, defaultImgUrl, ...inputProps } = props;
 	const [imagePreview, setImagePreview] = useState<string | null>(defaultImgUrl || null)
 

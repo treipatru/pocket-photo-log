@@ -14,7 +14,7 @@ function Component({
 	onCancel,
 	onSelect,
 	value,
-}: ComponentProps) {
+}: Readonly<ComponentProps>) {
 	const [searchTerm, setSearchTerm] = useState<string>('');
 	const [queryValue] = useDebounce(searchTerm, 200);
 	const queryClient = useQueryClient();
@@ -128,6 +128,6 @@ function Component({
 	)
 }
 
-export default function TagDropdown(props: ComponentProps) {
+export default function TagDropdown(props: Readonly<ComponentProps>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

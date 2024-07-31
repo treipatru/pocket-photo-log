@@ -16,7 +16,7 @@ function getClasses(id: string, activeTagId?: string) {
 export default function TagLocationDate({
 	activeTagId: selectedTagId,
 	structuredTags,
-}: Props) {
+}: Readonly<Props>) {
 	const { pl, co, yr } = structuredTags;
 
 	return (

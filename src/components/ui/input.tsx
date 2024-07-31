@@ -15,7 +15,7 @@ type Props = {
 	value: string | undefined;
 }
 
-export default function Input(props: Props) {
+export default function Input(props: Readonly<Props>) {
 	const { className, value, label, error, ...inputProps } = props;
 
 	return (

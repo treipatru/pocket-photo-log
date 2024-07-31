@@ -9,7 +9,7 @@ interface Props {
 export default function TagFormControl({
 	onChange,
 	value = [],
-}: Props) {
+}: Readonly<Props>) {
 	const handleSelect = (tag: string) => {
 		onChange([...value, tag]);
 	};

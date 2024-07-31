@@ -9,7 +9,7 @@ interface Props {
 export default function TagPicker({
 	onSelect,
 	value,
-}: Props) {
+}: Readonly<Props>) {
 	const [showDropdown, setShowDropdown] = useState(false);
 
 	const handleSelect = (tag: string) => {

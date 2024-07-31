@@ -3,7 +3,7 @@ interface Props {
 	name: string;
 }
 
-export default function FormError({ error, name }: Props) {
+export default function FormError({ error, name }: Readonly<Props>) {
 	if (!error) return null;
 
 	return (

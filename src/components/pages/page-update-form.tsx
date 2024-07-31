@@ -12,7 +12,7 @@ interface Props {
 	page: Page
 }
 
-function Component({ page }: Props) {
+function Component({ page }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
@@ -103,6 +103,6 @@ function Component({ page }: Props) {
 	)
 }
 
-export default function PageUpdateForm(props: Props) {
+export default function PageUpdateForm(props: Readonly<Props>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

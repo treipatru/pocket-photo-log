@@ -16,7 +16,7 @@ interface Props {
 function Component({
 	postId,
 	tags = [],
-}: Props) {
+}: Readonly<Props>) {
 	/**
 	 * Form
 	 */
@@ -98,6 +98,6 @@ function Component({
 	)
 }
 
-export default function PostTagUpdateForm(props: Props) {
+export default function PostTagUpdateForm(props: Readonly<Props>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

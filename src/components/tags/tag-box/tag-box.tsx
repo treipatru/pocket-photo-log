@@ -8,7 +8,7 @@ interface Props {
 	activeTagId?: string;
 }
 
-export default function TagBox({ tags, activeTagId }: Props) {
+export default function TagBox({ tags, activeTagId }: Readonly<Props>) {
 	if (!tags) {
 		return null;
 	}

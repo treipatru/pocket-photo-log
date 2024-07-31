@@ -10,7 +10,7 @@ type Props = {
 	onInput: React.ChangeEventHandler<HTMLTextAreaElement>;
 };
 
-export default function Textarea(props: Props) {
+export default function Textarea(props: Readonly<Props>) {
 	const { value, label, error, ...inputProps } = props;
 
 	return (

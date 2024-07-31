@@ -63,7 +63,7 @@ export default function PagesEditor({
 	className,
 	onInput,
 	value,
-}: Props) {
+}: Readonly<Props>) {
 	return (
 		<div className={className}>
 			<Editor

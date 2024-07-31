@@ -6,7 +6,7 @@ interface Props {
 export default function TagBadge({
 	onDelete,
 	tag,
-}: Props) {
+}: Readonly<Props>) {
 	return (
 		<button
 			className="btn-sm p-0"

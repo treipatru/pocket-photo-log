@@ -8,7 +8,7 @@ interface Props {
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function Toggle(props: Props) {
+export default function Toggle(props: Readonly<Props>) {
 	const { value, label, error, ...inputProps } = props;
 
 	return (

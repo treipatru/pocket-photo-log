@@ -20,7 +20,7 @@ interface Props {
 	post: Post
 }
 
-function Component({ post }: Props) {
+function Component({ post }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
@@ -136,6 +136,6 @@ function Component({ post }: Props) {
 	);
 }
 
-export default function PostUpdateForm(props: Props) {
+export default function PostUpdateForm(props: Readonly<Props>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

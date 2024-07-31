@@ -29,7 +29,7 @@ export default function TagLink({
 	category,
 	activeTagId: selectedTagId,
 	tag,
-}: Props) {
+}: Readonly<Props>) {
 	if (!tag) {
 		return null;
 	}

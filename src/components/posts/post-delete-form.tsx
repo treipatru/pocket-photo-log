@@ -11,7 +11,7 @@ interface Props {
 	post: Post
 }
 
-function Component({ post }: Props) {
+function Component({ post }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
@@ -81,6 +81,6 @@ function Component({ post }: Props) {
 	)
 }
 
-export default function PostDeleteForm(props: Props) {
+export default function PostDeleteForm(props: Readonly<Props>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

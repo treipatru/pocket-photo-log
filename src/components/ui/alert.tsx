@@ -6,7 +6,7 @@ interface Props {
 	type: "error";
 }
 
-export default function Alert({ className, content, type }: Props) {
+export default function Alert({ className, content, type }: Readonly<Props>) {
 	return (
 		<div
 			aria-live="polite"
