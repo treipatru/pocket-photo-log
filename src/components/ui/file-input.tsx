@@ -15,7 +15,7 @@ interface Props {
 
 export default function FileInput(props: Readonly<Props>) {
 	const { value, label, error, onChange, defaultImgUrl, ...inputProps } = props;
-	const [imagePreview, setImagePreview] = useState<string | null>(defaultImgUrl || null)
+	const [imagePreview, setImagePreview] = useState<string | null>(defaultImgUrl ?? null)
 
 	const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const file = event.target?.files?.[0];
@@ -28,14 +28,14 @@ export default function FileInput(props: Readonly<Props>) {
 			};
 			reader.readAsDataURL(file);
 		} else {
-			setImagePreview(defaultImgUrl || null);
+			setImagePreview(defaultImgUrl ?? null);
 		}
 	};
 
 	const handleImageReset = (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		onChange(new File([], ''));
-		setImagePreview(defaultImgUrl || null);
+		setImagePreview(defaultImgUrl ?? null);
 	};
 
 	return (

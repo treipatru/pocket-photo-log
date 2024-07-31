@@ -35,7 +35,7 @@ export default function Input(props: Readonly<Props>) {
 				aria-errormessage={`${props.name}-error`}
 				aria-invalid={!!props.error}
 				id={props.name}
-				value={props.value || ''}
+				value={props.value ?? ''}
 			/>
 
 			<FormError name={props.name} error={props.error} />

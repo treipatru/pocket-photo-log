@@ -31,7 +31,7 @@ export default function Textarea(props: Readonly<Props>) {
 				name={props.name}
 				placeholder={props.placeholder}
 				required={props.required}
-				value={props.value || ''}
+				value={props.value ?? ''}
 			></textarea>
 
 			<FormError name={props.name} error={props.error} />
