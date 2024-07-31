@@ -70,7 +70,7 @@ function Component({
 			/**
 			 * If the search did not yield results, submit the term as a new tag.
 			 */
-			if (!!data.length) {
+			if (data.length) {
 				onSelect(searchTerm);
 				return
 			}
