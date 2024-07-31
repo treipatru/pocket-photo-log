@@ -15,9 +15,7 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 ---
 
 <CmsLayout>
-	<h1 aria-label="Posts" class="text-lg text-center">
-		<a href="/cms/posts"> Posts </a>
-	</h1>
+	<a class="link-hover" href="/cms/posts" slot="title">Posts</a>
 
 	<div class="overflow-x-auto m-auto">
 		<table class="table">

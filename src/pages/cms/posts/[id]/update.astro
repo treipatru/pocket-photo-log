@@ -13,7 +13,7 @@ const post = await pocketClient
 ---
 
 <CmsLayout>
-	<h1 aria-label="Edit post"></h1>
+	<span slot="title">Update post</span>
 
 	<section class="max-w-sm m-auto">
 		<PostUpdateForm client:load post={post} />

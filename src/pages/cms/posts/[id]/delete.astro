@@ -11,7 +11,7 @@ const post = await pocketClient
 ---
 
 <CmsLayout>
-	<h1 aria-label="Delete post"></h1>
+	<span slot="title">Delete post</span>
 
 	<section class="max-w-md m-auto">
 		<PostDeleteForm post={post} client:load />
