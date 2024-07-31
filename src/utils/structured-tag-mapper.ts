@@ -36,7 +36,6 @@ const categoryKeys: TagCategory[] = [
 	"form",
 	"format",
 	"pl",
-	"yr",
 ];
 
 export function structuredTagMapper(tags: Tag[]): StructuredTags {

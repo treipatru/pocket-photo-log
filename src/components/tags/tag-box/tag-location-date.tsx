@@ -1,13 +1,15 @@
 import clsx from "clsx";
 import { type StructuredTags } from "@/entities/tags"
+import { format } from "date-fns";
 
 interface Props {
 	activeTagId?: string;
+	date: string;
 	structuredTags: StructuredTags;
 }
 
 function getClasses(id: string, activeTagId?: string) {
-	const baseClasses = "px-1 link link-hover flex items-center gap-1 rounded-sm"
+	const baseClasses = "px-2 link link-hover flex items-center rounded-sm"
 	return id === activeTagId
 		? `${baseClasses} text-accent bg-accent-background`
 		: baseClasses
@@ -15,14 +17,15 @@ function getClasses(id: string, activeTagId?: string) {
 
 export default function TagLocationDate({
 	activeTagId: selectedTagId,
+	date,
 	structuredTags,
 }: Readonly<Props>) {
-	const { pl, co, yr } = structuredTags;
+	const { pl, co } = structuredTags;
 
 	return (
-		<ul className="flex gap-x-2 items-center text-sm">
+		<>
 			{pl && (
-				<li className="text-xs">
+				<li>
 					<a
 						href={`/tags/${pl.id}`}
 						className={clsx(getClasses(pl.id, selectedTagId), 'capitalize')}
@@ -33,35 +36,17 @@ export default function TagLocationDate({
 			)}
 
 			{co && (
-				<>
-					{pl && <span>-</span>}
-
-					<li className="text-xs">
-						<a
-							href={`/tags/${co.id}`}
-							className={clsx(getClasses(co.id, selectedTagId), 'uppercase')}
-						>
-							{co.name}
-						</a>
-					</li>
-
-				</>
+				<li>
+					<a
+						href={`/tags/${co.id}`}
+						className={clsx(getClasses(co.id, selectedTagId), 'uppercase')}
+					>
+						{co.name}
+					</a>
+				</li>
 			)}
 
-			{yr && (
-				<>
-					{co && <span>-</span>}
-
-					<li className="text-xs">
-						<a
-							href={`/tags/${yr.id}`}
-							className={clsx(getClasses(yr.id, selectedTagId), 'uppercase')}
-						>
-							{yr.name}
-						</a>
-					</li>
-				</>
-			)}
-		</ul>
+			<li>{format(date, 'yyyy')}</li>
+		</>
 	)
 }

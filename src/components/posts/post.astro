@@ -13,9 +13,11 @@ const activeTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
 
 const {
 	isLink,
-	post: { alt, expand, id, file, caption },
+	post: { alt, expand, id, file, caption, created, shot_on },
 	size,
 } = Astro.props;
+
+const postDate = shot_on?.length ? shot_on : created;
 ---
 
 <article
@@ -44,12 +46,12 @@ const {
 
 		{
 			caption && (
-				<figcaption class="text-base px-2 mt-2 ml-1 break-all">
+				<figcaption class="text-base font-normal px-2 mt-2 ml-1 break-all">
 					{caption}
 				</figcaption>
 			)
 		}
 	</figure>
 
-	<TagBox tags={expand?.tags} activeTagId={activeTagId} />
+	<TagBox tags={expand?.tags} activeTagId={activeTagId} date={postDate} />
 </article>

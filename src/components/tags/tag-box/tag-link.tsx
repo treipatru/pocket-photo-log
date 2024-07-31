@@ -35,11 +35,11 @@ export default function TagLink({
 	}
 
 	return (
-		<li className="text-xs">
+		<li>
 			<a
 				className={clsx(
 					{ "text-accent bg-accent-background": tag.id === selectedTagId },
-					"px-1 link link-hover flex items-center gap-1 rounded-sm",
+					"px-2 link link-hover flex items-center gap-1 rounded-sm",
 				)}
 				href={`/tags/${tag.id}`}
 			>
