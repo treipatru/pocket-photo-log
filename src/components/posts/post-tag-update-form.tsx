@@ -67,7 +67,7 @@ function Component({
 				<input
 					className="input input-bordered input-sm w-full"
 					onClick={() => { setIsEditing(true) }}
-					onInput={(e) => updateField('tags', e.currentTarget.value.split(','))}
+					onInput={(e) => updateField('tags', e.currentTarget.value.toLowerCase().split(','))}
 					type="text"
 					value={formData.values.tags?.join(',')}
 				/>

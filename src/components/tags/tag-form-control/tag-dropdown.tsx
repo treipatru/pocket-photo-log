@@ -100,7 +100,7 @@ function Component({
 					<input
 						autoFocus
 						className="input input-bordered input-sm w-28 px-1"
-						onInput={v => setSearchTerm(v.currentTarget.value)}
+						onInput={v => setSearchTerm(v.currentTarget.value.toLowerCase())}
 						onKeyDown={handleKeyDown}
 						type="text"
 						value={searchTerm}
