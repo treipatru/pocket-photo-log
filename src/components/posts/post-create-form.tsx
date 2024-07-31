@@ -60,7 +60,6 @@ function Component() {
 			onSubmit={handleSubmit}
 		>
 
-			{error && <Alert className="mb-4" type="error" content={error.message} />}
 
 			<FileInput
 				error={formData.errors.file}
@@ -109,11 +108,14 @@ function Component() {
 				onChange={v => updateField('published', v.currentTarget.checked)}
 			/>
 
+			{error && <Alert className="my-4" type="error" content={error.message} />}
+
 			<button
 				className="btn mt-1"
 				type='submit'
 				disabled={isFetching}
 			>
+				{isFetching && <span className="loading loading-spinner"></span>}
 				Create
 			</button>
 		</form>

@@ -20,9 +20,7 @@ interface Props {
 	post: Post
 }
 
-function Component({
-	post,
-}: Props) {
+function Component({ post }: Props) {
 	/**
 	 * Form
 	 */
@@ -67,8 +65,6 @@ function Component({
 			name="update-post"
 			onSubmit={handleSubmit}
 		>
-
-			{error && <Alert className="mb-4" type="error" content={error.message} />}
 
 			<FileInput
 				defaultImgUrl={getImgUrl(post, 'medium')}
@@ -117,6 +113,8 @@ function Component({
 				onChange={v => updateField('published', v.currentTarget.checked)}
 			/>
 
+			{error && <Alert className="my-4" type="error" content={error.message} />}
+
 			<div className="flex items-center justify-center gap-x-12 mt-1 pt-4 border-t">
 				<a
 					className="link link-hover"
@@ -130,6 +128,7 @@ function Component({
 					type='submit'
 					disabled={isFetching}
 				>
+					{isFetching && <span className="loading loading-spinner"></span>}
 					Update
 				</button>
 			</div>

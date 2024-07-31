@@ -54,8 +54,6 @@ function Component({ page }: Props) {
 				name="update-page"
 				onSubmit={handleSubmit}
 			>
-				{error && <Alert className="col-span-2" type="error" content={error.message} />}
-
 				<Input
 					className="col-span-1"
 					error={formData.errors.name}
@@ -82,6 +80,9 @@ function Component({ page }: Props) {
 					value={formData.values.content}
 				/>
 
+
+				{error && <Alert className="col-span-2" type="error" content={error.message} />}
+
 				<div className="col-span-2 flex items-center justify-center gap-x-12 mt-1 pt-4 border-t">
 					<a
 						className="link link-hover"
@@ -95,6 +96,7 @@ function Component({ page }: Props) {
 						disabled={isFetching}
 						type='submit'
 					>
+						{isFetching && <span className="loading loading-spinner"></span>}
 						Update
 					</button>
 				</div>
