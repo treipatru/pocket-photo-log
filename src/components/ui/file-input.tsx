@@ -75,9 +75,9 @@ export default function FileInput(props: Readonly<Props>) {
 				<div className={clsx("w-full min-h-60 mt-4", { "bg-muted": !imagePreview })}>
 					{imagePreview && (
 						<img
+							alt="Upload preview"
 							id="imagePreview"
 							src={imagePreview}
-							alt="Image Preview"
 						/>
 					)}
 				</div>
