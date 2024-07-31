@@ -1,6 +1,5 @@
-import { defineMiddleware } from "astro:middleware";
+import { defineMiddleware, sequence } from "astro:middleware";
 import { getUserApiClient } from "@/services/auth/get-user-api-client";
-import { sequence } from "astro:middleware";
 import { urlMatcher } from "@/utils/url-matcher";
 
 /**
