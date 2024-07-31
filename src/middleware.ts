@@ -27,13 +27,19 @@ const authentication = defineMiddleware(async (context, next) => {
 /**
  * Check if the request is authorized to access the route.
  */
-const privateRoutes = ["!/api/auth", "/api/*", "/auth/logout", "/cms/*"];
+const privateRoutes = ["/auth/logout", "/cms/*"];
+const apiRoutes = ["!/api/auth", "/api/*"];
 const authorization = defineMiddleware(async (context, next) => {
 	const { isAuthenticated } = context.locals;
 	const isPrivateRoute = urlMatcher(context.url.pathname, privateRoutes);
+	const isApiRoute = urlMatcher(context.url.pathname, apiRoutes);
 
 	if (isPrivateRoute && !isAuthenticated) {
-		return context.redirect("/");
+		return context.redirect("/auth/login");
+	}
+
+	if (isApiRoute && !isAuthenticated) {
+		return new Response("Unauthorized", { status: 401 });
 	}
 
 	return next();

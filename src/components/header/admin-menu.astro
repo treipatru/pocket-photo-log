@@ -12,10 +12,10 @@ const id = Astro.params.id;
 		<li>
 			<h2 class="menu-title">Post</h2>
 			<ul>
-				<HeaderLink href="/cms/create/post" label="Create"/>
+				<HeaderLink href="/cms/posts/create" label="Create"/>
 				{Astro.url.pathname.includes('/posts') && id && (
-						<HeaderLink href={`/posts/${id}/update`} label="Update"/>
-						<HeaderLink href={`/posts/${id}/delete`} label="Delete"/>
+						<HeaderLink href={`/cms/posts/${id}/update`} label="Update"/>
+						<HeaderLink href={`/cms/posts/${id}/delete`} label="Delete"/>
 					)
 				}
 			</ul>
@@ -24,10 +24,10 @@ const id = Astro.params.id;
 		<li>
 			<h2 class="menu-title">Page</h2>
 			<ul>
-				<HeaderLink  href="/cms/create/page" label="Create"/>
+				<HeaderLink  href="/cms/pages/create" label="Create"/>
 				{Astro.url.pathname.includes('/pages') && slug && (
-						<HeaderLink href={`/pages/${slug}/update`} label="Update"/>
-						<HeaderLink href={`/pages/${slug}/delete`} label="Delete"/>
+						<HeaderLink href={`/cms/pages/${slug}/update`} label="Update"/>
+						<HeaderLink href={`/cms/pages/${slug}/delete`} label="Delete"/>
 					)
 				}
 			</ul>
