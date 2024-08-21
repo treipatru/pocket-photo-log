@@ -46,7 +46,7 @@ function Component({
 	});
 
 	/**
-	 * On success, redirect to home page.
+	 * On success, update the field input to match the new tags.
 	 */
 	useEffect(() => {
 		if (isSuccess) {
