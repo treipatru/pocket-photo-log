@@ -2,12 +2,29 @@
 interface Props {
 	href: string;
 	label: string;
+	prefetch?: boolean;
 }
 
-const { href, label } = Astro.props;
+const { href, label, prefetch } = Astro.props;
 const isActive = Astro.url.pathname === href;
 ---
 
 <li>
-	<a class:list={[{ active: isActive }]} href={href}>{label}</a>
+	<a
+		class:list={[{ active: isActive }]}
+		href={href}
+		{...prefetch === false && {
+			/**
+			 * This prop is used to control prefetch behavior. It is set to true
+			 * project-wide by default in astro.config. This override allows disabling
+			 * it for certain urls.
+			 *
+			 * Caveat: Setting the value to 'true' will also disable prefetching,
+			 * which is why the prop is included only when false.
+			 */
+			"data-astro-prefetch": prefetch.toString(),
+		}}
+	>
+		{label}
+	</a>
 </li>
