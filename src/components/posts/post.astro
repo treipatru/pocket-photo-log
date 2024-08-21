@@ -10,6 +10,7 @@ interface Props {
 }
 
 const activeTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
+const activeYear = Astro.url.searchParams.get("year");
 
 const {
 	isLink,
@@ -53,5 +54,10 @@ const postDate = shot_on?.length ? shot_on : created;
 		}
 	</figure>
 
-	<TagBox tags={expand?.tags} activeTagId={activeTagId} date={postDate} />
+	<TagBox
+		activeTagId={activeTagId}
+		activeYear={activeYear}
+		date={postDate}
+		tags={expand?.tags}
+	/>
 </article>

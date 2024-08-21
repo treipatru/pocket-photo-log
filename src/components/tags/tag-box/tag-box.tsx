@@ -5,12 +5,14 @@ import TagLocationDate from "./tag-location-date";
 
 interface Props {
 	activeTagId?: string;
+	activeYear: string | null;
 	date: string;
 	tags?: Tag[];
 }
 
 export default function TagBox({
 	activeTagId,
+	activeYear,
 	date,
 	tags = [],
 }: Readonly<Props>) {
@@ -20,8 +22,9 @@ export default function TagBox({
 		<ul className="text-muted mt-2 flex items-center flex-wrap gap-x-1 p-2 text-sm">
 			<TagLocationDate
 				activeTagId={activeTagId}
-				structuredTags={structuredTags}
+				activeYear={activeYear}
 				date={date}
+				structuredTags={structuredTags}
 			/>
 
 			<TagLink

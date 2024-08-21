@@ -6,17 +6,23 @@ import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
+const year = Astro.url.searchParams.get("year");
 
 const posts = await pocketClient.collection("posts").getList(page, 20, {
 	sort: "-created",
 	expand: "tags",
+	...(year
+		? {
+				filter: `created >= "${year}-01-01 00:00:00" && created <= "${year}-12-31 23:59:59"`,
+			}
+		: {}),
 });
 
 const { items, ...pagination } = posts;
 ---
 
 <BlogLayout>
-	<Hero slot="hero" />
+	<Hero slot="hero" subtitle={year ? `in ${year}` : undefined} />
 
 	<PostList posts={posts.items} />
 
