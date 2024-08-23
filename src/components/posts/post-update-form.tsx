@@ -93,6 +93,15 @@ function Component({ post }: Readonly<Props>) {
 			/>
 
 			<Input
+				disabled
+				label="Created on"
+				name="created_on"
+				onInput={() => { }}
+				type="date"
+				value={post.created.substring(0, 10)}
+			/>
+
+			<Input
 				error={formData.errors.shot_on}
 				label="Shot on"
 				name='shot_on'
