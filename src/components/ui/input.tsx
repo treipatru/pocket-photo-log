@@ -4,6 +4,7 @@ import type React from 'react';
 
 type Props = {
 	className?: string;
+	disabled?: boolean;
 	error?: string;
 	label: string;
 	name: string;
