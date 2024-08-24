@@ -5,7 +5,7 @@ type ExploreSectionProps = {
 	title: string;
 	tagCategory?: TagCategory;
 }
-export default function ExploreSection({
+export default function ExploreTags({
 	tagCategory,
 	tags,
 	title,
