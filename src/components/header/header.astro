@@ -17,6 +17,8 @@ const articles = await pocketClient.collection("pages").getFullList({
 	>
 		<HeaderLink href="/" label="Home" />
 
+		<HeaderLink href="/explore" label="Explore" />
+
 		{
 			articles.map((article) => (
 				<HeaderLink href={`/pages/${article.slug}`} label={article.name} />

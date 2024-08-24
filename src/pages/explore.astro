@@ -1,0 +1,29 @@
+---
+import { pocketClient } from "@/services/pocket/pocket-client";
+import BlogLayout from "@/layouts/blog-layout.astro";
+import Hero from "@/components/hero.astro";
+import ExploreSection from "@/components/explore/explore-section";
+
+const tags = await pocketClient.collection("tags_with_posts").getFullList({
+	sort: "-post_count",
+});
+
+const cameras = tags.filter((tag) => tag.name.startsWith("camera:"));
+const countries = tags.filter((tag) => tag.name.startsWith("co:"));
+const places = tags.filter((tag) => tag.name.startsWith("pl:"));
+const sets = tags.filter((tag) => tag.name.startsWith("set:"));
+---
+
+<BlogLayout>
+	<Hero slot="hero" subtitle="explore" />
+
+	<div class="flex flex-col gap-y-12">
+		<ExploreSection tags={sets} title="Sets" tagCategory="set" />
+
+		<ExploreSection tags={places} title="Places" tagCategory="pl" />
+
+		<ExploreSection tags={countries} title="Countries" tagCategory="co" />
+
+		<ExploreSection tags={cameras} title="Cameras" tagCategory="camera" />
+	</div>
+</BlogLayout>

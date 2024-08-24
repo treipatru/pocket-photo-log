@@ -8,7 +8,14 @@ export const tagSchema = z.object({
 
 export type Tag = z.infer<typeof tagSchema>;
 
-export type TagCategory = "camera" | "co" | "film" | "form" | "format" | "pl";
+export type TagCategory =
+	| "camera"
+	| "co"
+	| "film"
+	| "form"
+	| "format"
+	| "pl"
+	| "set";
 
 export type StructuredTags = {
 	camera?: Tag;
@@ -18,6 +25,7 @@ export type StructuredTags = {
 	format?: Tag;
 	other: Tag[];
 	pl?: Tag;
+	set?: Tag;
 };
 
 type SanitizeTagNamesOutput = "str" | "arr";
