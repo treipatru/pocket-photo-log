@@ -14,11 +14,9 @@ const activeYear = Astro.url.searchParams.get("year");
 
 const {
 	isLink,
-	post: { alt, expand, id, file, caption, created, shot_on },
+	post: { alt, expand, id, file, caption, shot_on },
 	size,
 } = Astro.props;
-
-const postDate = shot_on?.length ? shot_on : created;
 ---
 
 <article
@@ -57,7 +55,7 @@ const postDate = shot_on?.length ? shot_on : created;
 	<TagBox
 		activeTagId={activeTagId}
 		activeYear={activeYear}
-		date={postDate}
+		date={shot_on}
 		tags={expand?.tags}
 	/>
 </article>

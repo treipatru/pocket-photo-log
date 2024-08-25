@@ -9,7 +9,7 @@ export const postSchema = z.object({
 	id: z.string(),
 	image: z.string(),
 	published: z.boolean(),
-	shot_on: z.string().optional(),
+	shot_on: z.string(),
 	tags: z.array(z.string()),
 	expand: z
 		.object({
@@ -28,7 +28,7 @@ export const postSchemaFormCreate = z.object({
 	file: z.instanceof(File).refine((file) => {
 		return !file || file.size <= MAX_FILE_SIZE;
 	}, "File size must be less than 10MB"),
-	shot_on: z.string().optional(),
+	shot_on: z.string(),
 });
 
 export const postSchemaFormDelete = z.object({

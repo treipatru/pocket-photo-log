@@ -13,7 +13,7 @@ const post = await pocketClient
 		expand: "tags",
 	});
 
-const postDate = format(post.shot_on || post.created, "PPP");
+const postDate = format(post.shot_on, "PPP");
 ---
 
 <PostLayout>

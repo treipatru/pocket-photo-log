@@ -90,6 +90,7 @@ function Component() {
 			<Input
 				error={formData.errors.shot_on}
 				label="Shot on"
+				required
 				name='shot_on'
 				onInput={v => updateField('shot_on', v.currentTarget.value)}
 				type="date"

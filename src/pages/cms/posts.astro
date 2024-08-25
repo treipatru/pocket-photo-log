@@ -31,7 +31,7 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 				{
 					posts.items.map((post) => (
 						<tr>
-							<td>{format(post.created, "yyyy.MM.dd")}</td>
+							<td>{format(post.shot_on, "yyyy.MM.dd")}</td>
 
 							<td class="text-xs">
 								<PostTagUpdateForm
