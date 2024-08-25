@@ -16,13 +16,16 @@ const cameras = tags.filter((tag) => tag.name.startsWith("camera:"));
 const countries = tags.filter((tag) => tag.name.startsWith("co:"));
 const places = tags.filter((tag) => tag.name.startsWith("pl:"));
 const sets = tags.filter((tag) => tag.name.startsWith("set:"));
+const otherTags = tags.filter((tag) => !tag.name.match(/^\S+:\s/));
 ---
 
 <BlogLayout>
 	<Hero slot="hero" subtitle="explore" />
 
 	<div class="flex flex-col gap-y-12">
-		<ExploreTags tags={sets} title="Sets" tagCategory="set" />
+		<ExploreTags tags={sets} title="Featured" tagCategory="set" />
+
+		<ExploreTags tags={otherTags} title="Tags" />
 
 		<ExploreYears years={years.map((y) => y.year).filter((y) => y !== null)} />
 
