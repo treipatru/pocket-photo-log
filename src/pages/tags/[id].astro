@@ -10,7 +10,7 @@ const id = Astro.params.id;
 
 const posts = await pocketClient.collection("posts").getList(page, 20, {
 	filter: `tags.id?="${id}"`,
-	sort: "-created",
+	sort: "-shot_on",
 	expand: "tags",
 });
 

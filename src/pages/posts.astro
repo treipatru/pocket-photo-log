@@ -9,11 +9,11 @@ const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const year = Astro.url.searchParams.get("year");
 
 const posts = await pocketClient.collection("posts").getList(page, 20, {
-	sort: "-created",
+	sort: "-shot_on",
 	expand: "tags",
 	...(year
 		? {
-				filter: `created >= "${year}-01-01 00:00:00" && created <= "${year}-12-31 23:59:59"`,
+				filter: `shot_on >= "${year}-01-01 00:00:00" && shot_on <= "${year}-12-31 23:59:59"`,
 			}
 		: {}),
 });

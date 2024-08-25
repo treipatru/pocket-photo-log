@@ -10,7 +10,7 @@ const page = parseInt(Astro.url.searchParams.get("page") || "1");
 
 const posts = await pocketClient.collection("posts").getList(page, 20, {
 	expand: "tags",
-	sort: "-created",
+	sort: "-shot_on",
 });
 ---
 

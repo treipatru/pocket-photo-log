@@ -6,7 +6,7 @@ import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
 
 const posts = await pocketClient.collection("posts").getList(1, 20, {
-	sort: "-created",
+	sort: "-shot_on",
 	expand: "tags",
 });
 
