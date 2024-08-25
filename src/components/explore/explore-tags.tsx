@@ -10,6 +10,10 @@ export default function ExploreTags({
 	tags,
 	title,
 }: Readonly<ExploreSectionProps>) {
+	if (!tags.length) {
+		return null;
+	}
+
 	return (
 		<div>
 			<h2 aria-label={title}></h2>
