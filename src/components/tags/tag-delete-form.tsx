@@ -1,6 +1,5 @@
-import { deletePost } from "@/services/client-api/posts";
-import { getImgUrl } from "@/lib/get-img-url"
-import { type Post, postSchemaFormDelete, type PostFormDelete } from "@/entities/posts"
+import { deleteTag } from "@/services/client-api/tags";
+import { type Tag, tagSchemaFormDelete, type TagFormDelete } from "@/entities/tags"
 import { useEffect } from "react"
 import { useForm } from "@/hooks/use-form"
 import { useQuery } from "@tanstack/react-query"
@@ -8,15 +7,15 @@ import Alert from "@/components/ui/alert"
 import QueryWrapper from "@/components/query-wrapper"
 
 interface Props {
-	post: Post
+	tag: Tag
 }
 
-function Component({ post }: Readonly<Props>) {
+function Component({ tag }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
-	const { formData, isValid, validate } = useForm<PostFormDelete>(postSchemaFormDelete, {
-		id: post.id
+	const { formData, isValid, validate } = useForm<TagFormDelete>(tagSchemaFormDelete, {
+		id: tag.id
 	});
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
@@ -29,42 +28,39 @@ function Component({ post }: Readonly<Props>) {
 	 */
 	const { error, isFetching, isSuccess } = useQuery({
 		enabled: isValid,
-		queryFn: () => deletePost(formData.values),
-		queryKey: ['posts'],
+		queryFn: () => deleteTag(formData.values),
+		queryKey: ['tags'],
 		retry: false,
 	});
 
 	/**
-	 * On success, redirect to homepage.
+	 * On success, redirect to tags listing.
 	 */
 	useEffect(() => {
 		if (isSuccess) {
-			window.location.href = '/';
+			window.location.href = '/cms/tags';
 		}
 	}, [isSuccess])
 
 	return (
 		<form
 			className="flex flex-col gap-4"
-			id="delete-post"
-			name="delete-post"
+			id="delete-tag"
+			name="delete-tag"
 			onSubmit={handleSubmit}
 		>
 			{error && <Alert className="col-span-2" type="error" content={error.message} />}
 
-			<img
-				src={getImgUrl(post, 'medium')}
-				alt={post.alt}
-			/>
-
-			<p className="text-xl">Are you sure you want to delete this post?</p>
+			<p className="text-xl">Are you sure you want to delete this tag?</p>
 
 			<p>This will delete the data permanently. You cannot undo this action.</p>
+
+			<p>Deleting tag <em>{tag.name}</em> used in {tag.post_count} posts.</p>
 
 			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
 				<a
 					className="link link-hover"
-					href={`/posts/${post.id}`}
+					href={"/cms/tags"}
 				>
 					Cancel
 				</a>
@@ -81,6 +77,6 @@ function Component({ post }: Readonly<Props>) {
 	)
 }
 
-export default function PostDeleteForm(props: Readonly<Props>) {
+export default function TagDeleteForm(props: Readonly<Props>) {
 	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

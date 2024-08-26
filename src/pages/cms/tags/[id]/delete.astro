@@ -1,0 +1,19 @@
+---
+import { pocketClient } from "@/services/pocket/pocket-client";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import TagDeleteForm from "@/components/tags/tag-delete-form";
+
+const id = Astro.params.id;
+
+const tag = await pocketClient
+	.collection("tags_with_posts")
+	.getFirstListItem(`id="${id}"`);
+---
+
+<CmsLayout>
+	<span slot="title">Delete tag</span>
+
+	<section class="max-w-md m-auto">
+		<TagDeleteForm tag={tag} client:load />
+	</section>
+</CmsLayout>

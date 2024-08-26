@@ -2,6 +2,7 @@
 import CmsLayout from "@/layouts/cms-layout.astro";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import Pagination from "@/components/ui/pagination.astro";
+import { XIcon } from "lucide-react";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const query = Astro.url.searchParams.get("query");
@@ -33,26 +34,36 @@ const tags = await pocketClient
 	</form>
 
 	<div class="overflow-x-auto max-w-md m-auto">
-		<table class="table">
+		<table class="table table-zebra table-sm font-normal">
 			<thead>
 				<tr>
-					<th></th>
 					<th>Name</th>
-					<th>Count</th>
+					<th class="w-[100px]">Count</th>
+					<th class="w-[30px]"></th>
 				</tr>
 			</thead>
 
 			<tbody>
 				{
 					tags.items.map((tag) => (
-						<tr>
-							<th> </th>
+						<tr class="group hover">
 							<td>
 								<a class="link link-hover" href={`/tags/${tag.id}`}>
 									{tag.name}
 								</a>
 							</td>
+
 							<td>{tag.post_count}</td>
+
+							<th class="opacity-30 group-hover:opacity-100">
+								<a
+									class="btn btn-xs btn-square btn-ghost"
+									role="button"
+									href={`/cms/tags/${tag.id}/delete`}
+								>
+									<XIcon size="16" />
+								</a>
+							</th>
 						</tr>
 					))
 				}
