@@ -12,11 +12,13 @@ const years = await pocketClient.collection("posts_per_year").getFullList({
 	sort: "-year",
 });
 
-const cameras = tags.filter((tag) => tag.name.startsWith("camera:"));
-const countries = tags.filter((tag) => tag.name.startsWith("co:"));
-const places = tags.filter((tag) => tag.name.startsWith("pl:"));
-const sets = tags.filter((tag) => tag.name.startsWith("set:"));
-const otherTags = tags.filter((tag) => !tag.name.match(/^\S+:\s/));
+const nonEmptyTags = tags.filter((tag) => tag.post_count && tag.post_count > 0);
+
+const cameras = nonEmptyTags.filter((tag) => tag.name.startsWith("camera:"));
+const countries = nonEmptyTags.filter((tag) => tag.name.startsWith("co:"));
+const places = nonEmptyTags.filter((tag) => tag.name.startsWith("pl:"));
+const sets = nonEmptyTags.filter((tag) => tag.name.startsWith("set:"));
+const otherTags = nonEmptyTags.filter((tag) => !tag.name.match(/^\S+:\s/));
 ---
 
 <BlogLayout>
