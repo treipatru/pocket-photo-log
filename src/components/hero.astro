@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
+const { siteSettings } = Astro.locals;
 
 interface Props {
 	subtitle?: string;
@@ -16,13 +16,13 @@ const { subtitle } = Astro.props;
 		class="text-7xl md:text-9xl font-bold tracking-wide semibold font-condensed"
 	>
 		<a href="/">
-			{SITE_TITLE}
+			{siteSettings.SITE_TITLE}
 		</a>
 	</h1>
 
 	<span
 		class="md:text-xl uppercase block leading-none absolute bottom-6 md:bottom-8"
 	>
-		{subtitle ?? SITE_DESCRIPTION}
+		{subtitle ?? siteSettings.SITE_DESCRIPTION}
 	</span>
 </section>

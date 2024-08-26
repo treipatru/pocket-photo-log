@@ -3,9 +3,10 @@
 
 declare namespace App {
 	interface Locals {
-		pbClient: import("@/entities/api-client").TypedPocketBase;
 		isAuthenticated: boolean;
+		pbClient: import("@/entities/api-client").TypedPocketBase;
 		postPayload: Record<string, any>;
+		siteSettings: import("@/entities/settings").SiteSettings;
 	}
 }
 

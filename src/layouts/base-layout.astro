@@ -1,6 +1,5 @@
 ---
 import "@/styles/global.css";
-import { SITE_TITLE, SITE_DESCRIPTION } from "@/consts";
 import { ViewTransitions } from "astro:transitions";
 import Header from "@/components/header/header.astro";
 
@@ -10,6 +9,7 @@ interface Props {
 }
 
 const { showFooter = false, showHeader = false } = Astro.props;
+const { siteSettings } = Astro.locals;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
@@ -30,22 +30,25 @@ const image = "";
 		<link rel="canonical" href={canonicalURL} />
 
 		<!-- Primary Meta Tags -->
-		<title>{SITE_TITLE}</title>
-		<meta name="title" content={SITE_TITLE} />
-		<meta name="description" content={SITE_DESCRIPTION} />
+		<title>{siteSettings.SITE_TITLE}</title>
+		<meta name="title" content={siteSettings.SITE_TITLE} />
+		<meta name="description" content={siteSettings.SITE_DESCRIPTION} />
 
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={SITE_TITLE} />
-		<meta property="og:description" content={SITE_DESCRIPTION} />
+		<meta property="og:title" content={siteSettings.SITE_TITLE} />
+		<meta property="og:description" content={siteSettings.SITE_DESCRIPTION} />
 		<meta property="og:image" content={new URL(image, Astro.url)} />
 
 		<!-- Twitter -->
 		<meta property="twitter:card" content="summary_large_image" />
 		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={SITE_TITLE} />
-		<meta property="twitter:description" content={SITE_DESCRIPTION} />
+		<meta property="twitter:title" content={siteSettings.SITE_TITLE} />
+		<meta
+			property="twitter:description"
+			content={siteSettings.SITE_DESCRIPTION}
+		/>
 		<meta property="twitter:image" content={new URL(image, Astro.url)} />
 
 		<slot name="head" />

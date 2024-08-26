@@ -1,5 +1,7 @@
 import { defineMiddleware, sequence } from "astro:middleware";
 import { getUserApiClient } from "@/services/auth/get-user-api-client";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import { settingsArrayToObject } from "@/entities/settings";
 import { urlMatcher } from "@/utils/url-matcher";
 
 /**
@@ -79,4 +81,29 @@ const payload = defineMiddleware(async (context, next) => {
 	return next();
 });
 
-export const onRequest = sequence(authentication, authorization, payload);
+/**
+ * Retrieve the site settings and store them in the context.
+ */
+const siteSettings = defineMiddleware(async (context, next) => {
+	try {
+		// Fetch settings array from the database
+		const settingsArr = await pocketClient.collection("settings").getFullList();
+
+		// Transform the settings array into a key-value pairs
+		const settings = settingsArrayToObject(settingsArr);
+
+		// Make data available to the context
+		context.locals.siteSettings = settings;
+	} catch (error) {
+		throw new Error("Failed to fetch site settings");
+	}
+
+	return next();
+});
+
+export const onRequest = sequence(
+	authentication,
+	authorization,
+	payload,
+	siteSettings
+);
