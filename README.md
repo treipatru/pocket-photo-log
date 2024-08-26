@@ -16,8 +16,8 @@ The goal is to make the software usable by anyone who wishes to self-host, via i
 
 The project is on it's way to a v1 but there are still a few things to do before that.
 
-- [ ] Add admin interface to change settings.
-- [ ] Add photo sets feature
+- [x] Add admin interface to change settings.
+- [x] Add photo sets feature
 - [ ] Create backend deployment docker image
 - [ ] Improve rendered image quality
 - [ ] Process image on upload (size & metadata)

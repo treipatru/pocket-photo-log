@@ -6,7 +6,7 @@ declare namespace App {
 		isAuthenticated: boolean;
 		pbClient: import("@/entities/api-client").TypedPocketBase;
 		postPayload: Record<string, any>;
-		siteSettings: import("@/entities/settings").SiteSettings;
+		siteSettings: import("@/entities/settings").Settings;
 	}
 }
 

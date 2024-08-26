@@ -1,0 +1,12 @@
+---
+import CmsLayout from "@/layouts/cms-layout.astro";
+import SettingsUpdateForm from "@/components/settings/settings-update-form";
+
+const { siteSettings } = Astro.locals;
+---
+
+<CmsLayout>
+	<span slot="title">Settings</span>
+
+	<SettingsUpdateForm settings={siteSettings} client:load />
+</CmsLayout>

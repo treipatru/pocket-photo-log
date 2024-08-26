@@ -16,13 +16,13 @@ const { subtitle } = Astro.props;
 		class="text-7xl md:text-9xl font-bold tracking-wide semibold font-condensed"
 	>
 		<a href="/">
-			{siteSettings.SITE_TITLE}
+			{siteSettings.TITLE}
 		</a>
 	</h1>
 
 	<span
 		class="md:text-xl uppercase block leading-none absolute bottom-6 md:bottom-8"
 	>
-		{subtitle ?? siteSettings.SITE_DESCRIPTION}
+		{subtitle ?? siteSettings.DESCRIPTION}
 	</span>
 </section>
