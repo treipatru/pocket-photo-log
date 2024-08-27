@@ -1,12 +1,10 @@
-import {
-	type PostFormCreate,
-	postSchemaFormCreate
-} from "@/entities/posts";
+import { postSchemaFormCreate, type PostFormCreate } from "@/entities/posts";
 import { createPost } from "@/services/client-api/posts";
 import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
 import { useQuery } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
+import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
 import FileInput from "@/components/ui/file-input";
 import Input from "@/components/ui/input";
 import QueryWrapper from "../query-wrapper";
@@ -42,6 +40,18 @@ function Component() {
 		retry: false,
 	});
 
+	const handleFileChange = async (file: File) => {
+		if (file) {
+			// Update the file field first.
+			updateField('file', file);
+
+			// Parse the image metadata and replace previous form values.
+			const { shotOn, tags } = await extractMetadataFromImg(file);
+			updateField('shot_on', shotOn ?? '');
+			updateField('tags', tags);
+		}
+	}
+
 	/**
 	 * On success, redirect to home page.
 	 */
@@ -65,7 +75,7 @@ function Component() {
 				error={formData.errors.file}
 				label="Image"
 				name='file'
-				onChange={v => updateField('file', v)}
+				onChange={handleFileChange}
 				required
 				value={formData.values.file}
 			/>
