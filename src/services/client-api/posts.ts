@@ -35,7 +35,6 @@ export async function createPost(body: PostFormCreate) {
 }
 
 export async function deletePost(body: PostFormDelete) {
-	console.log("deleting from frontend");
 	const res = await fetch(`/api/posts/${body.id}`, {
 		method: "DELETE",
 	});
