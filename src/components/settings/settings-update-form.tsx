@@ -36,11 +36,11 @@ function Component({
 	});
 
 	/**
-	 * On success, update the field input to match the new tags.
+	 * On success, redirect to home page.
 	 */
 	useEffect(() => {
 		if (isSuccess) {
-			console.log('Success')
+			window.location.href = `/`;
 		}
 	}, [isSuccess])
 
