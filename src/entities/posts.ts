@@ -18,7 +18,7 @@ export const postSchema = z.object({
 		.optional(),
 });
 
-const MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
+const MAX_FILE_SIZE = 1024 * 1024 * 20; // 10MB
 
 export const postSchemaFormCreate = z.object({
 	alt: z.string(),
@@ -27,7 +27,7 @@ export const postSchemaFormCreate = z.object({
 	published: z.boolean(),
 	file: z.instanceof(File).refine((file) => {
 		return !file || file.size <= MAX_FILE_SIZE;
-	}, "File size must be less than 10MB"),
+	}, "File size must be less than 20MB"),
 	shot_on: z.string(),
 });
 
