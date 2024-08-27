@@ -18,6 +18,7 @@
 		"tanstack",
 		"tinymce",
 		"tsconfigs",
+		"upscaling",
 		"webp"
 	],
 	"cSpell.ignorePaths": [

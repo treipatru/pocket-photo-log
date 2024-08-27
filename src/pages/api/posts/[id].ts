@@ -2,6 +2,7 @@ import { postSchemaFormUpdate } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
 import type { APIRoute } from "astro";
 import { z } from "zod";
+import { stripResizeImg } from "@/utils/remove-metadata-from-img";
 
 export const DELETE: APIRoute = async ({ locals, params }) => {
 	const postId = params.id;
@@ -94,9 +95,15 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	 */
 	try {
 		const { file, tags, ...rest } = data;
+		let resizedFile = null;
+
+		if (file && file.size > 0) {
+			resizedFile = await stripResizeImg(file);
+		}
+
 		await pbClient.collection("posts").update(postId, {
 			...rest,
-			...(data.file && data.file.size > 0 && { file: data.file }),
+			...(resizedFile && { file: resizedFile }),
 			tags: tagIds,
 		});
 	} catch (error) {

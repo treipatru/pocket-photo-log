@@ -3,6 +3,7 @@ import { separateTags } from "@/pages/api/_utils/separate-tags";
 import { postSchemaFormCreate } from "@/entities/posts";
 import { z } from "zod";
 import { sanitizeTagNames } from "@/entities/tags";
+import { stripResizeImg } from "@/utils/remove-metadata-from-img";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**
@@ -36,7 +37,6 @@ export const POST: APIRoute = async ({ locals, request }) => {
 	/**
 	 * Get the tag ids and create new ones if necessary
 	 */
-
 	const tagIds = [];
 	if (data.tags) {
 		const allTags = await pbClient.collection("tags").getFullList();
@@ -68,8 +68,11 @@ export const POST: APIRoute = async ({ locals, request }) => {
 	 * Create the post
 	 */
 	try {
+		const resizedFile = await stripResizeImg(data.file);
+
 		const payload = {
 			...data,
+			file: resizedFile,
 			tags: tagIds, // PB expects an array of tag ids, not a string
 		};
 
