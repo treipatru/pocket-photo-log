@@ -16,7 +16,7 @@ export default function ExploreTags({
 
 	return (
 		<div>
-			<h2 aria-label={title}></h2>
+			<h2 className="sr-only">{title}</h2>
 
 			<div className="divider uppercase">{title}</div>
 

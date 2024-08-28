@@ -6,7 +6,7 @@ export default function ExploreTags({
 }: Readonly<ExploreSectionProps>) {
 	return (
 		<div>
-			<h2 aria-label="Years"></h2>
+			<h2 className="sr-only">Years</h2>
 
 			<div className="divider uppercase">Years</div>
 
