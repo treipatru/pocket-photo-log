@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
 import { useQuery } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
+import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
 import FileInput from "@/components/ui/file-input";
 import Input from "@/components/ui/input";
 import QueryWrapper from "@/components/query-wrapper";
@@ -44,6 +45,19 @@ function Component({ post }: Readonly<Props>) {
 		retry: false,
 	});
 
+
+	const handleFileChange = async (file: File) => {
+		if (file) {
+			// Update the file field first.
+			updateField('file', file);
+
+			// Parse the image metadata and replace previous form values.
+			const { shotOn, tags } = await extractMetadataFromImg(file);
+			updateField('shot_on', shotOn ?? '');
+			updateField('tags', tags);
+		}
+	}
+
 	/**
 	 * On success, redirect to home page.
 	 */
@@ -67,7 +81,7 @@ function Component({ post }: Readonly<Props>) {
 				error={formData.errors.file}
 				label="Image"
 				name='file'
-				onChange={v => updateField('file', v)}
+				onChange={handleFileChange}
 				value={formData.values.file}
 			/>
 
