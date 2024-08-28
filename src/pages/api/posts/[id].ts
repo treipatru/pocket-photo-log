@@ -104,7 +104,7 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 		await pbClient.collection("posts").update(postId, {
 			...rest,
 			...(resizedFile && { file: resizedFile }),
-			tags: tagIds,
+			...(tagIds.length > 0 && { tags: tagIds }),
 		});
 	} catch (error) {
 		return new Response(
