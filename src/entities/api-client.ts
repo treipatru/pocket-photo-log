@@ -6,13 +6,13 @@ import { type Page } from "@/entities/pages";
 import { type Post } from "@/entities/posts";
 import { type Tag } from "@/entities/tags";
 
-type PostsPerYear = {
+export type PostsPerYear = {
 	id?: number;
 	year: number | null;
 	post_count: number;
 };
 
-type SettingsArr = {
+export type SettingsArr = {
 	id: string;
 	name: string;
 	value: string;

@@ -2,8 +2,8 @@
 import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
-import ExploreTags from "@/components/explore/explore-tags";
-import ExploreYears from "@/components/explore/explore-years";
+import ExploreSection from "@/components/explore/explore-section";
+
 
 const tags = await pocketClient.collection("tags_with_posts").getFullList({
 	sort: "-post_count",
@@ -24,17 +24,5 @@ const otherTags = nonEmptyTags.filter((tag) => !tag.name.match(/^\S+:\s/));
 <BlogLayout>
 	<Hero slot="hero" subtitle="explore" />
 
-	<div class="flex flex-col gap-y-12">
-		<ExploreTags tags={sets} title="Featured" tagCategory="set" />
-
-		<ExploreTags tags={otherTags} title="Tags" />
-
-		<ExploreYears years={years.map((y) => y.year).filter((y) => y !== null)} />
-
-		<ExploreTags tags={places} title="Places" tagCategory="pl" />
-
-		<ExploreTags tags={countries} title="Countries" tagCategory="co" />
-
-		<ExploreTags tags={cameras} title="Cameras" tagCategory="camera" />
-	</div>
+	<ExploreSection tags={nonEmptyTags} years={years} />
 </BlogLayout>
