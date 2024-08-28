@@ -19,7 +19,7 @@ export default function TagBox({
 	const structuredTags = structuredTagMapper(tags);
 
 	return (
-		<ul className="text-muted mt-2 flex items-center flex-wrap gap-x-1 p-2 text-sm">
+		<ul className="text-muted flex items-center flex-wrap gap-x-1 pt-2 text-sm m-auto">
 			<TagLocationDate
 				activeTagId={activeTagId}
 				activeYear={activeYear}

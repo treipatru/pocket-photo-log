@@ -1,10 +1,15 @@
 import { type Post } from "@/entities/posts";
 
 export type ImageSize = "thumb" | "medium" | "large";
+
+/**
+ * These sizes must match the data model in the backend otherwise
+ * the image returned will be the original size.
+ */
 const imageSizeMap: Record<ImageSize, string> = {
 	thumb: "100x0f",
-	medium: "650x650f",
-	large: "900x900f",
+	medium: "600x600f",
+	large: "1000x0f",
 };
 
 /**

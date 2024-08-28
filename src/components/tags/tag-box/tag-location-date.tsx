@@ -10,7 +10,7 @@ interface Props {
 }
 
 function getClasses(id: string, activeTagId?: string | null) {
-	const baseClasses = "px-2 link link-hover flex items-center rounded-sm"
+	const baseClasses = "px-1 link link-hover flex items-center rounded-sm"
 	return id === activeTagId
 		? `${baseClasses} text-accent bg-accent-background`
 		: baseClasses

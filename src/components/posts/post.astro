@@ -6,7 +6,7 @@ import TagBox from "@/components/tags/tag-box/tag-box";
 interface Props {
 	isLink: boolean;
 	post: Post;
-	size: ImageSize;
+	size?: ImageSize;
 }
 
 const activeTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
@@ -20,14 +20,17 @@ const {
 ---
 
 <article
-	class="bg-muted-background m-auto inline-flex flex-col text-left rounded-b-sm"
+	class:list={[
+		"m-auto inline-flex flex-col text-left rounded-b-sm max-w-[1000px",
+		isLink ? "w-[600px]" : "",
+	]}
 >
-	<figure>
+	<figure class="flex items-center flex-col">
 		{
 			isLink ? (
 				<a href={`/posts/${id}`} aria-label={"Post"}>
 					<img
-						class="rounded-t-sm"
+						class="max-h-[78vh]"
 						src={getImgUrl({ id, file }, size)}
 						alt={alt}
 						loading="lazy"
@@ -35,7 +38,7 @@ const {
 				</a>
 			) : (
 				<img
-					class="rounded-t-sm max-h-[700px]"
+					class="max-h-[78vh]"
 					src={getImgUrl({ id, file }, size)}
 					alt={alt}
 					loading="lazy"
@@ -45,7 +48,7 @@ const {
 
 		{
 			caption && (
-				<figcaption class="text-base font-normal px-2 mt-2 ml-1 break-all">
+				<figcaption class="text-base font-normal mt-2 ml-1 break-all">
 					{caption}
 				</figcaption>
 			)
