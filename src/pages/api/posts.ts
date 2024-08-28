@@ -3,7 +3,7 @@ import { separateTags } from "@/pages/api/_utils/separate-tags";
 import { postSchemaFormCreate } from "@/entities/posts";
 import { z } from "zod";
 import { sanitizeTagNames } from "@/entities/tags";
-import { stripResizeImg } from "@/utils/remove-metadata-from-img";
+import { stripResizeImg } from "@/utils/strip-resize-img";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**

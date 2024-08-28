@@ -7,7 +7,7 @@ import sharp from "sharp";
  * @param {File} file
  * @return {*}
  */
-export async function stripResizeImg(file: File) {
+export async function stripResizeImg(file: File): Promise<File> {
 	const buffer = await file.arrayBuffer();
 
 	/**

@@ -1,5 +1,6 @@
 import { postSchemaFormUpdate } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
+import { stripResizeImg } from "@/utils/strip-resize-img";
 import type { APIRoute } from "astro";
 import { z } from "zod";
 import { stripResizeImg } from "@/utils/remove-metadata-from-img";
