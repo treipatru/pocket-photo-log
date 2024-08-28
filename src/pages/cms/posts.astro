@@ -5,7 +5,7 @@ import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import CmsLayout from "@/layouts/cms-layout.astro";
 import Pagination from "@/components/ui/pagination.astro";
-import PostTagUpdateForm from "@/components/posts/post-tag-update-form";
+import PostTagUpdateForm from "@/components/posts/forms/post-tag-update-form";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 
