@@ -1,20 +1,35 @@
 ---
-import { pocketClient } from "@/services/pocket/pocket-client";
-import PostLayout from "@/layouts/post-layout.astro";
-import Hero from "@/components/hero.astro";
-import TimelineItem from "@/components/posts/post.astro";
+import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import Hero from "@/components/hero.astro";
+import PostLayout from "@/layouts/post-layout.astro";
+import TimelineItem from "@/components/posts/post.astro";
+import { getImgUrl } from "@/lib/get-img-url";
 
-const id = Astro.params.id;
+const { siteSettings } = Astro.locals;
 
 const post = await pocketClient
 	.collection("posts")
-	.getFirstListItem(`id="${id}"`, {
+	.getFirstListItem(`id="${Astro.params.id}"`, {
 		expand: "tags",
 	});
 
 const postDate = format(post.shot_on, "PPP");
+const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 ---
+
+<AstroSeo
+	title={pageTitle}
+	description={siteSettings.DESCRIPTION}
+	openGraph={{
+		url: Astro.url.host + Astro.url.pathname,
+		title: pageTitle,
+		description: siteSettings.DESCRIPTION,
+		images: [{ url: getImgUrl(post, "medium") }],
+		site_name: siteSettings.TITLE,
+	}}
+/>
 
 <PostLayout>
 	<Hero slot="hero" subtitle={`on ${postDate}`} />

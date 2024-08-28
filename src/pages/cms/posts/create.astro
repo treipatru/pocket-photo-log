@@ -1,7 +1,10 @@
 ---
+import { AstroSeo } from "@astrolib/seo";
 import CmsLayout from "@/layouts/cms-layout.astro";
 import PostCreateForm from "@/components/posts/post-create-form";
 ---
+
+<AstroSeo title={`Create post | ${Astro.locals.siteSettings.TITLE}`} />
 
 <CmsLayout>
 	<span slot="title">Create post</span>

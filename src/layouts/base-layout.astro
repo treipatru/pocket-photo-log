@@ -29,25 +29,6 @@ const image = "";
 		<!-- Canonical URL -->
 		<link rel="canonical" href={canonicalURL} />
 
-		<!-- Primary Meta Tags -->
-		<title>{siteSettings.TITLE}</title>
-		<meta name="title" content={siteSettings.TITLE} />
-		<meta name="description" content={siteSettings.DESCRIPTION} />
-
-		<!-- Open Graph / Facebook -->
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content={Astro.url} />
-		<meta property="og:title" content={siteSettings.TITLE} />
-		<meta property="og:description" content={siteSettings.DESCRIPTION} />
-		<meta property="og:image" content={new URL(image, Astro.url)} />
-
-		<!-- Twitter -->
-		<meta property="twitter:card" content="summary_large_image" />
-		<meta property="twitter:url" content={Astro.url} />
-		<meta property="twitter:title" content={siteSettings.TITLE} />
-		<meta property="twitter:description" content={siteSettings.DESCRIPTION} />
-		<meta property="twitter:image" content={new URL(image, Astro.url)} />
-
 		<slot name="head" />
 
 		<ViewTransitions />

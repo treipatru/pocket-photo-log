@@ -1,9 +1,12 @@
 ---
+import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
+
+const { siteSettings } = Astro.locals;
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const id = Astro.params.id;
@@ -23,6 +26,11 @@ const { items, ...pagination } = posts;
 // Clear any categories from name
 const tagName = tag.name.replace(/^[^:]*: /, "");
 ---
+
+<AstroSeo
+	title={`#${tagName} page ${pagination.page}| ${siteSettings.TITLE}`}
+	description={siteSettings.DESCRIPTION}
+/>
 
 <BlogLayout>
 	<Hero slot="hero" subtitle=`on #${tagName}` />

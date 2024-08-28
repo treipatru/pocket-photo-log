@@ -1,9 +1,10 @@
 ---
+import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
-import CmsLayout from "@/layouts/cms-layout.astro";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import Pagination from "@/components/ui/pagination.astro";
 import { getImgUrl } from "@/lib/get-img-url";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import Pagination from "@/components/ui/pagination.astro";
 import PostTagUpdateForm from "@/components/posts/post-tag-update-form";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
@@ -13,6 +14,8 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 	sort: "-shot_on",
 });
 ---
+
+<AstroSeo title={`Posts | ${Astro.locals.siteSettings.TITLE}`} />
 
 <CmsLayout>
 	<a class="link-hover" href="/cms/posts" slot="title">Posts</a>

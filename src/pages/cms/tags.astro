@@ -1,8 +1,9 @@
 ---
-import CmsLayout from "@/layouts/cms-layout.astro";
+import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import Pagination from "@/components/ui/pagination.astro";
 import { XIcon } from "lucide-react";
+import CmsLayout from "@/layouts/cms-layout.astro";
+import Pagination from "@/components/ui/pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const query = Astro.url.searchParams.get("query");
@@ -14,6 +15,8 @@ const tags = await pocketClient
 		sort: "-post_count",
 	});
 ---
+
+<AstroSeo title={`Tags | ${Astro.locals.siteSettings.TITLE}`} />
 
 <CmsLayout>
 	<a class="link-hover" href="/cms/tags" slot="title">Tags</a>

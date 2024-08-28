@@ -1,9 +1,12 @@
 ---
+import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
-import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
+import PostList from "@/components/posts/post-list.astro";
+
+const { siteSettings } = Astro.locals;
 
 const posts = await pocketClient.collection("posts").getList(1, 20, {
 	sort: "-shot_on",
@@ -12,6 +15,11 @@ const posts = await pocketClient.collection("posts").getList(1, 20, {
 
 const { items, ...pagination } = posts;
 ---
+
+<AstroSeo
+	title={`Home | ${siteSettings.TITLE}`}
+	description={siteSettings.DESCRIPTION}
+/>
 
 <BlogLayout>
 	<Hero slot="hero" />

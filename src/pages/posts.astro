@@ -1,9 +1,12 @@
 ---
+import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
-import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
+import PostList from "@/components/posts/post-list.astro";
+
+const { siteSettings } = Astro.locals;
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const year = Astro.url.searchParams.get("year");
@@ -20,6 +23,11 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 
 const { items, ...pagination } = posts;
 ---
+
+<AstroSeo
+	title={`Posts page ${pagination.page} | ${siteSettings.TITLE}`}
+	description={siteSettings.DESCRIPTION}
+/>
 
 <BlogLayout>
 	<Hero slot="hero" subtitle={year ? `in ${year}` : undefined} />
