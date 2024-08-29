@@ -78,7 +78,16 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			width: metaData.width,
 		};
 
-		await pbClient.collection("posts").create(payload);
+		const newPost = await pbClient.collection("posts").create(payload);
+
+		/**
+		 * Create associated stats entry
+		 */
+		await pbClient.collection("stats").create({
+			post: newPost.id,
+			likes: 0,
+			views: 0,
+		});
 	} catch (_) {
 		return new Response(
 			JSON.stringify({

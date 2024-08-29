@@ -3,28 +3,68 @@ import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
+import { type Stat } from "@/entities/stats";
 import Hero from "@/components/hero.astro";
 import PostComplete from "@/components/posts/post/post-complete";
 import PostLayout from "@/layouts/post-layout.astro";
+import type { Post } from "@/entities/posts";
 
+let post: Post | null = null;
+let stat: Stat | null = null;
+
+/**
+ * Fetch the post and handle 404.
+ */
+try {
+	// The fetch will throw if the post is not found.
+	post = await pocketClient
+		.collection("posts")
+		.getFirstListItem(`id="${Astro.params.id}"`, {
+			expand: "tags",
+		});
+
+	// This is for TS to know that post is not null.
+	if (!post) {
+		throw new Error();
+	}
+} catch (_) {
+	return Astro.redirect("/404");
+}
+
+/**
+ * Handle post stats
+ */
+try {
+	try {
+		// Try to get the stats for the post
+		stat = await pocketClient
+			.collection("stats")
+			.getFirstListItem(`postId="${post.id}"`);
+	} catch (_) {
+		// If the stats are not found we will ignore the error
+	}
+
+	// If there are no stats for the post we will create a new record
+	if (stat === null) {
+		stat = await pocketClient.collection("stats").create({
+			likes: 0,
+			postId: post.id,
+			views: 1,
+		});
+		// Otherwise we will update the views count
+	} else {
+		stat = await pocketClient.collection("stats").update(stat.id, {
+			views: stat.views + 1,
+		});
+	}
+} catch (error) {
+	return Astro.redirect("/500", error);
+}
+
+// Content strings
 const { siteSettings } = Astro.locals;
-
-const post = await pocketClient
-	.collection("posts")
-	.getFirstListItem(`id="${Astro.params.id}"`, {
-		expand: "tags",
-	});
-
 const postDate = format(post.shot_on, "PPP");
 const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
-
-try {
-	await pocketClient.collection("posts").update(post.id, {
-		views: post.views + 1,
-	});
-} catch (error) {
-	console.error("Error updating post views", error);
-}
 ---
 
 <AstroSeo
@@ -42,5 +82,5 @@ try {
 <PostLayout>
 	<Hero slot="hero" subtitle={`on ${postDate}`} />
 
-	<PostComplete post={post} client:load />
+	<PostComplete client:load post={post} stats={stat} />
 </PostLayout>
