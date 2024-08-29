@@ -9,12 +9,8 @@ interface Props {
 }
 
 const { showFooter = false, showHeader = false } = Astro.props;
-const { siteSettings } = Astro.locals;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-
-// TODO: Add a default image
-const image = "";
 ---
 
 <!doctype html>
