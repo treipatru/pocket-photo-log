@@ -1,51 +1,44 @@
 import { Eye, Heart } from "lucide-react";
-import QueryWrapper from "@/components/query-wrapper";
-import type { Post } from "@/entities/posts";
-import { updatePost } from "@/services/client-api/posts";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { likePost } from "@/services/client-api/posts";
+import { type Stat } from "@/entities/stats";
+import { useState } from "react";
 import clsx from "clsx";
 
 type PostStatsProps = {
-	post: Post
+	stats: Stat;
 	className?: string;
 };
 
-function Component({
+export default function PostStats({
 	className,
-	post,
+	stats,
 }: Readonly<PostStatsProps>) {
-	const [shouldFetch, setShouldFetch] = useState(false);
+	const [likes, setLikes] = useState(stats.likes);
+	const [isFetching, setIsFetching] = useState(false);
 
-	/**
-	 * The likes should use an optimistic UI, but with updates from the server.
-	 * TODO: Implement optimistic UI.
-	 */
-	const [likes, setLikes] = useState(post.likes);
+	const handleClick = async () => {
+		if (isFetching) return;
+		setIsFetching(true);
 
-	const { isFetching } = useQuery({
-		enabled: shouldFetch,
-		queryFn: () => updatePost({ likes }, post.id),
-		queryKey: ['posts/update', post.id],
-		retry: false,
-	});
-
-	useEffect(() => {
-		if (shouldFetch) {
-			setShouldFetch(false);
+		try {
+			const res = await likePost(stats.postId);
+			setLikes(res.likes);
+		} catch (_) {
+			console.error(_);
+		} finally {
+			setIsFetching(false);
 		}
-	}, [shouldFetch]);
-
-	const handleClick = () => {
-		setLikes(likes + 1);
-		setShouldFetch(true);
 	}
+
 
 	return (
 		<div className={clsx("flex font-normal text-sm items-center gap-1 justify-end text-muted", className)}>
-			<div className="tooltip w-6 flex flex-col items-center" data-tip="Post views" >
+			<div
+				className="tooltip w-6 flex flex-col items-center"
+				data-tip="Post views"
+			>
 				<Eye size={18} />
-				<span>{post.views}</span>
+				<span>{stats.views}</span>
 			</div>
 
 
@@ -61,8 +54,4 @@ function Component({
 
 		</div>
 	)
-}
-
-export default function PostStats(props: Readonly<PostStatsProps>) {
-	return <QueryWrapper><Component {...props} /></QueryWrapper>
 }

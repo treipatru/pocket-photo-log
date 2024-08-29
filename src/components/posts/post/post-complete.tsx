@@ -1,11 +1,13 @@
-import TagBox from "@/components/tags/tag-box/tag-box";
-import type { Post } from "@/entities/posts"
 import { getImgUrl } from "@/lib/get-img-url";
 import PostCaption from "@/components/posts/post/components/post-caption";
 import PostStats from "@/components/posts/post/components/post-stats";
+import TagBox from "@/components/tags/tag-box/tag-box";
+import type { Post } from "@/entities/posts"
+import type { Stat } from "@/entities/stats";
 
 type PostCompleteProps = {
 	post: Post;
+	stats: Stat | null;
 }
 
 function getPostDimension(post: Post) {
@@ -37,7 +39,8 @@ function getPostDimension(post: Post) {
 }
 
 export default function PostComplete({
-	post
+	post,
+	stats,
 }: Readonly<PostCompleteProps>) {
 	const { width } = getPostDimension(post)
 
@@ -63,7 +66,9 @@ export default function PostComplete({
 				tags={post.expand?.tags}
 			/>
 
-			<PostStats className="col-span-3 md:col-span-1" post={post} />
+			{stats && (
+				<PostStats className="col-span-3 md:col-span-1" stats={stats} />
+			)}
 		</article>
 	)
 }
