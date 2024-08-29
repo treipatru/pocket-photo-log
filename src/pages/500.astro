@@ -1,0 +1,23 @@
+---
+import { AstroSeo } from "@astrolib/seo";
+import SimpleLayout from "@/layouts/simple-layout.astro";
+interface Props {
+	error: unknown;
+}
+---
+
+<AstroSeo
+	title={`500 Error| ${Astro.locals.siteSettings.TITLE}`}
+	description="Something went wrong."
+/>
+
+<SimpleLayout>
+	<h1 class="text-3xl mb-4">500</h1>
+
+	<p class="font-normal">
+		Something went wrong in the darkroom! Our site’s having a moment, but we’re
+		working to develop a solution.
+	</p>
+
+	<a href="/" class="btn mt-6">Go back to the home page</a>
+</SimpleLayout>

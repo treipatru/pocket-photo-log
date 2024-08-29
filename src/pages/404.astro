@@ -1,0 +1,22 @@
+---
+import { AstroSeo } from "@astrolib/seo";
+import SimpleLayout from "@/layouts/simple-layout.astro";
+interface Props {
+	error: unknown;
+}
+---
+
+<AstroSeo
+	title={`404 Not found | ${Astro.locals.siteSettings.TITLE}`}
+	description="Resouce not found."
+/>
+
+<SimpleLayout>
+	<h1 class="text-3xl mb-4">404</h1>
+
+	<p class="font-normal">Sorry, this page didn’t make the final cut.</p>
+
+	<p class="font-normal">It might have been moved or deleted.</p>
+
+	<a href="/" class="btn mt-6">Go back to the home page</a>
+</SimpleLayout>
