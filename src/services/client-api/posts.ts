@@ -82,6 +82,10 @@ export async function updatePost(body: PostFormUpdate, id: string) {
 		formData.append("tags", sanitizeTagNames(body.tags, "str"));
 	}
 
+	if (body.likes && body.likes > 0) {
+		formData.append("likes", body.likes.toString());
+	}
+
 	/**
 	 * Call API
 	 */

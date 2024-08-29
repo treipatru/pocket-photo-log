@@ -6,8 +6,10 @@ export const postSchema = z.object({
 	caption: z.string(),
 	created: z.string(),
 	file: z.string(),
+	height: z.number(),
 	id: z.string(),
 	image: z.string(),
+	likes: z.number(),
 	published: z.boolean(),
 	shot_on: z.string(),
 	tags: z.array(z.string()),
@@ -16,6 +18,8 @@ export const postSchema = z.object({
 			tags: z.array(tagSchema),
 		})
 		.optional(),
+	views: z.number(),
+	width: z.number(),
 });
 
 const MAX_FILE_SIZE = 1024 * 1024 * 20; // 10MB
@@ -23,19 +27,26 @@ const MAX_FILE_SIZE = 1024 * 1024 * 20; // 10MB
 export const postSchemaFormCreate = z.object({
 	alt: z.string(),
 	caption: z.string(),
-	tags: z.array(z.string()),
-	published: z.boolean(),
 	file: z.instanceof(File).refine((file) => {
 		return !file || file.size <= MAX_FILE_SIZE;
 	}, "File size must be less than 20MB"),
+	published: z.boolean(),
 	shot_on: z.string(),
+	tags: z.array(z.string()),
 });
 
 export const postSchemaFormDelete = z.object({
 	id: z.string(),
 });
 
-export const postSchemaFormUpdate = postSchemaFormCreate.partial();
+export const postSchemaFormUpdate = postSchemaFormCreate
+	.extend({
+		height: z.number(),
+		likes: z.number(),
+		views: z.number(),
+		width: z.number(),
+	})
+	.partial();
 
 export type Post = z.infer<typeof postSchema>;
 export type PostFormCreate = z.infer<typeof postSchemaFormCreate>;

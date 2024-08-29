@@ -1,9 +1,8 @@
-import { postSchemaFormUpdate } from "@/entities/posts";
+import { postSchemaFormUpdate, type PostFormUpdate } from "@/entities/posts";
 import { separateTags } from "@/pages/api/_utils/separate-tags";
-import { stripResizeImg } from "@/utils/strip-resize-img";
-import type { APIRoute } from "astro";
+import { imgGetOptimized } from "@/utils/img-get-optimized";
 import { z } from "zod";
-import { stripResizeImg } from "@/utils/remove-metadata-from-img";
+import type { APIRoute } from "astro";
 
 export const DELETE: APIRoute = async ({ locals, params }) => {
 	const postId = params.id;
@@ -42,13 +41,16 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	const postId = params.id;
 
 	/**
-	 * Since the form data is not typed, everything is a string so we need to
-	 * update the schema to reflect that.
+	 * Since the FormData object received with the request is not typed,
+	 * everything is a string so we need to update the initial schema
+	 * to reflect that.
 	 */
 	const { data, error } = postSchemaFormUpdate
 		.extend({
+			likes: z.string().optional(),
 			published: z.string().optional(),
 			tags: z.string().optional(),
+			views: z.string().optional(),
 		})
 		.safeParse(parsed);
 
@@ -93,19 +95,29 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	/**
 	 * Update the post
 	 * If the file is empty, do not update the field.
+	 * FIXME: Impossible to delete tags if length is 0. Published is not updated.
 	 */
 	try {
 		const { file, tags, ...rest } = data;
-		let resizedFile = null;
+		const payload: PostFormUpdate = {};
 
+		// Process image if it exists
 		if (file && file.size > 0) {
-			resizedFile = await stripResizeImg(file);
+			const { file: resized, metaData } = await imgGetOptimized(file);
+
+			payload.file = resized;
+			payload.height = metaData.height;
+			payload.width = metaData.width;
+		}
+
+		// Include tags if there are any
+		if (tagIds.length > 0) {
+			payload.tags = tagIds;
 		}
 
 		await pbClient.collection("posts").update(postId, {
 			...rest,
-			...(resizedFile && { file: resizedFile }),
-			...(tagIds.length > 0 && { tags: tagIds }),
+			...payload,
 		});
 	} catch (error) {
 		return new Response(
