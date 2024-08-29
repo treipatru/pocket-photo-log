@@ -20,7 +20,7 @@ The project is on it's way to a v1 but there are still a few things to do before
 - [x] Add photo sets feature
 - [ ] Create backend deployment docker image
 - [ ] Improve rendered image quality
-- [ ] Process image on upload (size & metadata)
+- [x] Process image on upload (size & metadata)
 
 ## License
 

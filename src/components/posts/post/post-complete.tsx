@@ -8,30 +8,59 @@ type PostCompleteProps = {
 	post: Post;
 }
 
+function getPostDimension(post: Post) {
+	const aspectRatio = Number((post.width / post.height).toPrecision(2))
+
+	const style = {
+		width: 'auto',
+	}
+
+	switch (true) {
+		// Landscape
+		case aspectRatio > 1:
+			style.width = '1000px'
+			break;
+		// Portrait
+		case aspectRatio < 1:
+			style.width = '600px'
+			break;
+		// Square
+		case aspectRatio === 1:
+			style.width = '850px'
+			break;
+		// Default
+		default:
+			break;
+	}
+
+	return style
+}
+
 export default function PostComplete({
 	post
 }: Readonly<PostCompleteProps>) {
-	const { id, file, alt, caption, shot_on, expand } = post;
+	const { width } = getPostDimension(post)
 
 	return (
 		<article
-			className="grid grid-cols-12 max-w-[1000]px gap-y-2 gap-x-4 bg-muted-background"
+			className="grid grid-cols-12 max-w-[1000]px gap-y-2 gap-x-4 bg-muted-background m-auto"
+			style={{ width }}
 		>
 			<figure className="col-span-12 flex items-center flex-col">
 				<img
-					alt={alt}
-					className="max-h-[78vh] mb-2"
+					alt={post.alt}
+					className="mb-2"
 					loading="lazy"
-					src={getImgUrl({ id, file }, 'large')}
+					src={getImgUrl({ id: post.id, file: post.file })}
 				/>
 
-				<PostCaption caption={caption} />
+				<PostCaption caption={post.caption} />
 			</figure>
 
 			<TagBox
 				className="col-span-9 md:col-span-11"
-				date={shot_on}
-				tags={expand?.tags}
+				date={post.shot_on}
+				tags={post.expand?.tags}
 			/>
 
 			<PostStats className="col-span-3 md:col-span-1" post={post} />
