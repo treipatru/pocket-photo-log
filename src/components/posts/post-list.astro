@@ -1,14 +1,25 @@
 ---
 import { type Post } from "@/entities/posts";
-import TimelineItem from "@/components/posts/post.astro";
+import PostPreview from "@/components/posts/post/post-preview";
 
 interface Props {
 	posts: Post[];
 }
 
 const { posts } = Astro.props;
+
+const activeTagId = Astro.url.pathname.match(/\/tags\/([^\/?]+)/)?.[1];
+const activeYear = Astro.url.searchParams.get("year") ?? undefined;
 ---
 
-<div class="flex flex-col gap-y-24 md:gap-y-32 max-w-screen-sm m-auto">
-	{posts.map((post) => <TimelineItem isLink post={post} size="medium" />)}
+<div class="flex flex-col gap-y-24 md:gap-y-32 max-w-[600px] m-auto">
+	{
+		posts.map((post) => (
+			<PostPreview
+				activeTagId={activeTagId}
+				activeYear={activeYear}
+				post={post}
+			/>
+		))
+	}
 </div>

@@ -2,10 +2,12 @@ import type { Tag } from "@/entities/tags";
 import { structuredTagMapper } from "@/utils/structured-tag-mapper";
 import TagLink from "./tag-link";
 import TagLocationDate from "./tag-location-date";
+import clsx from "clsx";
 
 interface Props {
 	activeTagId?: string;
-	activeYear: string | null;
+	activeYear?: string;
+	className?: string;
 	date: string;
 	tags?: Tag[];
 }
@@ -13,13 +15,14 @@ interface Props {
 export default function TagBox({
 	activeTagId,
 	activeYear,
+	className,
 	date,
 	tags = [],
 }: Readonly<Props>) {
 	const structuredTags = structuredTagMapper(tags);
 
 	return (
-		<ul className="text-muted flex items-center flex-wrap gap-x-1 pt-2 text-sm m-auto">
+		<ul className={clsx("text-muted flex items-center flex-wrap gap-x-1 text-sm", className)}>
 			<TagLocationDate
 				activeTagId={activeTagId}
 				activeYear={activeYear}

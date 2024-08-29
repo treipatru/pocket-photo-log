@@ -3,7 +3,7 @@ import { type StructuredTags } from "@/entities/tags"
 import { format } from "date-fns";
 
 interface Props {
-	activeYear: string | null;
+	activeYear?: string;
 	activeTagId?: string;
 	date: string;
 	structuredTags: StructuredTags;
