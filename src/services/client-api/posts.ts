@@ -4,6 +4,7 @@ import {
 	type PostFormUpdate,
 } from "@/entities/posts";
 import { sanitizeTagNames } from "@/entities/tags";
+import { type Stat } from "@/entities/stats";
 
 export async function createPost(body: PostFormCreate) {
 	/**
@@ -95,4 +96,16 @@ export async function updatePost(body: PostFormUpdate, id: string) {
 	}
 
 	return Promise.resolve({});
+}
+
+export async function likePost(id: Stat["id"]) {
+	const res = await fetch(`/api/posts/${id}/like`);
+
+	if (!res.ok) {
+		return Promise.reject({ message: "Failed to create post." });
+	}
+
+	const data = await res.json();
+
+	return Promise.resolve(data);
 }

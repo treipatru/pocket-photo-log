@@ -30,7 +30,16 @@ const authentication = defineMiddleware(async (context, next) => {
  * Check if the request is authorized to access the route.
  */
 const privateRoutes = ["/auth/logout", "/cms/*"];
-const apiRoutes = ["!/api/auth", "/api/*"];
+const apiRoutes = [
+	// Auth routes are public
+	"!/api/auth",
+
+	// All other API routes are private by default
+	"/api/*",
+
+	// Except for these:
+	"!/api/posts/*/like",
+];
 const authorization = defineMiddleware(async (context, next) => {
 	const { isAuthenticated } = context.locals;
 	const isPrivateRoute = urlMatcher(context.url.pathname, privateRoutes);
