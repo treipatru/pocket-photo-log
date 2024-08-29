@@ -51,7 +51,7 @@ export async function updatePost(body: PostFormUpdate, id: string) {
 	 * Transform the JSON body to FormData as the server expects it due to
 	 * the file upload.
 	 *
-	 * Since this method calls a PATCH request we only need to append resource data
+	 * Since this method calls a PATCH request we only need to append record data
 	 * which is updated.
 	 */
 	const formData = new FormData();
@@ -80,10 +80,6 @@ export async function updatePost(body: PostFormUpdate, id: string) {
 
 	if (body.tags) {
 		formData.append("tags", sanitizeTagNames(body.tags, "str"));
-	}
-
-	if (body.likes && body.likes > 0) {
-		formData.append("likes", body.likes.toString());
 	}
 
 	/**

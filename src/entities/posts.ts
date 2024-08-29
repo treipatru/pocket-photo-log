@@ -9,7 +9,6 @@ export const postSchema = z.object({
 	height: z.number(),
 	id: z.string(),
 	image: z.string(),
-	likes: z.number(),
 	published: z.boolean(),
 	shot_on: z.string(),
 	tags: z.array(z.string()),
@@ -18,7 +17,6 @@ export const postSchema = z.object({
 			tags: z.array(tagSchema),
 		})
 		.optional(),
-	views: z.number(),
 	width: z.number(),
 });
 
@@ -42,8 +40,6 @@ export const postSchemaFormDelete = z.object({
 export const postSchemaFormUpdate = postSchemaFormCreate
 	.extend({
 		height: z.number(),
-		likes: z.number(),
-		views: z.number(),
 		width: z.number(),
 	})
 	.partial();

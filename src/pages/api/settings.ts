@@ -20,7 +20,7 @@ export const PUT: APIRoute = async ({ locals }) => {
 
 	/**
 	 * Update settings one by one.
-	 * PocketBase does not allow updating multiple resource IDs at once.
+	 * PocketBase does not allow updating multiple records at once.
 	 */
 
 	try {

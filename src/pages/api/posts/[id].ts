@@ -47,10 +47,8 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	 */
 	const { data, error } = postSchemaFormUpdate
 		.extend({
-			likes: z.string().optional(),
 			published: z.string().optional(),
 			tags: z.string().optional(),
-			views: z.string().optional(),
 		})
 		.safeParse(parsed);
 
