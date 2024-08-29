@@ -1,11 +1,11 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
+import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import Hero from "@/components/hero.astro";
+import PostComplete from "@/components/posts/post/post-complete";
 import PostLayout from "@/layouts/post-layout.astro";
-import TimelineItem from "@/components/posts/post.astro";
-import { getImgUrl } from "@/lib/get-img-url";
 
 const { siteSettings } = Astro.locals;
 
@@ -17,6 +17,14 @@ const post = await pocketClient
 
 const postDate = format(post.shot_on, "PPP");
 const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
+
+try {
+	await pocketClient.collection("posts").update(post.id, {
+		views: post.views + 1,
+	});
+} catch (error) {
+	console.error("Error updating post views", error);
+}
 ---
 
 <AstroSeo
@@ -34,5 +42,5 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 <PostLayout>
 	<Hero slot="hero" subtitle={`on ${postDate}`} />
 
-	<TimelineItem post={post} size="large" isLink={false} />
+	<PostComplete post={post} client:load />
 </PostLayout>
