@@ -11,17 +11,25 @@ import react from "@astrojs/react";
  * it when building the site.
  */
 
+import sentry from "@sentry/astro";
 
 // https://astro.build/config
 export default defineConfig({
 	adapter: node({
 		mode: 'standalone'
 	}),
-	integrations: [tailwind(), react()],
+	integrations: [
+		tailwind(),
+		react(),
+		sentry({
+			dsn: process.env.ERROR_TRACKING_DSN,
+			enabled: process.env.NODE_ENV === "production",
+		}),
+	],
 	output: 'server',
 	prefetch: true,
 	security: {
-		checkOrigin: true,
+		checkOrigin: true
 	},
 	site: "http://revelator.planet34.org"
 });
