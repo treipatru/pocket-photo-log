@@ -23,7 +23,7 @@ export default defineConfig({
 		react(),
 		sentry({
 			dsn: process.env.ERROR_TRACKING_DSN,
-			enabled: process.env.NODE_ENV === "production",
+			environment: process.env.NODE_ENV,
 		}),
 	],
 	output: 'server',
