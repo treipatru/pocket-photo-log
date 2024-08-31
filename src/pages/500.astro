@@ -1,9 +1,15 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import SimpleLayout from "@/layouts/simple-layout.astro";
+import { captureException } from "@sentry/astro";
+
 interface Props {
 	error: unknown;
 }
+
+const { error } = Astro.props;
+
+captureException(error);
 ---
 
 <AstroSeo
