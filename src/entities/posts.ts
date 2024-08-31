@@ -37,12 +37,7 @@ export const postSchemaFormDelete = z.object({
 	id: z.string(),
 });
 
-export const postSchemaFormUpdate = postSchemaFormCreate
-	.extend({
-		height: z.number(),
-		width: z.number(),
-	})
-	.partial();
+export const postSchemaFormUpdate = postSchemaFormCreate.partial();
 
 export type Post = z.infer<typeof postSchema>;
 export type PostFormCreate = z.infer<typeof postSchemaFormCreate>;
