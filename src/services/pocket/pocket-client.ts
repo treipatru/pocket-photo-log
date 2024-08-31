@@ -14,9 +14,10 @@ const createPocketClient = async (url: string, user: string, key: string) => {
 	}
 
 	pb.beforeSend = function (url, options) {
-		options.headers = Object.assign({}, options.headers, {
+		options.headers = {
+			...options.headers,
 			Authorization: `${pb.authStore.token}`,
-		});
+		};
 
 		return { url, options };
 	};
