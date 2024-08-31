@@ -1,9 +1,10 @@
-import type { APIRoute } from "astro";
-import { separateTags } from "@/pages/api/_utils/separate-tags";
-import { postSchemaFormCreate } from "@/entities/posts";
-import { z } from "zod";
-import { sanitizeTagNames } from "@/entities/tags";
 import { imgGetOptimized } from "@/utils/img-get-optimized";
+import { postSchemaFormCreate, type Post } from "@/entities/posts";
+import { sanitizeTagNames } from "@/entities/tags";
+import { separateTags } from "@/pages/api/_utils/separate-tags";
+import { z } from "zod";
+import type { APIRoute } from "astro";
+import { captureException } from "@sentry/astro";
 
 export const POST: APIRoute = async ({ locals, request }) => {
 	/**
@@ -67,6 +68,8 @@ export const POST: APIRoute = async ({ locals, request }) => {
 	/**
 	 * Create the post
 	 */
+	let newPost: Post | null = null;
+
 	try {
 		const { file, metaData } = await imgGetOptimized(data.file);
 
@@ -78,16 +81,11 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			width: metaData.width,
 		};
 
-		const newPost = await pbClient.collection("posts").create(payload);
+		newPost = await pbClient.collection("posts").create(payload);
 
-		/**
-		 * Create associated stats entry
-		 */
-		await pbClient.collection("stats").create({
-			post: newPost.id,
-			likes: 0,
-			views: 0,
-		});
+		if (!newPost) {
+			throw new Error();
+		}
 	} catch (_) {
 		return new Response(
 			JSON.stringify({
@@ -97,10 +95,22 @@ export const POST: APIRoute = async ({ locals, request }) => {
 		);
 	}
 
-	return new Response(
-		JSON.stringify({
-			message: "Success!",
-		}),
-		{ status: 200 }
-	);
+	/**
+	 * Create associated stats entry
+	 */
+	try {
+		await pbClient.collection("stats").create({
+			postId: newPost.id,
+			likes: 0,
+			views: 0,
+		});
+	} catch (error) {
+		/**
+		 * Log the error but don't block the response.
+		 * The stat will be created on the next view.
+		 */
+		captureException(error);
+	}
+
+	return new Response(JSON.stringify(newPost), { status: 200 });
 };
