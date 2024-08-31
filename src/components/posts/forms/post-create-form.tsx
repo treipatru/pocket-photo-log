@@ -1,8 +1,7 @@
 import { postSchemaFormCreate, type PostFormCreate } from "@/entities/posts";
 import { createPost } from "@/services/client-api/posts";
-import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
 import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
 import FileInput from "@/components/ui/file-input";
@@ -13,9 +12,6 @@ import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
 
 function Component() {
-	/**
-	 * Form
-	 */
 	const { formData, isValid, updateField, validate } = useForm<PostFormCreate>(postSchemaFormCreate, {
 		alt: '',
 		caption: '',
@@ -25,20 +21,21 @@ function Component() {
 		tags: [],
 	});
 
+	const { mutate, isPending, error } = useMutation({
+		mutationFn: (newPost: PostFormCreate) => createPost(newPost),
+		onSuccess: (res) => {
+			window.location.href = `/posts/${res.id}`;
+		}
+	})
+
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		validate();
-	}
 
-	/**
-	 * Query
-	 */
-	const { error, isFetching, isSuccess } = useQuery({
-		enabled: isValid,
-		queryFn: () => createPost(formData.values),
-		queryKey: ['posts'],
-		retry: false,
-	});
+		if (isValid) {
+			mutate(formData.values);
+		}
+	}
 
 	const handleFileChange = async (file: File) => {
 		if (file) {
@@ -51,15 +48,6 @@ function Component() {
 			updateField('tags', tags);
 		}
 	}
-
-	/**
-	 * On success, redirect to home page.
-	 */
-	useEffect(() => {
-		if (isSuccess) {
-			window.location.href = '/'
-		}
-	}, [isSuccess])
 
 	return (
 		<form
@@ -124,9 +112,9 @@ function Component() {
 			<button
 				className="btn mt-1"
 				type='submit'
-				disabled={isFetching}
+				disabled={isPending}
 			>
-				{isFetching && <span className="loading loading-spinner"></span>}
+				{isPending && <span className="loading loading-spinner"></span>}
 				Create
 			</button>
 		</form>

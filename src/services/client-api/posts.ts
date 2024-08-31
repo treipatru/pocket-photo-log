@@ -1,4 +1,5 @@
 import {
+	type Post,
 	type PostFormCreate,
 	type PostFormDelete,
 	type PostFormUpdate,
@@ -6,7 +7,7 @@ import {
 import { sanitizeTagNames } from "@/entities/tags";
 import { type Stat } from "@/entities/stats";
 
-export async function createPost(body: PostFormCreate) {
+export async function createPost(body: PostFormCreate): Promise<Post> {
 	/**
 	 * Transform the JSON body to FormData as the server expects it due to
 	 * the file upload.
@@ -32,7 +33,9 @@ export async function createPost(body: PostFormCreate) {
 		return Promise.reject({ message: "Failed to create post." });
 	}
 
-	return Promise.resolve({});
+	const data = await res.json();
+
+	return Promise.resolve(data);
 }
 
 export async function deletePost(body: PostFormDelete) {
