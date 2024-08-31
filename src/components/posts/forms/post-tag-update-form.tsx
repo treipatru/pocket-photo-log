@@ -1,10 +1,10 @@
 import type { Tag } from "@/entities/tags";
 import QueryWrapper from "@/components/query-wrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "@/hooks/use-form";
 import { Save, X } from "lucide-react";
 import { postSchemaFormUpdate, type PostFormUpdate } from "@/entities/posts";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { updatePost } from "@/services/client-api/posts";
 import { sanitizeTagNames } from "@/entities/tags";
 
@@ -28,6 +28,10 @@ function Component({
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		validate();
+
+		if (isValid) {
+			mutate({ id: postId, payload: formData.values });
+		}
 	}
 
 	const handleCancel = () => {
@@ -35,25 +39,16 @@ function Component({
 		setIsEditing(false);
 	}
 
-	/**
-	 * Query
-	 */
-	const { isFetching, isSuccess } = useQuery({
-		enabled: isValid,
-		queryFn: () => updatePost(formData.values, postId),
-		queryKey: ['posts/update', postId],
-		retry: false,
-	});
-
-	/**
-	 * On success, update the field input to match the new tags.
-	 */
-	useEffect(() => {
-		if (isSuccess) {
+	const { mutate, isPending } = useMutation({
+		mutationFn: ({
+			id,
+			payload
+		}: { id: string, payload: PostFormUpdate }) => updatePost(id, payload),
+		onSuccess: () => {
 			setIsEditing(false);
 			updateField('tags', sanitizeTagNames(formData.values.tags, 'arr'));
 		}
-	}, [isSuccess])
+	});
 
 	return (
 		<div className="flex items-center gap-1">
@@ -77,7 +72,7 @@ function Component({
 				{isEditing && (
 					<>
 						<button
-							disabled={isFetching}
+							disabled={isPending}
 							className="btn btn-ghost btn-sm"
 							onClick={handleCancel}
 						>
@@ -85,7 +80,7 @@ function Component({
 						</button>
 
 						<button
-							disabled={isFetching}
+							disabled={isPending}
 							className="btn btn-ghost btn-sm" onClick={handleSubmit}
 						>
 							<Save size={16} />

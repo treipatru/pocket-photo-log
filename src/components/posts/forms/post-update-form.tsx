@@ -1,9 +1,8 @@
 import { getImgUrl } from "@/lib/get-img-url";
 import { postSchemaFormUpdate, type Post, type PostFormUpdate } from "@/entities/posts";
 import { updatePost } from "@/services/client-api/posts";
-import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
 import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
 import FileInput from "@/components/ui/file-input";
@@ -33,18 +32,21 @@ function Component({ post }: Readonly<Props>) {
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
 		validate();
+
+		if (isValid) {
+			mutate({ id: post.id, payload: formData.values });
+		}
 	}
 
-	/**
-	 * Query
-	 */
-	const { error, isFetching, isSuccess } = useQuery({
-		enabled: isValid,
-		queryFn: () => updatePost(formData.values, post.id),
-		queryKey: ['posts/update', post.id],
-		retry: false,
-	});
-
+	const { mutate, isPending, error } = useMutation({
+		mutationFn: ({
+			id,
+			payload
+		}: { id: string, payload: PostFormUpdate }) => updatePost(id, payload),
+		onSuccess: () => {
+			window.location.href = `/posts/${post.id}`;
+		}
+	})
 
 	const handleFileChange = async (file: File) => {
 		if (file) {
@@ -57,15 +59,6 @@ function Component({ post }: Readonly<Props>) {
 			updateField('tags', tags);
 		}
 	}
-
-	/**
-	 * On success, redirect to home page.
-	 */
-	useEffect(() => {
-		if (isSuccess) {
-			window.location.href = `/posts/${post.id}`;
-		}
-	}, [isSuccess])
 
 	return (
 		<form
@@ -145,9 +138,9 @@ function Component({ post }: Readonly<Props>) {
 				<button
 					className="btn btn-primary"
 					type='submit'
-					disabled={isFetching}
+					disabled={isPending}
 				>
-					{isFetching && <span className="loading loading-spinner"></span>}
+					{isPending && <span className="loading loading-spinner"></span>}
 					Update
 				</button>
 			</div>

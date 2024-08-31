@@ -50,7 +50,7 @@ export async function deletePost(body: PostFormDelete) {
 	return Promise.resolve({});
 }
 
-export async function updatePost(body: PostFormUpdate, id: string) {
+export async function updatePost(id: string, body: PostFormUpdate) {
 	/**
 	 * Transform the JSON body to FormData as the server expects it due to
 	 * the file upload.

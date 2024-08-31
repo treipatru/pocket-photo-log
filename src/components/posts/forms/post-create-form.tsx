@@ -57,8 +57,6 @@ function Component() {
 			name="create-post"
 			onSubmit={handleSubmit}
 		>
-
-
 			<FileInput
 				error={formData.errors.file}
 				label="Image"
