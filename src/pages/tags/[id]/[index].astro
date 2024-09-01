@@ -104,7 +104,12 @@ try {
 <BlogLayout>
 	<Hero slot="hero" subtitle=`on #${tagName}` />
 
-	<PostComplete post={post} stats={stats} activeTagId={tagId} />
+	<PostComplete
+		activeTagId={tagId}
+		post={post}
+		showAdminMenu={Astro.locals.isAuthenticated}
+		stats={stats}
+	/>
 
 	<PostPagination
 		page={pagination.page}

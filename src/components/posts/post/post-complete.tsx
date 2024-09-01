@@ -1,6 +1,7 @@
 import { getImgUrl } from "@/lib/get-img-url";
 import { type Post } from "@/entities/posts"
 import { type Stat } from "@/entities/stats";
+import PostAdminMenu from "@/components/posts/post/post-admin-menu";
 import PostCaption from "@/components/posts/post/components/post-caption";
 import PostStats from "@/components/posts/post/components/post-stats";
 import TagBox from "@/components/tags/tag-box/tag-box";
@@ -9,6 +10,7 @@ type PostCompleteProps = {
 	activeTagId?: string;
 	post: Post;
 	stats: Stat | null;
+	showAdminMenu?: boolean;
 }
 
 function getPostDimension(post: Post) {
@@ -42,14 +44,17 @@ function getPostDimension(post: Post) {
 export default function PostComplete({
 	activeTagId,
 	post,
+	showAdminMenu = false,
 	stats,
 }: Readonly<PostCompleteProps>) {
 	const { width } = getPostDimension(post)
 
 	return (
 		<article
-			className={`grid grid-cols-12 w-[${width}px] max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto`}
+			className={`grid grid-cols-12 w-[${width}px] max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto pb-2`}
 		>
+			{showAdminMenu && <PostAdminMenu className="col-span-12" post={post} />}
+
 			<figure className="col-span-12 flex items-center flex-col">
 				<img
 					alt={post.alt}
@@ -63,7 +68,7 @@ export default function PostComplete({
 
 			<TagBox
 				activeTagId={activeTagId}
-				className="col-span-9 md:col-span-11"
+				className="col-span-9 md:col-span-11 px-2"
 				date={post.shot_on}
 				tags={post.expand?.tags}
 			/>

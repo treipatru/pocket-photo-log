@@ -1,7 +1,6 @@
 ---
 import HeaderLink from "@/components/header/header-link.astro";
-const slug = Astro.params.slug;
-const id = Astro.params.id;
+import { Database, Plus, User } from "lucide-react";
 ---
 
 <div class="dropdown dropdown-bottom dropdown-end dropdown-hover">
@@ -10,35 +9,36 @@ const id = Astro.params.id;
 		class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow normal-case gap-y-1"
 	>
 		<li>
-			<h2 class="menu-title">Post</h2>
+			<h2 class="menu-title flex items-center">
+				<Plus className="mr-2" size="16" />
+				Create
+			</h2>
 			<ul>
-				<HeaderLink href="/cms/posts/create" label="Create"/>
-				{Astro.url.pathname.includes('/posts') && id && (
-						<HeaderLink href={`/cms/posts/${id}/update`} label="Update"/>
-						<HeaderLink href={`/cms/posts/${id}/delete`} label="Delete"/>
-					)
-				}
+				<HeaderLink href="/cms/pages/create" label="Page" />
+				<HeaderLink href="/cms/posts/create" label="Post" />
 			</ul>
 		</li>
 
 		<li>
-			<h2 class="menu-title">Page</h2>
+			<h2 class="menu-title flex items-center">
+				<Database className="mr-2" size="16" />
+				Manage
+			</h2>
 			<ul>
-				<HeaderLink  href="/cms/pages/create" label="Create"/>
-				{Astro.url.pathname.includes('/pages') && slug && (
-						<HeaderLink href={`/cms/pages/${slug}/update`} label="Update"/>
-						<HeaderLink href={`/cms/pages/${slug}/delete`} label="Delete"/>
-					)
-				}
+				<HeaderLink href="/cms/posts" label="Posts" />
+				<HeaderLink href="/cms/tags" label="Tags" />
+				<HeaderLink href="/cms/settings" label="Settings" />
 			</ul>
 		</li>
 
-		<HeaderLink href="/cms/posts" label="Posts"/>
-
-		<HeaderLink href="/cms/tags" label="Tags"/>
-
-		<HeaderLink href="/cms/settings" label="Settings"/>
-
-		<HeaderLink href="/auth/logout" label="Logout" prefetch={false}/>
+		<li>
+			<h2 class="menu-title flex items-center">
+				<User className="mr-2" size="16" />
+				User
+			</h2>
+			<ul>
+				<HeaderLink href="/auth/logout" label="Logout" prefetch={false} />
+			</ul>
+		</li>
 	</ul>
 </div>

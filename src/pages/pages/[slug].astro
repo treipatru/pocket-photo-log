@@ -2,6 +2,7 @@
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import PageLayout from "@/layouts/page-layout.astro";
+import PageAdminMenu from "@/components/pages/page-admin-menu";
 
 const { siteSettings } = Astro.locals;
 
@@ -17,5 +18,9 @@ const page = await pocketClient
 />
 
 <PageLayout>
-	<div set:html={page.content} class="prose prose-slate max-w-none" />
+	<div>
+		{Astro.locals.isAuthenticated && <PageAdminMenu page={page} />}
+
+		<div set:html={page.content} class="prose prose-slate max-w-none" />
+	</div>
 </PageLayout>

@@ -4,10 +4,10 @@ import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import { type Stat } from "@/entities/stats";
+import { type Post } from "@/entities/posts";
 import Hero from "@/components/hero.astro";
 import PostComplete from "@/components/posts/post/post-complete";
 import PostLayout from "@/layouts/post-layout.astro";
-import type { Post } from "@/entities/posts";
 
 let post: Post | null = null;
 let stat: Stat | null = null;
@@ -82,5 +82,10 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 <PostLayout>
 	<Hero slot="hero" subtitle={`on ${postDate}`} />
 
-	<PostComplete client:load post={post} stats={stat} />
+	<PostComplete
+		client:load
+		post={post}
+		showAdminMenu={Astro.locals.isAuthenticated}
+		stats={stat}
+	/>
 </PostLayout>
