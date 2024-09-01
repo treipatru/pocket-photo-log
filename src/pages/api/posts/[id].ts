@@ -97,7 +97,16 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 	 */
 	try {
 		const { file, tags, ...rest } = data;
-		const payload: PostFormUpdate = {};
+
+		/**
+		 * We are adding the width and height of the image to the existing type.
+		 * The W/H properties are part of the Post data type, but they are always
+		 * calculated by the backend so they are not accepted in the request body.
+		 */
+		const payload: PostFormUpdate & {
+			width?: number;
+			height?: number;
+		} = {};
 
 		// Process image if it exists
 		if (file && file.size > 0) {
