@@ -1,11 +1,12 @@
 import { getImgUrl } from "@/lib/get-img-url";
+import { type Post } from "@/entities/posts"
+import { type Stat } from "@/entities/stats";
 import PostCaption from "@/components/posts/post/components/post-caption";
 import PostStats from "@/components/posts/post/components/post-stats";
 import TagBox from "@/components/tags/tag-box/tag-box";
-import type { Post } from "@/entities/posts"
-import type { Stat } from "@/entities/stats";
 
 type PostCompleteProps = {
+	activeTagId?: string;
 	post: Post;
 	stats: Stat | null;
 }
@@ -39,6 +40,7 @@ function getPostDimension(post: Post) {
 }
 
 export default function PostComplete({
+	activeTagId,
 	post,
 	stats,
 }: Readonly<PostCompleteProps>) {
@@ -46,13 +48,12 @@ export default function PostComplete({
 
 	return (
 		<article
-			className="grid grid-cols-12 max-w-[1000]px gap-y-2 gap-x-4 bg-muted-background m-auto"
-			style={{ width }}
+			className={`grid grid-cols-12 w-[${width}px] max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto`}
 		>
 			<figure className="col-span-12 flex items-center flex-col">
 				<img
 					alt={post.alt}
-					className="mb-2"
+					className={'mb-2'}
 					loading="lazy"
 					src={getImgUrl({ id: post.id, file: post.file })}
 				/>
@@ -61,6 +62,7 @@ export default function PostComplete({
 			</figure>
 
 			<TagBox
+				activeTagId={activeTagId}
 				className="col-span-9 md:col-span-11"
 				date={post.shot_on}
 				tags={post.expand?.tags}
