@@ -1,41 +1,66 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
+import { type PaginatedCollection } from "@/entities/api-client";
+import { type Post } from "@/entities/posts";
+import { type Tag } from "@/entities/tags";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
-import PostList from "@/components/posts/post-list.astro";
 import Pagination from "@/components/ui/pagination.astro";
+import PostListMasonry from "@/components/posts/post-list-masonry";
 
-const { siteSettings } = Astro.locals;
+/**
+ * Get tag and tag name
+ */
+const tagId = Astro.params.id;
 
+let tag: Tag = {} as Tag;
+let tagName = "";
+
+try {
+	tag = await pocketClient.collection("tags").getFirstListItem(`id="${tagId}"`);
+
+	// Clear any categories from name
+	tagName = tag.name.replace(/^[^:]*: /, "");
+} catch (_) {
+	return Astro.redirect("/404");
+}
+
+/**
+ * Get posts associated with tag
+ */
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
-const id = Astro.params.id;
+const perPage = 70;
 
-const posts = await pocketClient.collection("posts").getList(page, 20, {
-	filter: `tags.id?="${id}"`,
-	sort: "-shot_on",
-	expand: "tags",
-});
+let posts: PaginatedCollection<Post> = {} as PaginatedCollection<Post>;
 
-const tag = await pocketClient
-	.collection("tags")
-	.getFirstListItem(`id="${id}"`);
+try {
+	posts = await pocketClient.collection("posts").getList(page, perPage, {
+		filter: `tags.id?="${tagId}"`,
+		sort: "-shot_on",
+		expand: "tags",
+	});
+} catch (_) {
+	return Astro.redirect("/500");
+}
 
 const { items, ...pagination } = posts;
-
-// Clear any categories from name
-const tagName = tag.name.replace(/^[^:]*: /, "");
 ---
 
 <AstroSeo
-	title={`#${tagName} page ${pagination.page}| ${siteSettings.TITLE}`}
-	description={siteSettings.DESCRIPTION}
+	title={`#${tagName} page ${pagination.page}| ${Astro.locals.siteSettings.TITLE}`}
+	description={Astro.locals.siteSettings.DESCRIPTION}
 />
-
 <BlogLayout>
 	<Hero slot="hero" subtitle=`on #${tagName}` />
 
-	<PostList posts={posts.items} />
+	<PostListMasonry
+		client:only
+		page={page}
+		perPage={perPage}
+		posts={posts.items}
+		tagId={tag.id}
+	/>
 
-	<Pagination {...pagination} url=`/tags/${id}` itemsPerPage={20} />
+	<Pagination {...pagination} url=`/tags/${tagId}` itemsPerPage={perPage} />
 </BlogLayout>
