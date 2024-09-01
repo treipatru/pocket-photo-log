@@ -11,6 +11,7 @@ import QueryWrapper from "@/components/query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
+import { useEffect } from "react";
 
 interface Props {
 	post: Post
@@ -28,15 +29,6 @@ function Component({ post }: Readonly<Props>) {
 		shot_on: post.shot_on,
 		tags: post.expand?.tags.map(tag => tag.name) || [],
 	});
-
-	const handleSubmit = async (event: React.SyntheticEvent) => {
-		event.preventDefault();
-		validate();
-
-		if (isValid) {
-			mutate({ id: post.id, payload: formData.values });
-		}
-	}
 
 	const { mutate, isPending, error } = useMutation({
 		mutationFn: ({
@@ -59,6 +51,22 @@ function Component({ post }: Readonly<Props>) {
 			updateField('tags', tags);
 		}
 	}
+
+	const handleSubmit = async (event: React.SyntheticEvent) => {
+		event.preventDefault();
+		validate();
+
+		if (isValid) {
+			mutate({ id: post.id, payload: formData.values });
+		}
+	}
+
+	useEffect(() => {
+		if (isValid) {
+			mutate({ id: post.id, payload: formData.values });
+		}
+	}, [isValid])
+
 
 	return (
 		<form

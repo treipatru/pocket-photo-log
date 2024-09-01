@@ -10,6 +10,7 @@ import QueryWrapper from "../../query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
+import { useEffect } from "react";
 
 function Component() {
 	const { formData, isValid, updateField, validate } = useForm<PostFormCreate>(postSchemaFormCreate, {
@@ -28,15 +29,6 @@ function Component() {
 		}
 	})
 
-	const handleSubmit = async (event: React.SyntheticEvent) => {
-		event.preventDefault();
-		validate();
-
-		if (isValid) {
-			mutate(formData.values);
-		}
-	}
-
 	const handleFileChange = async (file: File) => {
 		if (file) {
 			// Update the file field first.
@@ -48,6 +40,17 @@ function Component() {
 			updateField('tags', tags);
 		}
 	}
+
+	const handleSubmit = async (event: React.SyntheticEvent) => {
+		event.preventDefault();
+		validate();
+	}
+
+	useEffect(() => {
+		if (isValid) {
+			mutate(formData.values);
+		}
+	}, [isValid])
 
 	return (
 		<form
