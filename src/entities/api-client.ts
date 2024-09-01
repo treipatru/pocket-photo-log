@@ -26,6 +26,7 @@ export interface TypedPocketBase extends PocketBase {
 	collection(idOrName: "stats"): RecordService<Stat>;
 	collection(idOrName: "tags_with_posts"): RecordService<Tag>;
 	collection(idOrName: "tags"): RecordService<Tag>;
+
 	collection(idOrName: string): RecordService; // default fallback for any other collection
 }
 
@@ -37,3 +38,13 @@ export const paginatedCollection = (schema: ZodSchema) =>
 		totalItems: z.number(),
 		totalPages: z.number(),
 	});
+
+export type PaginatedCollection<T> = {
+	items: T[];
+	page: number;
+	perPage: number;
+	totalItems: number;
+	totalPages: number;
+};
+
+export type Pagination = Omit<PaginatedCollection<any>, "items">;
