@@ -1,0 +1,114 @@
+---
+import { AstroSeo } from "@astrolib/seo";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import { type PaginatedCollection } from "@/entities/api-client";
+import { type Post } from "@/entities/posts";
+import { type Stat } from "@/entities/stats";
+import { type Tag } from "@/entities/tags";
+import BlogLayout from "@/layouts/blog-layout.astro";
+import Hero from "@/components/hero.astro";
+import PostComplete from "@/components/posts/post/post-complete";
+import PostPagination from "@/components/posts/post/post-pagination";
+
+/**
+ * Check for tag id
+ */
+const tagId = Astro.params.id;
+if (!tagId) {
+	return Astro.redirect("/404");
+}
+
+/**
+ * Get tag and tag name
+ */
+let tag: Tag = {} as Tag;
+let tagName = "";
+
+try {
+	tag = await pocketClient.collection("tags").getFirstListItem(`id="${tagId}"`);
+
+	// Clear any categories from name
+	tagName = tag.name.replace(/^[^:]*: /, "");
+} catch (_) {
+	return Astro.redirect("/404");
+}
+
+/**
+ * Get post
+ */
+const postIndex = parseInt(Astro.params.index || "1");
+let post: Post = {} as Post;
+let pagination: Omit<PaginatedCollection<Post>, "items"> = {} as Omit<
+	PaginatedCollection<Post>,
+	"items"
+>;
+
+try {
+	const postList = await pocketClient
+		.collection("posts")
+		.getList(postIndex, 1, {
+			filter: `tags.id?="${tagId}"`,
+			sort: "-shot_on",
+			expand: "tags",
+		});
+	post = postList.items[0];
+
+	const { items, ...rest } = postList;
+	pagination = rest;
+
+	if (!post) {
+		return Astro.redirect(`/tags/${tagId}`);
+	}
+} catch (_) {
+	return Astro.redirect("/500");
+}
+
+/**
+ * Get post stats
+ */
+let stats: Stat = {} as Stat;
+
+try {
+	try {
+		stats = await pocketClient
+			.collection("stats")
+			.getFirstListItem(`postId="${post.id}"`);
+	} catch (_) {
+		console.log("Stats not found");
+		// If the stats are not found we will ignore the error
+	}
+
+	// If there are no stats for the post we will create a new record
+	if (!stats.id) {
+		stats = await pocketClient.collection("stats").create({
+			likes: 0,
+			postId: post.id,
+			views: 1,
+		});
+		// Otherwise we will update the views count
+	} else {
+		stats = await pocketClient.collection("stats").update(stats.id, {
+			views: stats.views + 1,
+		});
+	}
+} catch (error) {
+	return Astro.redirect("/500", error);
+}
+---
+
+<AstroSeo
+	title={`#${tagName} post #${pagination.page}| ${Astro.locals.siteSettings.TITLE}`}
+	description={Astro.locals.siteSettings.DESCRIPTION}
+/>
+
+<BlogLayout>
+	<Hero slot="hero" subtitle=`on #${tagName}` />
+
+	<PostComplete post={post} stats={stats} activeTagId={tagId} />
+
+	<PostPagination
+		page={pagination.page}
+		tagId={tagId}
+		totalPages={pagination.totalPages}
+	/>
+</BlogLayout>
