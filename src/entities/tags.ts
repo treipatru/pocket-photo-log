@@ -33,9 +33,14 @@ type SanitizeTagNamesOutput = "str" | "arr";
 export const tagSchemaFormDelete = tagSchema.pick({
 	id: true,
 });
+
+export const tagSchemaFormUpdate = tagSchema.pick({
+	id: true,
+	name: true,
 });
 
 export type TagFormDelete = z.infer<typeof tagSchemaFormDelete>;
+export type TagFormUpdate = z.infer<typeof tagSchemaFormUpdate>;
 
 /**
  *
