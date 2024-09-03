@@ -2,9 +2,9 @@ import type { APIRoute } from "astro";
 import { getLoginCookie } from "@/services/auth/get-login-cookie";
 import { userLoginSchema } from "@/entities/users";
 
-export const POST: APIRoute = async ({ locals }) => {
-	const { postPayload } = locals;
-	const { data, success } = userLoginSchema.safeParse(postPayload);
+export const POST: APIRoute = async ({ request }) => {
+	const payload = await request.json();
+	const { data, success } = userLoginSchema.safeParse(payload);
 
 	if (!success) {
 		return new Response(

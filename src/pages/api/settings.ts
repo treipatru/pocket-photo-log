@@ -1,13 +1,14 @@
 import type { APIRoute } from "astro";
 import { settingsSchemaFormUpdate } from "@/entities/settings";
 
-export const PUT: APIRoute = async ({ locals }) => {
-	const { postPayload, pbClient } = locals;
+export const PUT: APIRoute = async ({ locals, request }) => {
+	const { pbClient } = locals;
+	const payload = await request.json();
 	/**
 	 * Parse and validate the data
 	 */
 
-	const { data, error } = settingsSchemaFormUpdate.safeParse(postPayload);
+	const { data, error } = settingsSchemaFormUpdate.safeParse(payload);
 
 	if (error) {
 		return new Response(

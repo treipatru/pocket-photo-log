@@ -7,12 +7,9 @@ import type { APIRoute } from "astro";
 import { captureException } from "@sentry/astro";
 
 export const POST: APIRoute = async ({ locals, request }) => {
-	/**
-	 * Parse and validate the data
-	 */
-
-	const formData = await request.formData();
-	const parsed = Object.fromEntries(formData.entries());
+	const formData = await request
+		.formData()
+		.then((data) => Object.fromEntries(data));
 
 	/**
 	 * Since the form data is not typed, everything is a string so we need to
@@ -23,7 +20,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			published: z.string().optional(),
 			tags: z.string().optional(),
 		})
-		.safeParse(parsed);
+		.safeParse(formData);
 
 	if (error) {
 		return new Response(

@@ -36,8 +36,9 @@ export const DELETE: APIRoute = async ({ locals, params }) => {
 };
 
 export const PATCH: APIRoute = async ({ locals, request, params }) => {
-	const formData = await request.formData();
-	const parsed = Object.fromEntries(formData.entries());
+	const formData = await request
+		.formData()
+		.then((data) => Object.fromEntries(data));
 	const postId = params.id;
 
 	/**
@@ -50,7 +51,7 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 			published: z.string().optional(),
 			tags: z.string().optional(),
 		})
-		.safeParse(parsed);
+		.safeParse(formData);
 
 	if (error || !postId) {
 		return new Response(

@@ -6,8 +6,9 @@ const postPayloadSchema = z.object({
 	query: z.string(),
 });
 
-export const POST: APIRoute = async ({ locals }) => {
-	const { success, data } = postPayloadSchema.safeParse(locals.postPayload);
+export const POST: APIRoute = async ({ request }) => {
+	const payload = await request.json();
+	const { success, data } = postPayloadSchema.safeParse(payload);
 
 	if (!success) {
 		return new Response(

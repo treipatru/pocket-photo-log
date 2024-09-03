@@ -32,9 +32,10 @@ export const DELETE: APIRoute = async ({ locals, params }) => {
 	);
 };
 
-export const PATCH: APIRoute = async ({ locals, params }) => {
+export const PATCH: APIRoute = async ({ locals, params, request }) => {
 	const pageId = params.id;
-	const { data, error } = pageSchemaForm.safeParse(locals.postPayload);
+	const payload = await request.json();
+	const { data, error } = pageSchemaForm.safeParse(payload);
 
 	if (error || !pageId) {
 		return new Response(

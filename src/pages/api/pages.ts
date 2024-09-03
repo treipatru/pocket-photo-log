@@ -1,8 +1,9 @@
 import type { APIRoute } from "astro";
 import { pageSchemaForm } from "@/entities/pages";
 
-export const POST: APIRoute = async ({ locals }) => {
-	const { data, error } = pageSchemaForm.safeParse(locals.postPayload);
+export const POST: APIRoute = async ({ locals, request }) => {
+	const payload = await request.json();
+	const { data, error } = pageSchemaForm.safeParse(payload);
 
 	if (error) {
 		return new Response(

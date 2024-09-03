@@ -57,40 +57,6 @@ const authorization = defineMiddleware(async (context, next) => {
 });
 
 /**
- * For API routes check the payload.
- */
-const payload = defineMiddleware(async (context, next) => {
-	const { request } = context;
-
-	/**
-	 * Ignore everything but GET.
-	 */
-	if (request.method === "GET" || request.method === "DELETE") {
-		return next();
-	}
-
-	/**
-	 * Posts API is always multipart.
-	 */
-	const isMultipartPath = urlMatcher(context.url.pathname, ["/api/posts*"]);
-	if (isMultipartPath) {
-		return next();
-	}
-
-	/**
-	 * Verify the content type and make it available to the context.
-	 */
-	if (request.headers.get("Content-Type") !== "application/json") {
-		return new Response("Invalid content type", { status: 400 });
-	}
-
-	const body = await request.json();
-	context.locals.postPayload = body;
-
-	return next();
-});
-
-/**
  * Retrieve the site settings and store them in the context.
  */
 const siteSettings = defineMiddleware(async (context, next) => {
@@ -110,9 +76,4 @@ const siteSettings = defineMiddleware(async (context, next) => {
 	return next();
 });
 
-export const onRequest = sequence(
-	authentication,
-	authorization,
-	payload,
-	siteSettings
-);
+export const onRequest = sequence(authentication, authorization, siteSettings);
