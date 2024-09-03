@@ -7,7 +7,7 @@ export const pageSchema = z.object({
 	slug: z
 		.string()
 		.regex(
-			/^[a-zA-Z0-9\-]+$/,
+			/^[a-zA-Z0-9-]+$/,
 			"Slug can only contain letters, numbers, and dashes."
 		),
 });
