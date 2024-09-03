@@ -1,17 +1,18 @@
 ---
 interface Props {
+	highlight?: boolean;
 	href: string;
 	label: string;
 	prefetch?: boolean;
 }
 
-const { href, label, prefetch } = Astro.props;
+const { highlight, href, label, prefetch } = Astro.props;
 const isActive = Astro.url.pathname === href;
 ---
 
 <li>
 	<a
-		class:list={[{ active: isActive }]}
+		class:list={[{ active: isActive, "font-bold": highlight }]}
 		href={href}
 		{...prefetch === false && {
 			/**
