@@ -30,8 +30,9 @@ export type StructuredTags = {
 
 type SanitizeTagNamesOutput = "str" | "arr";
 
-export const tagSchemaFormDelete = z.object({
-	id: z.string(),
+export const tagSchemaFormDelete = tagSchema.pick({
+	id: true,
+});
 });
 
 export type TagFormDelete = z.infer<typeof tagSchemaFormDelete>;
