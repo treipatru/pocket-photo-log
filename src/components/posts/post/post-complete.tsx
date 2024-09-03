@@ -51,15 +51,16 @@ export default function PostComplete({
 
 	return (
 		<article
-			className={`grid grid-cols-12 w-[${width}px] max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto pb-2`}
+			className='grid grid-cols-12 max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto pb-2'
+			style={{ width }}
 		>
 			{showAdminMenu && <PostAdminMenu className="col-span-12" post={post} />}
 
 			<figure className="col-span-12 flex items-center flex-col">
 				<img
 					alt={post.alt}
-					className={'mb-2'}
-					loading="lazy"
+					className="mb-2"
+					style={{ width }}
 					src={getImgUrl({ id: post.id, file: post.file })}
 				/>
 
