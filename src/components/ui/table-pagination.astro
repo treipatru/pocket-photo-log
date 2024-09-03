@@ -1,0 +1,51 @@
+---
+import { type Pagination } from "@/entities/api-client";
+
+interface Props extends Pagination {
+	url: string;
+}
+
+const { page, url, totalPages } = Astro.props;
+
+/**
+ * Create a new URLSearchParams object excluding the "page" parameter.
+ */
+const allParams = new URLSearchParams(Astro.url.search);
+const newParams = new URLSearchParams();
+
+allParams.forEach((value, key) => {
+	if (key !== "page") {
+		newParams.append(key, value);
+	}
+});
+
+const getPageUrl = (page: number) => {
+	const pageParams = new URLSearchParams(newParams);
+	pageParams.set("page", page.toString());
+	return `${url}?${pageParams.toString()}`;
+};
+---
+
+<nav class="join items-center flex justify-center">
+	<a
+		class:list={["join-item btn", { "btn-disabled": page === 1 }]}
+		href={getPageUrl(1)}>«</a
+	>
+
+	<div class="grid grid-cols-2">
+		<a
+			class:list={["join-item btn", { "btn-disabled": page === 1 }]}
+			href={getPageUrl(page - 1)}>Previous</a
+		>
+
+		<a
+			class:list={["join-item btn", { "btn-disabled": page + 1 > totalPages }]}
+			href={getPageUrl(page + 1)}>Next</a
+		>
+	</div>
+
+	<a
+		class:list={["join-item btn", { "btn-disabled": page === totalPages }]}
+		href={getPageUrl(totalPages)}>»</a
+	>
+</nav>
