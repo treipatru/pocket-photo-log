@@ -1,16 +1,16 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import { XIcon } from "lucide-react";
 import CmsLayout from "@/layouts/cms-layout.astro";
-import Pagination from "@/components/ui/pagination.astro";
+import TagCmsManager from "@/components/tags/tag-cms-manager/tag-cms-manager";
+import TablePagination from "@/components/ui/table-pagination.astro";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
-const query = Astro.url.searchParams.get("query");
+const query = Astro.url.searchParams.get("query") || "";
 
 const tags = await pocketClient
 	.collection("tags_with_posts")
-	.getList(page, 20, {
+	.getList(page, 25, {
 		...(query && { filter: `name ~ "${query}"` }),
 		sort: "-post_count",
 	});
@@ -21,63 +21,19 @@ const tags = await pocketClient
 <CmsLayout>
 	<a class="link-hover" href="/cms/tags" slot="title">Tags</a>
 
-	<form
-		action="/cms/tags"
-		method="GET"
-		class="max-w-sm m-auto my-5 flex items-center justify-center gap-x-4"
-	>
-		<input
-			type="search"
-			name="query"
-			placeholder="Search tags"
-			value={query}
-			class="input input-bordered"
-		/>
-		<button type="submit" class="btn">Search</button>
-	</form>
+	<div class="max-w-lg m-auto flex flex-col gap-y-4">
+		<TagCmsManager tags={tags.items} initialQuery={query} client:load />
 
-	<div class="overflow-x-auto max-w-md m-auto">
-		<table class="table table-zebra table-sm font-normal">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th class="w-[100px]">Count</th>
-					<th class="w-[30px]"></th>
-				</tr>
-			</thead>
-
-			<tbody>
-				{
-					tags.items.map((tag) => (
-						<tr class="group hover">
-							<td>
-								<a class="link link-hover" href={`/tags/${tag.id}`}>
-									{tag.name}
-								</a>
-							</td>
-
-							<td>{tag.post_count}</td>
-
-							<th class="opacity-30 group-hover:opacity-100">
-								<a
-									class="btn btn-xs btn-square btn-ghost"
-									role="button"
-									href={`/cms/tags/${tag.id}/delete`}
-								>
-									<XIcon size="16" />
-								</a>
-							</th>
-						</tr>
-					))
-				}
-			</tbody>
-		</table>
-
-		<Pagination
-			itemsPerPage={20}
-			page={page}
-			totalItems={tags.totalItems}
-			url="/cms/tags"
-		/>
+		{
+			tags.totalPages > 1 && (
+				<TablePagination
+					page={tags.page}
+					perPage={tags.perPage}
+					totalItems={tags.totalItems}
+					totalPages={tags.totalPages}
+					url="/cms/tags"
+				/>
+			)
+		}
 	</div>
 </CmsLayout>
