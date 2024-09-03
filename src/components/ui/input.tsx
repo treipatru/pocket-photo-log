@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import type React from 'react';
 
 type Props = {
+	autocomplete?: 'on' | 'off';
 	className?: string;
 	disabled?: boolean;
 	error?: string;
