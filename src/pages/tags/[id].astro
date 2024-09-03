@@ -55,7 +55,7 @@ const { items, ...pagination } = posts;
 	<Hero slot="hero" subtitle=`on #${tagName}` />
 
 	<PostListMasonry
-		client:only
+		client:only="react"
 		page={page}
 		perPage={perPage}
 		posts={posts.items}

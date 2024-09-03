@@ -19,6 +19,6 @@ const page = await pocketClient
 	<span slot="title">Edit page</span>
 
 	<section>
-		<PageUpdateForm page={page} client:only />
+		<PageUpdateForm page={page} client:only="react" />
 	</section>
 </CmsLayout>
