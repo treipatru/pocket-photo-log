@@ -3,6 +3,12 @@ services:
     build:
       context: .
       target: pocket-photo-log-dev
+    command: sh -c "
+      npx prisma migrate deploy &&
+      npx prisma generate &&
+      npx tsx prisma/seed.ts &&
+      npm run dev -- --host 0.0.0.0 &
+      npx prisma studio --port 5555"
     container_name: pocket-photo-log-dev
     develop:
       watch:
@@ -20,9 +26,16 @@ services:
     networks:
       - pocket-photo-log
     ports:
-      - 4321:4321
+      - 4321:4321 # Web app
+      - 5555:5555 # Prisma Studio
     profiles:
       - development
+    restart: unless-stopped
+    volumes:
+      # Persistent volume for storage
+      - pocket-photo-storage:/app/storage
+      # Mapped volume for PB migrations
+      - ./prisma:/app/prisma:rw
 
   pocket-photo-log-prod:
     build:
@@ -41,7 +54,14 @@ services:
       - 4321:4321
     profiles:
       - production
+    restart: unless-stopped
+    volumes:
+      # Persistent volume for storage
+      - pocket-photo-storage:/app/storage
 
 networks:
   pocket-photo-log:
     driver: bridge
+
+volumes:
+  pocket-photo-storage:
