@@ -54,7 +54,6 @@ export const PATCH: APIRoute = async ({ locals, params, request }) => {
 
 		return new Response(JSON.stringify(updatedTag), { status: 200 });
 	} catch (error) {
-		console.log(error);
 		return new Response(
 			JSON.stringify({
 				message: "Failed to update tag.",
