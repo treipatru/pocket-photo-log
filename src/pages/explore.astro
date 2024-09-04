@@ -21,7 +21,7 @@ const nonEmptyTags = tags.filter((tag) => tag.post_count && tag.post_count > 0);
 	description="Explore the blog by tags, years, places, countries, and cameras."
 />
 
-<SidebarLayout>
+<SidebarLayout contentWidth="narrow">
 	<span slot="collection-title">Explore</span>
 
 	<ExploreSection tags={nonEmptyTags} years={years} />

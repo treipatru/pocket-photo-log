@@ -46,7 +46,7 @@ function Component({
 
 	return (
 		<form
-			className="max-w-md flex flex-col gap-4 items-center m-auto"
+			className="flex flex-col gap-4"
 			id="update-settings"
 			name="update-settings"
 			onSubmit={handleSubmit}

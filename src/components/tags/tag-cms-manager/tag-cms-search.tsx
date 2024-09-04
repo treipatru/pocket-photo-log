@@ -13,7 +13,7 @@ export default function TagCmsSearch({
 		<form
 			action="/cms/tags"
 			method="GET"
-			className="max-w-sm m-auto my-5 flex items-center justify-center gap-x-4"
+			className="m-auto my-5 flex items-center justify-center gap-x-4"
 		>
 			<input
 				className="input input-bordered"

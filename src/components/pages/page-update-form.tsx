@@ -54,7 +54,7 @@ function Component({ page }: Readonly<Props>) {
 			onSubmit={handleSubmit}
 		>
 			<Input
-				className="col-span-1"
+				className="col-span-2 md:col-span-1"
 				error={formData.errors.name}
 				label="Name"
 				name="name"
@@ -64,7 +64,7 @@ function Component({ page }: Readonly<Props>) {
 			/>
 
 			<Input
-				className="col-span-1"
+				className="col-span-2 md:col-span-1"
 				error={formData.errors.slug}
 				label="Slug"
 				name="slug"
