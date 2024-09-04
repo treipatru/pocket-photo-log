@@ -1,15 +1,13 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import PageCreateForm from "@/components/pages/page-create-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 ---
 
 <AstroSeo title={`Create page | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<span slot="title">Create page</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Create page</span>
 
-	<section>
-		<PageCreateForm client:only="react" />
-	</section>
-</CmsLayout>
+	<PageCreateForm client:only="react" />
+</SidebarLayout>

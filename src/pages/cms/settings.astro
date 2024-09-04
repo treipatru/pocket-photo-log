@@ -1,15 +1,15 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import SettingsUpdateForm from "@/components/settings/settings-update-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const { siteSettings } = Astro.locals;
 ---
 
 <AstroSeo title={`Site settings | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<span slot="title">Settings</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Settings</span>
 
 	<SettingsUpdateForm settings={siteSettings} client:load />
-</CmsLayout>
+</SidebarLayout>

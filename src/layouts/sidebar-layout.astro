@@ -1,0 +1,70 @@
+---
+import "@/styles/global.css";
+import { pocketClient } from "@/services/pocket/pocket-client";
+import Footer from "@/components/base/footer.astro";
+import Head from "@/components/base/head.astro";
+import SidebarDesktop from "@/components/base/sidebar-desktop.astro";
+import SidebarMobile from "@/components/base/sidebar-mobile.astro";
+
+interface Props {
+	contentPadding?: boolean;
+	contentWidth?: "full" | "narrow";
+	showFooter?: boolean;
+}
+
+const {
+	contentPadding = true,
+	contentWidth = "full",
+	showFooter = false,
+} = Astro.props;
+
+const pages = await pocketClient.collection("pages").getFullList({
+	sort: "name",
+});
+---
+
+<!doctype html>
+<html lang="en" data-theme="lofi">
+	<Head />
+
+	<body class="bg-primary-background text-primary font-body font-medium flex">
+		<aside
+			class="hidden md:flex flex-col justify-between px-2 py-4 self-start sticky top-0 h-lvh w-1/4 max-w-64"
+		>
+			<SidebarDesktop pages={pages}>
+				<slot name="collection-navigation" slot="collection-navigation" />
+				<slot name="collection-title" slot="collection-title">
+					<span>
+						{Astro.locals.siteSettings.DESCRIPTION}
+					</span>
+				</slot>
+			</SidebarDesktop>
+		</aside>
+
+		<main class="w-full grow">
+			<SidebarMobile pages={pages}>
+				<slot name="collection-navigation" slot="collection-navigation" />
+				<slot name="collection-title" slot="collection-title">
+					<span>
+						{Astro.locals.siteSettings.DESCRIPTION}
+					</span>
+				</slot>
+			</SidebarMobile>
+
+			<div
+				class:list={[
+					"py-10 md:py-20",
+					{
+						"px-0 md:px-4": !contentPadding,
+						"px-4": contentPadding,
+						"max-w-5xl mx-auto": contentWidth === "narrow",
+					},
+				]}
+			>
+				<slot />
+			</div>
+
+			{showFooter && <Footer />}
+		</main>
+	</body>
+</html>

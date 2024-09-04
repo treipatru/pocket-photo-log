@@ -1,8 +1,8 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import PostUpdateForm from "@/components/posts/forms/post-update-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const id = Astro.params.id;
 
@@ -15,10 +15,8 @@ const post = await pocketClient
 
 <AstroSeo title={`Update post | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<span slot="title">Update post</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Update post</span>
 
-	<section class="max-w-sm m-auto">
-		<PostUpdateForm client:load post={post} />
-	</section>
-</CmsLayout>
+	<PostUpdateForm client:load post={post} />
+</SidebarLayout>

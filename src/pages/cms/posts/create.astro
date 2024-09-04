@@ -1,15 +1,13 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import PostCreateForm from "@/components/posts/forms/post-create-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 ---
 
 <AstroSeo title={`Create post | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<span slot="title">Create post</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Create post</span>
 
-	<section class="max-w-sm m-auto">
-		<PostCreateForm client:load />
-	</section>
-</CmsLayout>
+	<PostCreateForm client:load />
+</SidebarLayout>

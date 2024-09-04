@@ -1,7 +1,7 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import PageLayout from "@/layouts/page-layout.astro";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 import PageAdminMenu from "@/components/pages/page-admin-menu";
 
 const { siteSettings } = Astro.locals;
@@ -17,10 +17,10 @@ const page = await pocketClient
 	description={siteSettings.DESCRIPTION}
 />
 
-<PageLayout>
-	<div>
-		{Astro.locals.isAuthenticated && <PageAdminMenu page={page} />}
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">{page.name}</span>
 
-		<div set:html={page.content} class="prose prose-slate max-w-none" />
-	</div>
-</PageLayout>
+	{Astro.locals.isAuthenticated && <PageAdminMenu page={page} />}
+
+	<div set:html={page.content} class="prose prose-slate container" />
+</SidebarLayout>

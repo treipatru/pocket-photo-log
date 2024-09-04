@@ -3,24 +3,26 @@ import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import CmsLayout from "@/layouts/cms-layout.astro";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 import Pagination from "@/components/ui/pagination.astro";
 import PostTagUpdateForm from "@/components/posts/forms/post-tag-update-form";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 
-const posts = await pocketClient.collection("posts").getList(page, 20, {
+const posts = await pocketClient.collection("posts").getList(page, 10, {
 	expand: "tags",
 	sort: "-shot_on",
 });
+
+const { items, ...pagination } = posts;
 ---
 
 <AstroSeo title={`Posts | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<a class="link-hover" href="/cms/posts" slot="title">Posts</a>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Posts</span>
 
-	<div class="overflow-x-auto m-auto">
+	<div class="overflow-x-auto">
 		<table class="table">
 			<thead>
 				<tr>
@@ -32,7 +34,7 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 
 			<tbody>
 				{
-					posts.items.map((post) => (
+					items.map((post) => (
 						<tr>
 							<td>{format(post.shot_on, "yyyy.MM.dd")}</td>
 
@@ -60,11 +62,6 @@ const posts = await pocketClient.collection("posts").getList(page, 20, {
 			</tbody>
 		</table>
 
-		<Pagination
-			itemsPerPage={20}
-			page={page}
-			totalItems={posts.totalItems}
-			url="/cms/posts"
-		/>
+		<Pagination {...pagination} url="/cms/posts" />
 	</div>
-</CmsLayout>
+</SidebarLayout>

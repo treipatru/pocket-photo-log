@@ -1,8 +1,8 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import PageUpdateForm from "@/components/pages/page-update-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const slug = Astro.params.slug;
 
@@ -15,10 +15,8 @@ const page = await pocketClient
 	title={`Update page "${page.name}" | ${Astro.locals.siteSettings.TITLE}`}
 />
 
-<CmsLayout>
-	<span slot="title">Edit page</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Update page</span>
 
-	<section>
-		<PageUpdateForm page={page} client:only="react" />
-	</section>
-</CmsLayout>
+	<PageUpdateForm page={page} client:only="react" />
+</SidebarLayout>

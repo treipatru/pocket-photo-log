@@ -3,11 +3,10 @@ import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import { type Stat } from "@/entities/stats";
 import { type Post } from "@/entities/posts";
-import Hero from "@/components/hero.astro";
+import { type Stat } from "@/entities/stats";
 import PostComplete from "@/components/posts/post/post-complete";
-import PostLayout from "@/layouts/post-layout.astro";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 let post: Post | null = null;
 let stat: Stat | null = null;
@@ -79,8 +78,8 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 	}}
 />
 
-<PostLayout>
-	<Hero slot="hero" subtitle={`on ${postDate}`} />
+<SidebarLayout contentPadding={false}>
+	<span slot="collection-title">{`on ${postDate}`}</span>
 
 	<PostComplete
 		client:load
@@ -88,4 +87,4 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 		showAdminMenu={Astro.locals.isAuthenticated}
 		stats={stat}
 	/>
-</PostLayout>
+</SidebarLayout>

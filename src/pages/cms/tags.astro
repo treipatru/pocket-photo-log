@@ -1,39 +1,30 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import CmsLayout from "@/layouts/cms-layout.astro";
-import TagCmsManager from "@/components/tags/tag-cms-manager/tag-cms-manager";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 import TablePagination from "@/components/ui/table-pagination.astro";
+import TagCmsManager from "@/components/tags/tag-cms-manager/tag-cms-manager";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const query = Astro.url.searchParams.get("query") || "";
 
 const tags = await pocketClient
 	.collection("tags_with_posts")
-	.getList(page, 25, {
+	.getList(page, 20, {
 		...(query && { filter: `name ~ "${query}"` }),
 		sort: "-post_count",
 	});
+const { items, ...pagination } = tags;
 ---
 
 <AstroSeo title={`Tags | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<a class="link-hover" href="/cms/tags" slot="title">Tags</a>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Tags</span>
 
-	<div class="max-w-lg m-auto flex flex-col gap-y-4">
-		<TagCmsManager tags={tags.items} initialQuery={query} client:load />
+	<div class="flex flex-col gap-4">
+		<TagCmsManager tags={items} initialQuery={query} client:load />
 
-		{
-			tags.totalPages > 1 && (
-				<TablePagination
-					page={tags.page}
-					perPage={tags.perPage}
-					totalItems={tags.totalItems}
-					totalPages={tags.totalPages}
-					url="/cms/tags"
-				/>
-			)
-		}
+		{tags.totalPages > 1 && <TablePagination {...pagination} url="/cms/tags" />}
 	</div>
-</CmsLayout>
+</SidebarLayout>

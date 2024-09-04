@@ -1,8 +1,8 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import CmsLayout from "@/layouts/cms-layout.astro";
 import PostDeleteForm from "@/components/posts/forms/post-delete-form";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const id = Astro.params.id;
 
@@ -13,10 +13,8 @@ const post = await pocketClient
 
 <AstroSeo title={`Delete post | ${Astro.locals.siteSettings.TITLE}`} />
 
-<CmsLayout>
-	<span slot="title">Delete post</span>
+<SidebarLayout contentWidth="narrow">
+	<span slot="collection-title">Delete post</span>
 
-	<section class="max-w-md m-auto">
-		<PostDeleteForm post={post} client:load />
-	</section>
-</CmsLayout>
+	<PostDeleteForm post={post} client:load />
+</SidebarLayout>

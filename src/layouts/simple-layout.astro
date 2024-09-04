@@ -1,11 +1,15 @@
 ---
-import BaseLayout from "./base-layout.astro";
+import "@/styles/global.css";
+import Head from "@/components/base/head.astro";
 ---
 
-<BaseLayout>
-	<slot name="head" slot="head" />
+<!doctype html>
+<html lang="en" data-theme="lofi">
+	<Head />
 
-	<main class="px-4 mt-8 md:mt-32 container max-w-screen-sm">
-		<slot />
-	</main>
-</BaseLayout>
+	<body class="bg-primary-background text-primary font-body font-medium pb-14">
+		<main class="px-4 mt-8 md:mt-32 container max-w-screen-sm">
+			<slot />
+		</main>
+	</body>
+</html>
