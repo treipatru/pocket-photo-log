@@ -1,12 +1,11 @@
 ---
-interface Props {
-	itemsPerPage: number;
-	page: number;
-	totalItems: number;
+import { type Pagination } from "@/entities/api-client";
+
+interface Props extends Pagination {
 	url: string;
 }
 
-const { page, totalItems, url, itemsPerPage } = Astro.props;
+const { page, totalItems, url, perPage } = Astro.props;
 
 /**
  * Create a new URLSearchParams object excluding the "page" parameter.
@@ -37,7 +36,7 @@ const prevUrl = () => {
 /**
  * Create the URL for next page
  */
-const showNext = totalItems > page * itemsPerPage;
+const showNext = totalItems > page * perPage;
 const nextUrl = () => {
 	if (!showNext) {
 		return "";
