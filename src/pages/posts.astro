@@ -4,19 +4,19 @@ import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import Pagination from "@/components/ui/pagination.astro";
-import PostList from "@/components/posts/post-list.astro";
+import PostTimeline from "@/components/posts/post-timeline/post-timeline";
 
 const { siteSettings } = Astro.locals;
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
-const year = Astro.url.searchParams.get("year");
+const activeYear = Astro.url.searchParams.get("year") ?? undefined;
 
 const posts = await pocketClient.collection("posts").getList(page, 20, {
 	sort: "-shot_on",
 	expand: "tags",
-	...(year
+	...(activeYear
 		? {
-				filter: `shot_on >= "${year}-01-01 00:00:00" && shot_on <= "${year}-12-31 23:59:59"`,
+				filter: `shot_on >= "${activeYear}-01-01 00:00:00" && shot_on <= "${activeYear}-12-31 23:59:59"`,
 			}
 		: {}),
 });
@@ -32,7 +32,7 @@ const { items, ...pagination } = posts;
 <BlogLayout>
 	<Hero slot="hero" subtitle={year ? `in ${year}` : undefined} />
 
-	<PostList posts={posts.items} />
+	<PostTimeline activeYear={activeYear} posts={posts.items} />
 
 	<Pagination {...pagination} url="/posts" itemsPerPage={20} />
 </BlogLayout>

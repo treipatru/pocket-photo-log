@@ -4,7 +4,7 @@ import { pocketClient } from "@/services/pocket/pocket-client";
 import BlogLayout from "@/layouts/blog-layout.astro";
 import Hero from "@/components/hero.astro";
 import Pagination from "@/components/ui/pagination.astro";
-import PostList from "@/components/posts/post-list.astro";
+import PostTimeline from "@/components/posts/post-timeline/post-timeline";
 
 const { siteSettings } = Astro.locals;
 
@@ -21,10 +21,7 @@ const { items, ...pagination } = posts;
 	description={siteSettings.DESCRIPTION}
 />
 
-<BlogLayout>
-	<Hero slot="hero" />
-
-	<PostList posts={posts.items} />
+	<PostTimeline posts={posts.items} />
 
 	<Pagination {...pagination} url="/posts" itemsPerPage={20} />
 </BlogLayout>
