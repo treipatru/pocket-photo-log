@@ -1,14 +1,13 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
 import { pocketClient } from "@/services/pocket/pocket-client";
-import BlogLayout from "@/layouts/blog-layout.astro";
-import Hero from "@/components/hero.astro";
 import Pagination from "@/components/ui/pagination.astro";
 import PostTimeline from "@/components/posts/post-timeline/post-timeline";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const { siteSettings } = Astro.locals;
 
-const posts = await pocketClient.collection("posts").getList(1, 20, {
+const posts = await pocketClient.collection("posts").getList(1, 10, {
 	sort: "-shot_on",
 	expand: "tags",
 });
@@ -21,7 +20,8 @@ const { items, ...pagination } = posts;
 	description={siteSettings.DESCRIPTION}
 />
 
+<SidebarLayout contentPadding={false} showFooter>
 	<PostTimeline posts={posts.items} />
 
 	<Pagination {...pagination} url="/posts" />
-</BlogLayout>
+</SidebarLayout>
