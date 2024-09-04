@@ -16,7 +16,7 @@ export default function PostListMasonry({
 	tagId,
 }: Readonly<PostListMasonryProps>) {
 	return (
-		<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2 }} >
+		<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3, 1920: 5 }} >
 			<Masonry
 				columnsCount={2}
 				gutter="10px"

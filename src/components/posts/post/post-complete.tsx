@@ -51,8 +51,8 @@ export default function PostComplete({
 
 	return (
 		<article
-			className='grid grid-cols-12 max-w-5xl gap-y-2 gap-x-4 bg-muted-background m-auto pb-2'
-			style={{ width }}
+			className='grid grid-cols-12 gap-y-2 gap-x-4 bg-muted-background m-auto pb-2'
+			style={{ maxWidth: width }}
 		>
 			{showAdminMenu && <PostAdminMenu className="col-span-12" post={post} />}
 

@@ -8,7 +8,7 @@ export type ImageSize = "thumb" | "medium" | "large";
  */
 const imageSizeMap: Record<ImageSize, string> = {
 	thumb: "100x0f",
-	medium: "600x0f",
+	medium: "800x0f",
 	large: "1000x0f",
 };
 
