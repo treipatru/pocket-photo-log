@@ -5,10 +5,10 @@ import { type PaginatedCollection } from "@/entities/api-client";
 import { type Post } from "@/entities/posts";
 import { type Stat } from "@/entities/stats";
 import { type Tag } from "@/entities/tags";
-import BlogLayout from "@/layouts/blog-layout.astro";
-import Hero from "@/components/hero.astro";
 import PostComplete from "@/components/posts/post/post-complete";
 import PostPagination from "@/components/posts/post/post-pagination";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
+import SidebarTagNav from "@/components/base/sidebar-tag-nav";
 
 /**
  * Check for tag id
@@ -101,8 +101,16 @@ try {
 	description={Astro.locals.siteSettings.DESCRIPTION}
 />
 
-<BlogLayout>
-	<Hero slot="hero" subtitle=`on #${tagName}` />
+<SidebarLayout contentPadding={false}>
+	<span slot="collection-title">{`on #${tagName}`}</span>
+
+	<SidebarTagNav
+		page={pagination.page}
+		slot="collection-navigation"
+		tagId={tagId}
+		totalItems={pagination.totalItems}
+		totalPages={pagination.totalPages}
+	/>
 
 	<PostComplete
 		activeTagId={tagId}
@@ -117,4 +125,4 @@ try {
 		tagId={tagId}
 		totalPages={pagination.totalPages}
 	/>
-</BlogLayout>
+</SidebarLayout>

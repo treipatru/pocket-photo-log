@@ -4,10 +4,10 @@ import { pocketClient } from "@/services/pocket/pocket-client";
 import { type PaginatedCollection } from "@/entities/api-client";
 import { type Post } from "@/entities/posts";
 import { type Tag } from "@/entities/tags";
-import BlogLayout from "@/layouts/blog-layout.astro";
-import Hero from "@/components/hero.astro";
 import Pagination from "@/components/ui/pagination.astro";
 import PostListMasonry from "@/components/posts/post-list-masonry";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
+import SidebarTagNav from "@/components/base/sidebar-tag-nav";
 
 /**
  * Get tag and tag name
@@ -51,8 +51,15 @@ const { items, ...pagination } = posts;
 	title={`#${tagName} page ${pagination.page}| ${Astro.locals.siteSettings.TITLE}`}
 	description={Astro.locals.siteSettings.DESCRIPTION}
 />
-<BlogLayout>
-	<Hero slot="hero" subtitle=`on #${tagName}` />
+
+<SidebarLayout showFooter contentPadding={false}>
+	<span slot="collection-title">{`on #${tagName}`}</span>
+
+	<SidebarTagNav
+		slot="collection-navigation"
+		tagId={tagId}
+		totalItems={pagination.totalItems}
+	/>
 
 	<PostListMasonry
 		client:only="react"
@@ -63,4 +70,4 @@ const { items, ...pagination } = posts;
 	/>
 
 	<Pagination {...pagination} url=`/tags/${tagId}` />
-</BlogLayout>
+</SidebarLayout>
