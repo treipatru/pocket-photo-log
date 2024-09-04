@@ -9,6 +9,7 @@ interface Props {
 	activeYear?: string;
 	className?: string;
 	date: string;
+	onlyDateTime?: boolean;
 	tags?: Tag[];
 }
 
@@ -17,6 +18,7 @@ export default function TagBox({
 	activeYear,
 	className,
 	date,
+	onlyDateTime = false,
 	tags = [],
 }: Readonly<Props>) {
 	const structuredTags = structuredTagMapper(tags);
@@ -30,37 +32,41 @@ export default function TagBox({
 				structuredTags={structuredTags}
 			/>
 
-			<TagLink
-				tag={structuredTags.camera}
-				category="camera"
-				activeTagId={activeTagId}
-			/>
+			{!onlyDateTime && (
+				<>
+					<TagLink
+						tag={structuredTags.camera}
+						category="camera"
+						activeTagId={activeTagId}
+					/>
 
-			<TagLink
-				tag={structuredTags.form}
-				category="form"
-				activeTagId={activeTagId}
-			/>
+					<TagLink
+						tag={structuredTags.form}
+						category="form"
+						activeTagId={activeTagId}
+					/>
 
-			<TagLink
-				tag={structuredTags.format}
-				category="format"
-				activeTagId={activeTagId}
-			/>
+					<TagLink
+						tag={structuredTags.format}
+						category="format"
+						activeTagId={activeTagId}
+					/>
 
-			<TagLink
-				tag={structuredTags.film}
-				category="film"
-				activeTagId={activeTagId}
-			/>
+					<TagLink
+						tag={structuredTags.film}
+						category="film"
+						activeTagId={activeTagId}
+					/>
 
-			{structuredTags.other.map((tag) => (
-				<TagLink
-					key={tag.id}
-					tag={tag}
-					activeTagId={activeTagId}
-				/>
-			))}
+					{structuredTags.other.map((tag) => (
+						<TagLink
+							key={tag.id}
+							tag={tag}
+							activeTagId={activeTagId}
+						/>
+					))}
+				</>
+			)}
 		</ul>
 	)
 }
