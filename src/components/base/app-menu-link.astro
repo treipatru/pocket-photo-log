@@ -1,0 +1,16 @@
+---
+interface Props {
+	highlight?: boolean;
+	href: string;
+	prefetch?: boolean;
+}
+
+const { highlight, href } = Astro.props;
+const isActive = Astro.url.pathname === href;
+---
+
+<li>
+	<a class:list={[{ active: isActive, "font-bold": highlight }]} href={href}>
+		<slot />
+	</a>
+</li>

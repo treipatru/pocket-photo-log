@@ -1,0 +1,76 @@
+---
+import { type Page } from "@/entities/pages";
+import AppMenuLink from "@/components/base/app-menu-link.astro";
+
+interface Props {
+	pages: Page[];
+}
+
+const { isAuthenticated } = Astro.locals;
+const pages = Astro.props.pages;
+---
+
+<ul class="menu gap-1">
+	<li>
+		<AppMenuLink href="/">Home</AppMenuLink>
+	</li>
+
+	<li>
+		<AppMenuLink href="/explore">Explore</AppMenuLink>
+	</li>
+
+	{
+		pages.map((page) => (
+			<li>
+				<AppMenuLink href={`/pages/${page.slug}`}>
+					<span class="capitalize">{page.name}</span>
+				</AppMenuLink>
+			</li>
+		))
+	}
+</ul>
+
+<ul class="menu gap-1">
+	{
+		isAuthenticated && (
+				<li>
+					<h2 class="menu-title">
+						Create
+					</h2>
+
+					<ul>
+						<AppMenuLink href="/cms/posts/create">Post</AppMenuLink>
+						<AppMenuLink href="/cms/pages/create">Page</AppMenuLink>
+					</ul>
+				</li>
+
+				<li>
+					<h3 class="menu-title">
+						Manage
+					</h3>
+
+					<ul>
+						<AppMenuLink href="/cms/posts">Posts</AppMenuLink>
+						<AppMenuLink href="/cms/tags">Tags</AppMenuLink>
+						<AppMenuLink href="/cms/settings">Settings</AppMenuLink>
+					</ul>
+				</li>
+		)
+	}
+
+	{
+		!isAuthenticated && import.meta.env.DEV && (
+			<AppMenuLink href="/auth/login">
+				Login
+			</AppMenuLink>
+		)
+	}
+
+	{
+		isAuthenticated && (
+			<AppMenuLink href="/auth/logout">
+				Logout
+			</AppMenuLink>
+		)
+	}
+</ul>

@@ -1,0 +1,26 @@
+---
+import AppMenu from "@/components/base/app-menu.astro";
+import type { Page } from "@/entities/pages";
+
+interface Props {
+	pages: Page[];
+}
+---
+
+<div>
+	<div class="w-full text-center">
+		<a href="/" class="text-2xl font-bold uppercase">
+			{Astro.locals.siteSettings.TITLE}
+		</a>
+
+		<p class="text-xs uppercase">
+			<slot name="collection-title" />
+		</p>
+	</div>
+
+	<AppMenu pages={Astro.props.pages} />
+</div>
+
+<div>
+	<slot name="collection-navigation" />
+</div>

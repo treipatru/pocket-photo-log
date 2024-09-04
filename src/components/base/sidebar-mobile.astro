@@ -1,0 +1,44 @@
+---
+import { Menu } from "lucide-react";
+import AppMenu from "@/components/base/app-menu.astro";
+import type { Page } from "@/entities/pages";
+
+interface Props {
+	pages: Page[];
+}
+---
+
+<div class="drawer drawer-end md:hidden z-10">
+	<input id="mobile-menu" type="checkbox" class="drawer-toggle" />
+
+	<div class="drawer-content flex items-center justify-between p-2">
+		<div>
+			<a href="/" class="text-2xl font-bold uppercase">
+				{Astro.locals.siteSettings.TITLE}
+			</a>
+
+			<p class="text-xs uppercase">
+				<slot name="collection-title">
+					<span>
+						{Astro.locals.siteSettings.DESCRIPTION}
+					</span>
+				</slot>
+			</p>
+		</div>
+
+		<label for="mobile-menu" class="btn btn-primary drawer-button">
+			<Menu size="24" />
+		</label>
+	</div>
+
+	<div class="drawer-side">
+		<label for="mobile-menu" aria-label="close sidebar" class="drawer-overlay">
+		</label>
+
+		<div
+			class="menu bg-base-200 text-base-content min-h-full w-80 p-4 flex flex-col"
+		>
+			<AppMenu pages={Astro.props.pages} />
+		</div>
+	</div>
+</div>
