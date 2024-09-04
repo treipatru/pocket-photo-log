@@ -27,7 +27,7 @@ export default defineConfig({
 		}),
 	],
 	output: 'server',
-	prefetch: true,
+	prefetch: false,
 	security: {
 		checkOrigin: true
 	},
