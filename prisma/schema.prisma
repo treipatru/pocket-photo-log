@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Page {
+  id      String   @id @default(cuid())
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  content String @default("")
+  name    String
+  slug    String
+
+  @@index([slug])
+}
+
+model Post {
+  id      String   @id @default(cuid())
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  alt       String   @default("")
+  caption   String   @default("")
+  file      String
+  height    Decimal  @default(0)
+  published Boolean  @default(false)
+  shot_on   DateTime @default(now())
+  stats     Stat?
+  tags      Tag[]
+  width     Decimal  @default(0)
+}
+
+model Setting {
+  id      String   @id @default(cuid())
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  name  String @unique
+  value String @default("")
+}
+
+model Stat {
+  id      String   @id @default(cuid())
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  likes   Decimal @default(0)
+  post    Post    @relation(fields: [post_id], references: [id])
+  post_id String  @unique
+  views   Decimal @default(0)
+}
+
+model Tag {
+  id      String   @id @default(cuid())
+  created DateTime @default(now())
+  updated DateTime @default(now())
+
+  name   String  @unique
+  Post   Post?   @relation(fields: [postId], references: [id])
+  postId String?
+}
+
+model SeedFlag {
+  id        Int      @id @default(1)
+  createdAt DateTime @default(now())
+}
