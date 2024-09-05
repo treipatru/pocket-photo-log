@@ -84,7 +84,7 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 	<PostComplete
 		client:load
 		post={post}
-		showAdminMenu={Astro.locals.isAuthenticated}
+		showAdminMenu={!!Astro.locals.user}
 		stats={stat}
 	/>
 </SidebarLayout>

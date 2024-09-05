@@ -26,13 +26,6 @@ async function main() {
 			},
 		});
 
-		await prisma.setting.create({
-			data: {
-				name: "ALLOW_SIGNUP",
-				value: "true",
-			},
-		});
-
 		// Mark the database as seeded
 		await prisma.seedFlag.create({ data: { id: 1 } });
 		console.log("Database has been seeded.");

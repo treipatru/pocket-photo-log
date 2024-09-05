@@ -1,0 +1,22 @@
+---
+import { AstroSeo } from "@astrolib/seo";
+import { getUserCount } from "@/services/db/requests/auth";
+import SignupForm from "@/components/auth/signup-form";
+import SimpleLayout from "@/layouts/simple-layout.astro";
+
+/**
+ * The platform currently only supports only one user.
+ */
+const userCount = await getUserCount();
+if (userCount > 0) {
+	return Astro.redirect("/auth/login");
+}
+---
+
+<AstroSeo
+	title={`Signup| ${Astro.locals.siteSettings.TITLE}`}
+	description="Create a new account."
+/>
+<SimpleLayout title="Signup">
+	<SignupForm client:load />
+</SimpleLayout>

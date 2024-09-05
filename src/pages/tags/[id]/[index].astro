@@ -114,7 +114,7 @@ try {
 	<PostComplete
 		activeTagId={tagId}
 		post={post}
-		showAdminMenu={Astro.locals.isAuthenticated}
+		showAdminMenu={!!Astro.locals.user}
 		stats={stats}
 	/>
 

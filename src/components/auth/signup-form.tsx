@@ -1,19 +1,19 @@
-import { logIn } from "@/services/client-api/auth";
+import { signUp } from "@/services/client-api/auth";
 import { useForm } from "@/hooks/use-form"
 import { useMutation } from "@tanstack/react-query";
-import { userLoginSchema, type UserLogin } from "@/entities/users"
+import { userSignupSchema, type UserSignup } from "@/entities/users"
 import Alert from "@/components/ui/alert";
 import Input from "@/components/ui/input"
 import QueryWrapper from "@/components/query-wrapper";
 
 function Component() {
-	const { formData, updateField, validate } = useForm<UserLogin>(userLoginSchema, {
+	const { formData, updateField, validate } = useForm<UserSignup>(userSignupSchema, {
 		username: '',
 		password: '',
 	});
 
 	const { mutate, isPending, error } = useMutation({
-		mutationFn: () => logIn(formData.values),
+		mutationFn: () => signUp(formData.values),
 		onSuccess: () => {
 			window.location.href = `/`;
 		}
@@ -31,7 +31,7 @@ function Component() {
 	return (
 		<form
 			className="flex flex-col gap-1"
-			name="login"
+			name="signup"
 			onSubmit={handleSubmit}
 		>
 			<Input
@@ -66,6 +66,6 @@ function Component() {
 	)
 }
 
-export default function LoginForm() {
+export default function SignupForm() {
 	return <QueryWrapper><Component /></QueryWrapper>
 }
