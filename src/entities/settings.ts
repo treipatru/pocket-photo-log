@@ -1,5 +1,11 @@
 import z from "zod";
 
+const booleanString = z
+	.string()
+	.refine((val) => val === "true" || val === "false", {
+		message: "Must be a boolean string",
+	});
+
 /**
  * The schema for the settings object as used by the frontend.
  */
@@ -9,25 +15,33 @@ export const settingsSchema = z.object({
 });
 
 export const settingsSchemaFormUpdate = settingsSchema;
-
-/**
- * Site settings in a key-value format.
- */
-export type Settings = z.infer<typeof settingsSchema>;
-
 export type SettingsSchemaFormUpdate = z.infer<typeof settingsSchemaFormUpdate>;
 
 /**
- * Keys of the settings object.
+ * Get the types from the settings schema.
  */
-export type SettingsKeys = keyof Settings;
+type SettingsDerived = z.infer<typeof settingsSchema>;
+
+/**
+ * Extract the keys from the derived settings type.
+ */
+export type SettingsKeys = keyof SettingsDerived;
+
+/**
+ * Define possible values types for the settings.
+ * TS does not natively allow this kind of union so this is an accepted
+ * workaround which allows us to define both string literals and a string type.
+ */
+type SettingsValues = "true" | "false" | (string & {});
+
+export type Settings = Record<SettingsKeys, SettingsValues>;
 
 /**
  * Convert an array of settings objects to a settings object.
  * Useful to transform the data from the DB into a more usable format.
  */
 export function settingsArrayToObject(
-	settings: { name: string; value: string }[]
+	settings: { name: string; value: SettingsValues }[]
 ): Settings {
 	// Create the object with the settings
 	const obj: Partial<Settings> = {};
