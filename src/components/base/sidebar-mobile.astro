@@ -1,7 +1,7 @@
 ---
 import { Menu } from "lucide-react";
 import AppMenu from "@/components/base/app-menu.astro";
-import type { Page } from "@/entities/pages";
+import { type Page } from "@prisma/client";
 
 interface Props {
 	pages: Page[];

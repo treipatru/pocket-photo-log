@@ -1,21 +1,33 @@
 import type { APIRoute } from "astro";
-import { pageSchemaForm } from "@/entities/pages";
+import { pageCreateSchema } from "@/entities/pages";
+import { createPage, getPageBySlug } from "@/services/db/requests/pages";
 
-export const POST: APIRoute = async ({ locals, request }) => {
+export const POST: APIRoute = async ({ request }) => {
 	const payload = await request.json();
-	const { data, error } = pageSchemaForm.safeParse(payload);
+	const { data, error } = pageCreateSchema.safeParse(payload);
 
 	if (error) {
 		return new Response(
 			JSON.stringify({
-				message: "Invalid post data",
+				message: "Invalid page data",
+			}),
+			{ status: 400 }
+		);
+	}
+
+	const existingPage = await getPageBySlug(data.slug);
+	if (existingPage) {
+		return new Response(
+			JSON.stringify({
+				message: "Page with that slug already exists",
 			}),
 			{ status: 400 }
 		);
 	}
 
 	try {
-		await locals.pbClient.collection("pages").create(data);
+		const newPage = await createPage(data);
+		return new Response(JSON.stringify(newPage), { status: 200 });
 	} catch (_) {
 		return new Response(
 			JSON.stringify({
@@ -24,11 +36,4 @@ export const POST: APIRoute = async ({ locals, request }) => {
 			{ status: 500 }
 		);
 	}
-
-	return new Response(
-		JSON.stringify({
-			message: "Success!",
-		}),
-		{ status: 200 }
-	);
 };

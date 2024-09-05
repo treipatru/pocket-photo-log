@@ -1,6 +1,6 @@
 ---
 import "@/styles/global.css";
-import { pocketClient } from "@/services/pocket/pocket-client";
+import { getPages } from "@/services/db/requests/pages";
 import Footer from "@/components/base/footer.astro";
 import Head from "@/components/base/head.astro";
 import SidebarDesktop from "@/components/base/sidebar-desktop.astro";
@@ -18,9 +18,7 @@ const {
 	showFooter = false,
 } = Astro.props;
 
-const pages = await pocketClient.collection("pages").getFullList({
-	sort: "name",
-});
+const pages = await getPages();
 ---
 
 <!doctype html>

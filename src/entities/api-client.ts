@@ -1,4 +1,3 @@
-import { type Page } from "@/entities/pages";
 import { type Post } from "@/entities/posts";
 import { type Stat } from "@/entities/stats";
 import { type Tag } from "@/entities/tags";
@@ -19,7 +18,6 @@ export type SettingsArr = {
 };
 
 export interface TypedPocketBase extends PocketBase {
-	collection(idOrName: "pages"): RecordService<Page>;
 	collection(idOrName: "posts_per_year"): RecordService<PostsPerYear>;
 	collection(idOrName: "posts"): RecordService<Post>;
 	collection(idOrName: "settings"): RecordService<SettingsArr>;

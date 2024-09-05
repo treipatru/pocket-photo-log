@@ -2,6 +2,9 @@ import z from "zod";
 
 export const pageSchema = z.object({
 	id: z.string(),
+	created: z.date(),
+	updated: z.date(),
+
 	content: z.string(),
 	name: z.string(),
 	slug: z
@@ -11,13 +14,17 @@ export const pageSchema = z.object({
 			"Slug can only contain letters, numbers, and dashes."
 		),
 });
-
-export const pageSchemaForm = pageSchema.omit({ id: true });
-
-export const pageSchemaFormDelete = z.object({
-	id: z.string(),
-});
-
 export type Page = z.infer<typeof pageSchema>;
-export type PageForm = z.infer<typeof pageSchemaForm>;
-export type PageFormDelete = z.infer<typeof pageSchemaFormDelete>;
+
+export const pageCreateSchema = pageSchema.omit({
+	id: true,
+	created: true,
+	updated: true,
+});
+export type PageCreate = z.infer<typeof pageCreateSchema>;
+
+export const pageUpdateSchema = pageSchema.omit({
+	created: true,
+	updated: true,
+});
+export type PageUpdate = z.infer<typeof pageUpdateSchema>;
