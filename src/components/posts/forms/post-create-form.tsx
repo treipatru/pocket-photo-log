@@ -1,5 +1,5 @@
-import { postSchemaFormCreate, type PostFormCreate } from "@/entities/posts";
 import { createPost } from "@/services/client-api/posts";
+import { postSchemaFormCreate, type PostFormCreate } from "@/entities/posts";
 import { useForm } from "@/hooks/use-form";
 import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
@@ -10,10 +10,9 @@ import QueryWrapper from "../../query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
-import { useEffect } from "react";
 
 function Component() {
-	const { formData, isValid, updateField, validate } = useForm<PostFormCreate>(postSchemaFormCreate, {
+	const { formData, updateField, validate } = useForm<PostFormCreate>(postSchemaFormCreate, {
 		alt: '',
 		caption: '',
 		file: new File([], ''),
@@ -23,7 +22,7 @@ function Component() {
 	});
 
 	const { mutate, isPending, error } = useMutation({
-		mutationFn: (newPost: PostFormCreate) => createPost(newPost),
+		mutationFn: () => createPost(formData.values),
 		onSuccess: (res) => {
 			window.location.href = `/posts/${res.id}`;
 		}
@@ -43,14 +42,12 @@ function Component() {
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		validate();
-	}
+		const isValid = validate();
 
-	useEffect(() => {
 		if (isValid) {
-			mutate(formData.values);
+			mutate();
 		}
-	}, [isValid])
+	}
 
 	return (
 		<form

@@ -11,7 +11,6 @@ import QueryWrapper from "@/components/query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
-import { useEffect } from "react";
 
 interface Props {
 	post: Post
@@ -21,7 +20,7 @@ function Component({ post }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
-	const { formData, isValid, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
+	const { formData, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
 		alt: post.alt,
 		caption: post.caption,
 		file: new File([], ''),
@@ -31,10 +30,7 @@ function Component({ post }: Readonly<Props>) {
 	});
 
 	const { mutate, isPending, error } = useMutation({
-		mutationFn: ({
-			id,
-			payload
-		}: { id: string, payload: PostFormUpdate }) => updatePost(id, payload),
+		mutationFn: () => updatePost(post.id, formData.values),
 		onSuccess: () => {
 			window.location.href = `/posts/${post.id}`;
 		}
@@ -54,19 +50,12 @@ function Component({ post }: Readonly<Props>) {
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		validate();
+		const isValid = validate();
 
 		if (isValid) {
-			mutate({ id: post.id, payload: formData.values });
+			mutate();
 		}
 	}
-
-	useEffect(() => {
-		if (isValid) {
-			mutate({ id: post.id, payload: formData.values });
-		}
-	}, [isValid])
-
 
 	return (
 		<form

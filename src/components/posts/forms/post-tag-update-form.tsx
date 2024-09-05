@@ -1,12 +1,12 @@
-import type { Tag } from "@/entities/tags";
-import QueryWrapper from "@/components/query-wrapper";
-import { useState } from "react";
-import { useForm } from "@/hooks/use-form";
-import { Save, X } from "lucide-react";
 import { postSchemaFormUpdate, type PostFormUpdate } from "@/entities/posts";
-import { useMutation } from "@tanstack/react-query";
-import { updatePost } from "@/services/client-api/posts";
 import { sanitizeTagNames } from "@/entities/tags";
+import { Save, X } from "lucide-react";
+import { updatePost } from "@/services/client-api/posts";
+import { useForm } from "@/hooks/use-form";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import QueryWrapper from "@/components/query-wrapper";
+import type { Tag } from "@/entities/tags";
 
 interface Props {
 	postId: string;
@@ -21,16 +21,16 @@ function Component({
 	 * Form
 	 */
 	const [isEditing, setIsEditing] = useState(false);
-	const { formData, isValid, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
+	const { formData, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
 		tags: tags.map(t => t.name),
 	});
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		validate();
+		const isValid = validate();
 
 		if (isValid) {
-			mutate({ id: postId, payload: formData.values });
+			mutate();
 		}
 	}
 
@@ -40,10 +40,7 @@ function Component({
 	}
 
 	const { mutate, isPending } = useMutation({
-		mutationFn: ({
-			id,
-			payload
-		}: { id: string, payload: PostFormUpdate }) => updatePost(id, payload),
+		mutationFn: () => updatePost(postId, formData.values),
 		onSuccess: () => {
 			setIsEditing(false);
 			updateField('tags', sanitizeTagNames(formData.values.tags, 'arr'));
