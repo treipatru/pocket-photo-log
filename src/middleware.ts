@@ -1,5 +1,5 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { getUserApiClient } from "@/services/auth/get-user-api-client";
+import { getSettings } from "@/services/db/requests/settings";
 import { pocketClient } from "@/services/pocket/pocket-client";
 import { settingsArrayToObject } from "@/entities/settings";
 import { urlMatcher } from "@/utils/url-matcher";
@@ -62,10 +62,7 @@ const authorization = defineMiddleware(async (context, next) => {
 const siteSettings = defineMiddleware(async (context, next) => {
 	try {
 		// Fetch settings array from the database
-		const settingsArr = await pocketClient.collection("settings").getFullList();
-
-		// Transform the settings array into a key-value pairs
-		const settings = settingsArrayToObject(settingsArr);
+		const settings = await getSettings();
 
 		// Make data available to the context
 		context.locals.siteSettings = settings;
