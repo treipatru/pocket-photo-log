@@ -10,12 +10,15 @@ declare namespace App {
 	}
 }
 
-declare var process: {
-	env: {
-		API_KEY: string;
-		API_USER: string;
-		ERROR_TRACKING_DSN: string;
-		PUBLIC_API_URL: string;
-		PUBLIC_SITE_URL: string;
-	};
-};
+declare global {
+	namespace NodeJS {
+		interface ProcessEnv {
+			API_KEY: string;
+			API_USER: string;
+			ERROR_TRACKING_DSN: string;
+			NODE_ENV: "development" | "production";
+			PUBLIC_API_URL: string;
+			PUBLIC_SITE_URL: string;
+		}
+	}
+}
