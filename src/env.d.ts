@@ -21,3 +21,10 @@ declare global {
 		}
 	}
 }
+
+type APIPagination = {
+	page: number;
+	perPage: number;
+	totalItems: number;
+	totalPages: number;
+};

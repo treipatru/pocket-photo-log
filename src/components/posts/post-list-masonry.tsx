@@ -1,10 +1,9 @@
 import { getImgUrl } from "@/lib/get-img-url"
-import { type Pagination } from "@/entities/api-client";
 import { type Post } from "@/entities/posts"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Measure from 'react-measure';
 
-type PostListMasonryProps = Pick<Pagination, "page" | "perPage"> & {
+type PostListMasonryProps = Pick<APIPagination, "page" | "perPage"> & {
 	posts: Post[];
 	tagId: string;
 }
@@ -58,7 +57,7 @@ export default function PostListMasonry({
 											 */
 											className={`w-[${post.width}px] h-[${post.height}px] bg-muted-background`}
 											loading="lazy"
-											src={getImgUrl({ id: post.id, file: post.file }, 'medium')}
+											src={getImgUrl(post, "medium")}
 										/>
 									</a>
 								</div>

@@ -1,7 +1,6 @@
-import { type Pagination } from "@/entities/api-client";
 import clsx from "clsx";
 
-type PostPaginationProps = Pick<Pagination, "page" | "totalPages"> & {
+type PostPaginationProps = Pick<APIPagination, "page" | "totalPages"> & {
 	className?: string;
 	tagId: string;
 }
