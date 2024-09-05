@@ -79,6 +79,7 @@ export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 
 		setIsValid(false);
 		setFormErrors(errors);
+		return false;
 	};
 
 	/**
