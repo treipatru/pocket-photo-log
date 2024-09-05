@@ -3,7 +3,6 @@
 
 declare namespace App {
 	interface Locals {
-		pbClient: import("@/entities/api-client").TypedPocketBase;
 		session: import("@lucia/session").Session;
 		siteSettings: import("@/entities/settings").Settings;
 		user: import("lucia").User | null;
