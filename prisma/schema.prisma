@@ -26,13 +26,16 @@ model Post {
 
   alt       String   @default("")
   caption   String   @default("")
-  file      String
-  height    Decimal  @default(0)
+  image     String
+  height    Int      @default(0)
   published Boolean  @default(false)
   shot_on   DateTime @default(now())
   stats     Stat?
   tags      Tag[]
-  width     Decimal  @default(0)
+  width     Int      @default(0)
+
+  @@index([shot_on])
+  @@index([published, shot_on])
 }
 
 model Setting {
@@ -49,10 +52,10 @@ model Stat {
   created DateTime @default(now())
   updated DateTime @default(now())
 
-  likes   Decimal @default(0)
-  post    Post    @relation(fields: [post_id], references: [id])
-  post_id String  @unique
-  views   Decimal @default(0)
+  likes   Int    @default(0)
+  post    Post   @relation(fields: [post_id], references: [id])
+  post_id String @unique
+  views   Int    @default(0)
 }
 
 model Tag {
@@ -60,9 +63,8 @@ model Tag {
   created DateTime @default(now())
   updated DateTime @default(now())
 
-  name   String  @unique
-  Post   Post?   @relation(fields: [postId], references: [id])
-  postId String?
+  name  String @unique
+  Posts Post[]
 }
 
 model SeedFlag {
