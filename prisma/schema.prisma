@@ -14,7 +14,7 @@ model Page {
 
   content String @default("")
   name    String
-  slug    String
+  slug    String @unique
 
   @@index([slug])
 }
