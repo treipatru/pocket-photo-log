@@ -32,8 +32,8 @@ services:
       - development
     restart: unless-stopped
     volumes:
-      # Persistent volume for storage
-      - pocket-photo-storage:/app/storage
+      # In development mode we map the local storage folder to the container
+      - ./storage:/app/storage
       # Mapped volume for PB migrations
       - ./prisma:/app/prisma:rw
 
