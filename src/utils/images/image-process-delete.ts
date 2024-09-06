@@ -1,5 +1,5 @@
 import { UPLOAD_DIR, IMAGE_FORMAT, IMAGE_SIZES } from "@/constants";
-import { getPostById } from "@/services/db/requests/posts";
+import { getPostById } from "@/services/db/requests/posts/get";
 import fs from "fs";
 import path from "path";
 

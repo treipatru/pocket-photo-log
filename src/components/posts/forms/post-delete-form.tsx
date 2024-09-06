@@ -1,83 +1,57 @@
 import { deletePost } from "@/services/client-api/posts";
-import { getImgUrl } from "@/lib/get-img-url"
-import { type Post, postSchemaFormDelete, type PostFormDelete } from "@/entities/posts"
-import { useEffect } from "react"
-import { useForm } from "@/hooks/use-form"
-import { useQuery } from "@tanstack/react-query"
-import Alert from "@/components/ui/alert"
+import { useMutation } from "@tanstack/react-query"
+import { useState } from "react";
+import Dialog from "@/components/ui/dialog";
 import QueryWrapper from "@/components/query-wrapper"
+import type { Post } from "@/entities/posts";
 
-interface Props {
-	post: Post
+type Props = {
+	post: Post;
 }
 
 function Component({ post }: Readonly<Props>) {
-	/**
-	 * Form
-	 */
-	const { formData, isValid, validate } = useForm<PostFormDelete>(postSchemaFormDelete, {
-		id: post.id
-	});
+	const [showModal, setShowModal] = useState(false);
 
-	const handleSubmit = async (event: React.SyntheticEvent) => {
-		event.preventDefault();
-		validate();
-	}
-
-	/**
-	 * Query
-	 */
-	const { error, isFetching, isSuccess } = useQuery({
-		enabled: isValid,
-		queryFn: () => deletePost(formData.values),
-		queryKey: ['posts'],
-		retry: false,
-	});
-
-	/**
-	 * On success, redirect to homepage.
-	 */
-	useEffect(() => {
-		if (isSuccess) {
-			window.location.href = '/';
+	const { isPending, mutate } = useMutation({
+		mutationFn: deletePost,
+		onSuccess: () => {
+			window.location.href = `/`;
 		}
-	}, [isSuccess])
+	});
 
 	return (
-		<form
-			className="flex flex-col gap-4"
-			id="delete-post"
-			name="delete-post"
-			onSubmit={handleSubmit}
-		>
-			{error && <Alert className="col-span-2" type="error" content={error.message} />}
+		<div>
+			<Dialog isOpen={showModal} title="Are you sure you want to delete this post?">
 
-			<img
-				src={getImgUrl(post, 'medium')}
-				alt={post.alt}
-			/>
+				<p>This will delete the data permanently. You cannot undo this action.</p>
 
-			<p className="text-xl">Are you sure you want to delete this post?</p>
 
-			<p>This will delete the data permanently. You cannot undo this action.</p>
+				<div className="flex gap-4 mt-8">
+					<button
+						className="btn btn-outline"
+						onClick={() => setShowModal(false)}
+					>
+						Cancel
+					</button>
 
-			<div className="col-span-2 flex items-center justify-center gap-x-12 mt-2">
-				<a
-					className="link link-hover"
-					href={`/posts/${post.id}`}
-				>
-					Cancel
-				</a>
+					<button
+						className="btn btn-error"
+						disabled={isPending}
+						onClick={() => mutate(post.id)}
+					>
+						Delete
+					</button>
+				</div>
+			</Dialog>
 
-				<button
-					className="btn btn-error"
-					disabled={isFetching}
-					type='submit'
-				>
-					Delete
-				</button>
-			</div>
-		</form>
+			<button
+				className="btn btn-sm btn-outline"
+				disabled={isPending}
+				onClick={() => setShowModal(true)}
+			>
+				Delete
+			</button>
+		</div>
 	)
 }
 
