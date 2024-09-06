@@ -19,7 +19,7 @@ WORKDIR /app
 FROM base AS deps
 # Mount the prisma directory so we can generate the client.
 RUN --mount=type=bind,source=prisma,target=/app/prisma \
-    npm ci
+    npm ci --ignore-scripts
 
 FROM base AS pocket-photo-log-dev
 COPY --from=deps /app/node_modules /app/node_modules
