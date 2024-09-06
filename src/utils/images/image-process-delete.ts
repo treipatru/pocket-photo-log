@@ -41,9 +41,9 @@ async function deleteImagesFromDisk(imageUrl: string) {
 export async function imageProcessDelete(postId: string): Promise<void> {
 	const post = await getPostById(postId);
 
-	if (!post || !post.image_url) {
+	if (!post || !post.imageUrl) {
 		return;
 	}
 
-	await deleteImagesFromDisk(post.image_url);
+	await deleteImagesFromDisk(post.imageUrl);
 }

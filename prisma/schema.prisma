@@ -8,9 +8,8 @@ datasource db {
 }
 
 model Page {
-  id      String   @id @default(cuid())
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
   content String @default("")
   name    String
@@ -20,48 +19,44 @@ model Page {
 }
 
 model Post {
-  id      String   @id @default(cuid())
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
   alt       String   @default("")
   caption   String   @default("")
-  image_url String
+  imageUrl  String
   height    Int      @default(0)
   published Boolean  @default(false)
-  shot_on   DateTime @default(now())
+  shotOn    DateTime @default(now())
   stats     Stat?
   tags      Tag[]
   width     Int      @default(0)
 
-  @@index([shot_on])
-  @@index([published, shot_on])
+  @@index([shotOn])
+  @@index([published, shotOn])
 }
 
 model Setting {
-  id      String   @id @default(cuid())
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
   name  String @unique
   value String @default("")
 }
 
 model Stat {
-  id      String   @id @default(cuid())
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
-  likes   Int    @default(0)
-  post    Post   @relation(fields: [post_id], references: [id], onDelete: Cascade)
-  post_id String @unique
-  views   Int    @default(0)
+  likes  Int    @default(0)
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String @unique
+  views  Int    @default(0)
 }
 
 model Tag {
-  id      String   @id @default(cuid())
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
 
   name  String @unique
   Posts Post[]
@@ -73,9 +68,8 @@ model SeedFlag {
 }
 
 model User {
-  id      String   @id
-  created DateTime @default(now())
-  updated DateTime @default(now())
+  id        String   @id
+  createdAt DateTime @default(now())
 
   password_hash String
   sessions      Session[]
