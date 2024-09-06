@@ -1,29 +1,24 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
 import Pagination from "@/components/ui/pagination.astro";
 import PostTimeline from "@/components/posts/post-timeline/post-timeline";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
 
 const { siteSettings } = Astro.locals;
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
-const activeYear = Astro.url.searchParams.get("year") ?? undefined;
+const year = Astro.url.searchParams.get("year") ?? undefined;
 
-const posts = await pocketClient.collection("posts").getList(page, 20, {
-	sort: "-shot_on",
-	expand: "tags",
-	...(activeYear
-		? {
-				filter: `shot_on >= "${activeYear}-01-01 00:00:00" && shot_on <= "${activeYear}-12-31 23:59:59"`,
-			}
-		: {}),
+const posts = await getPaginatedPosts({
+	page,
+	perPage: 20,
+	...(year !== undefined && { year }),
 });
-const { items, ...pagination } = posts;
 
-const collectionTitle = activeYear
-	? `in ${activeYear}`
-	: siteSettings.DESCRIPTION;
+const { items, pagination } = posts;
+
+const collectionTitle = year ? `in ${year}` : siteSettings.DESCRIPTION;
 ---
 
 <AstroSeo
@@ -34,7 +29,7 @@ const collectionTitle = activeYear
 <SidebarLayout contentPadding={false} showFooter>
 	<span slot="collection-title">{collectionTitle}</span>
 
-	<PostTimeline activeYear={activeYear} posts={posts.items} />
+	<PostTimeline activeYear={year} posts={items} />
 
 	<Pagination {...pagination} url="/posts" />
 </SidebarLayout>

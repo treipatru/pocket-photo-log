@@ -1,18 +1,24 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
+import { getUserCount } from "@/services/db/requests/auth";
 import Pagination from "@/components/ui/pagination.astro";
 import PostTimeline from "@/components/posts/post-timeline/post-timeline";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
+const userCount = await getUserCount();
+if (userCount === 0) {
+	return Astro.redirect("/auth/signup");
+}
+
 const { siteSettings } = Astro.locals;
 
-const posts = await pocketClient.collection("posts").getList(1, 10, {
-	sort: "-shot_on",
-	expand: "tags",
+const posts = await getPaginatedPosts({
+	page: 1,
+	perPage: 10,
 });
 
-const { items, ...pagination } = posts;
+const { items, pagination } = posts;
 ---
 
 <AstroSeo
@@ -21,7 +27,7 @@ const { items, ...pagination } = posts;
 />
 
 <SidebarLayout contentPadding={false} showFooter>
-	<PostTimeline posts={posts.items} />
+	<PostTimeline posts={items} />
 
 	<Pagination {...pagination} url="/posts" />
 </SidebarLayout>

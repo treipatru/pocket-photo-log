@@ -1,20 +1,16 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 import TablePagination from "@/components/ui/table-pagination.astro";
 import TagCmsManager from "@/components/tags/tag-cms-manager/tag-cms-manager";
+import { getPaginatedTags } from "@/services/db/requests/tags";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const query = Astro.url.searchParams.get("query") || "";
 
-const tags = await pocketClient
-	.collection("tags_with_posts")
-	.getList(page, 20, {
-		...(query && { filter: `name ~ "${query}"` }),
-		sort: "-post_count",
-	});
-const { items, ...pagination } = tags;
+const tags = await getPaginatedTags({ page, perPage: 20, query });
+
+const { items, pagination } = tags;
 ---
 
 <AstroSeo title={`Tags | ${Astro.locals.siteSettings.TITLE}`} />
@@ -25,6 +21,10 @@ const { items, ...pagination } = tags;
 	<div class="flex flex-col gap-4">
 		<TagCmsManager tags={items} initialQuery={query} client:load />
 
-		{tags.totalPages > 1 && <TablePagination {...pagination} url="/cms/tags" />}
+		{
+			pagination.totalPages > 1 && (
+				<TablePagination {...pagination} url="/cms/tags" />
+			)
+		}
 	</div>
 </SidebarLayout>

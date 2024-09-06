@@ -1,16 +1,18 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
+import { getPostById } from "@/services/db/requests/posts/get";
 import PostUpdateForm from "@/components/posts/forms/post-update-form";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const id = Astro.params.id;
+if (!id) {
+	return Astro.redirect("/404");
+}
 
-const post = await pocketClient
-	.collection("posts")
-	.getFirstListItem(`id="${id}"`, {
-		expand: "tags",
-	});
+const post = await getPostById(id);
+if (!post) {
+	return Astro.redirect("/404");
+}
 ---
 
 <AstroSeo title={`Update post | ${Astro.locals.siteSettings.TITLE}`} />

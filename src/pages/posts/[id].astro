@@ -2,11 +2,17 @@
 import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
-import { pocketClient } from "@/services/pocket/pocket-client";
+import { getPostById } from "@/services/db/requests/posts/get";
 import { type Post } from "@/entities/posts";
-import { type Stat } from "@/entities/stats";
+import type { Stat } from "@prisma/client";
 import PostComplete from "@/components/posts/post/post-complete";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
+import { getStats } from "@/services/db/requests/stats";
+
+const postId = Astro.params.id;
+if (!postId) {
+	return Astro.redirect("/404");
+}
 
 let post: Post | null = null;
 let stat: Stat | null = null;
@@ -16,13 +22,9 @@ let stat: Stat | null = null;
  */
 try {
 	// The fetch will throw if the post is not found.
-	post = await pocketClient
-		.collection("posts")
-		.getFirstListItem(`id="${Astro.params.id}"`, {
-			expand: "tags",
-		});
+	post = await getPostById(postId);
+	stat = await getStats(postId);
 
-	// This is for TS to know that post is not null.
 	if (!post) {
 		throw new Error();
 	}
@@ -30,39 +32,9 @@ try {
 	return Astro.redirect("/404");
 }
 
-/**
- * Handle post stats
- */
-try {
-	try {
-		// Try to get the stats for the post
-		stat = await pocketClient
-			.collection("stats")
-			.getFirstListItem(`postId="${post.id}"`);
-	} catch (_) {
-		// If the stats are not found we will ignore the error
-	}
-
-	// If there are no stats for the post we will create a new record
-	if (stat === null) {
-		stat = await pocketClient.collection("stats").create({
-			likes: 0,
-			postId: post.id,
-			views: 1,
-		});
-		// Otherwise we will update the views count
-	} else {
-		stat = await pocketClient.collection("stats").update(stat.id, {
-			views: stat.views + 1,
-		});
-	}
-} catch (error) {
-	return Astro.redirect("/500", error);
-}
-
 // Content strings
 const { siteSettings } = Astro.locals;
-const postDate = format(post.shot_on, "PPP");
+const postDate = format(post.shotOn, "PPP");
 const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 ---
 
@@ -73,7 +45,7 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 		url: Astro.url.host + Astro.url.pathname,
 		title: pageTitle,
 		description: siteSettings.DESCRIPTION,
-		images: [{ url: getImgUrl(post, "medium") }],
+		images: [{ url: getImgUrl(post.imageUrl, "MD") }],
 		site_name: siteSettings.TITLE,
 	}}
 />
