@@ -37,9 +37,6 @@ model Post {
 }
 
 model Setting {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-
   name  String @unique
   value String @default("")
 }

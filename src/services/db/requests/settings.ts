@@ -1,6 +1,7 @@
 import { dbClient } from "@/services/db/db";
 import { settingsArrayToObject } from "@/entities/settings";
 import type { Setting } from "@prisma/client";
+import type { Settings } from "@/entities/settings";
 
 /**
  * Retrieve a list of settings from the database.
@@ -8,12 +9,25 @@ import type { Setting } from "@prisma/client";
  * @export
  * @return {*}
  */
-export async function getSettings(): Promise<Record<string, string>> {
+export async function getSettings(): Promise<Settings> {
 	const dbSettings = await dbClient.setting.findMany();
 
 	return settingsArrayToObject(dbSettings);
 }
 
+/**
+ * Update a setting by name
+ *
+ * @export
+ * @param {{
+ * 	name: string;
+ * 	value: string;
+ * }} {
+ * 	name,
+ * 	value,
+ * }
+ * @return {*}  {Promise<Setting>}
+ */
 export async function updateSetting({
 	name,
 	value,
