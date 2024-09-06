@@ -3,7 +3,7 @@ import { postSchemaFormCreate, type PostFormCreate } from "@/entities/posts";
 import { useForm } from "@/hooks/use-form";
 import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
-import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
+import imageExtractMetadata from "@/utils/images/image-extract-metadata";
 import FileInput from "@/components/ui/file-input";
 import Input from "@/components/ui/input";
 import QueryWrapper from "../../query-wrapper";
@@ -17,7 +17,7 @@ function Component() {
 		caption: '',
 		file: new File([], ''),
 		published: true,
-		shot_on: '',
+		shotOn: '',
 		tags: [],
 	});
 
@@ -34,8 +34,8 @@ function Component() {
 			updateField('file', file);
 
 			// Parse the image metadata and replace previous form values.
-			const { shotOn, tags } = await extractMetadataFromImg(file);
-			updateField('shot_on', shotOn ?? '');
+			const { shotOn, tags } = await imageExtractMetadata(file);
+			updateField('shotOn', shotOn ?? '');
 			updateField('tags', tags);
 		}
 	}
@@ -84,13 +84,13 @@ function Component() {
 			/>
 
 			<Input
-				error={formData.errors.shot_on}
+				error={formData.errors.shotOn}
 				label="Shot on"
 				required
-				name='shot_on'
-				onInput={v => updateField('shot_on', v.currentTarget.value)}
+				name='shotOn'
+				onInput={v => updateField('shotOn', v.currentTarget.value)}
 				type="date"
-				value={formData.values.shot_on?.substring(0, 10)}
+				value={formData.values.shotOn?.substring(0, 10)}
 			/>
 
 			<TagFormControl

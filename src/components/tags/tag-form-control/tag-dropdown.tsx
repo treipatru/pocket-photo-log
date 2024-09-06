@@ -28,7 +28,7 @@ function Component({
 			/**
 			 * Exclude tags which have already been selected.
 			 */
-			return results.items
+			return results
 				.map((tag) => tag.name)
 				.filter((tag) => !value.includes(tag));
 		},

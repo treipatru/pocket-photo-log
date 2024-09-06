@@ -57,7 +57,7 @@ export default function PostListMasonry({
 											 */
 											className={`w-[${post.width}px] h-[${post.height}px] bg-muted-background`}
 											loading="lazy"
-											src={getImgUrl(post, "medium")}
+											src={getImgUrl(post.imageUrl, "MD")}
 										/>
 									</a>
 								</div>

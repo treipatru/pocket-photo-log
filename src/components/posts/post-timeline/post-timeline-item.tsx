@@ -14,7 +14,7 @@ export default function PostPreview({
 	activeYear,
 	post
 }: Readonly<PostPreviewProps>) {
-	const { id, file, alt, caption, shot_on, expand } = post;
+	const { id, imageUrl, alt, caption, shotOn, tags } = post;
 
 	return (
 		<li className="[&:not(:last-child)]:mb-28 ms-0 md:ms-6">
@@ -27,9 +27,9 @@ export default function PostPreview({
 					activeTagId={activeTagId}
 					activeYear={activeYear}
 					className="col-span-12"
-					date={shot_on}
+					date={shotOn}
 					onlyDateTime
-					tags={expand?.tags}
+					tags={tags}
 				/>
 			</div>
 
@@ -45,7 +45,7 @@ export default function PostPreview({
 							alt={alt}
 							className="max-h-[850px]"
 							loading="lazy"
-							src={getImgUrl({ id, file }, 'medium')}
+							src={getImgUrl(imageUrl, 'MD')}
 						/>
 					</a>
 

@@ -1,6 +1,6 @@
 import { Eye, Heart } from "lucide-react";
 import { likePost } from "@/services/client-api/posts";
-import { type Stat } from "@/entities/stats";
+import type { Stat } from "@prisma/client";
 import { useState } from "react";
 import clsx from "clsx";
 

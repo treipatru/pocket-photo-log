@@ -10,7 +10,10 @@ const isActive = Astro.url.pathname === href;
 ---
 
 <li>
-	<a class:list={[{ active: isActive, "font-bold": highlight }]} href={href}>
+	<a
+		class:list={["uppercase", { active: isActive, "font-bold": highlight }]}
+		href={href}
+	>
 		<slot />
 	</a>
 </li>

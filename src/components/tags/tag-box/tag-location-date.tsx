@@ -5,7 +5,7 @@ import { format } from "date-fns";
 interface Props {
 	activeYear?: string;
 	activeTagId?: string;
-	date: string;
+	date: Date;
 	structuredTags: StructuredTags;
 }
 

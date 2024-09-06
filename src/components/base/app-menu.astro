@@ -23,7 +23,7 @@ const pages = Astro.props.pages;
 		pages.map((page) => (
 			<li>
 				<AppMenuLink href={`/pages/${page.slug}`}>
-					<span class="capitalize">{page.name}</span>
+					<span>{page.name}</span>
 				</AppMenuLink>
 			</li>
 		))
@@ -70,7 +70,7 @@ const pages = Astro.props.pages;
 		!!user && (
 			<li>
 				<form method="post" action="/api/auth/logout">
-					<button type="submit">Logout</button>
+					<button type="submit">LOGOUT</button>
 				</form>
 			</li>
 		)
