@@ -1,11 +1,5 @@
 import z from "zod";
 
-const booleanString = z
-	.string()
-	.refine((val) => val === "true" || val === "false", {
-		message: "Must be a boolean string",
-	});
-
 /**
  * The schema for the settings object as used by the frontend.
  */
