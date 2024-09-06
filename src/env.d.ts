@@ -28,3 +28,12 @@ type APIPagination = {
 	totalItems: number;
 	totalPages: number;
 };
+
+type APIPaginationOptions = Pick<APIPagination, "page" | "perPage"> & {
+	query?: string;
+};
+
+type APIPaginatedResponse<T> = {
+	items: T[];
+	pagination: APIPagination;
+};

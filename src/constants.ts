@@ -1,3 +1,5 @@
+export const MAX_FILE_SIZE = 1024 * 1024 * 20; // 20MB
+
 export const IMAGE_FORMAT = ".jpg";
 
 export const UPLOAD_DIR = "storage/images";

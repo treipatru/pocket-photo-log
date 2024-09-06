@@ -1,10 +1,15 @@
-import { postSchemaFormUpdate, type PostFormUpdate } from "@/entities/posts";
-import { separateTags } from "@/pages/api/_utils/separate-tags";
-import { imgGetOptimized } from "@/utils/img-get-optimized";
+import {
+	updatePost,
+	type EditPostData,
+} from "@/services/db/requests/posts/update";
+import { deletePost } from "@/services/db/requests/posts/delete";
+import { postSchemaFormUpdate } from "@/entities/posts";
 import { z } from "zod";
 import type { APIRoute } from "astro";
+import { imageProcessDelete } from "@/utils/images/image-process-delete";
+import { imageProcessUpload } from "@/utils/images/image-process-upload";
 
-export const DELETE: APIRoute = async ({ locals, params }) => {
+export const DELETE: APIRoute = async ({ params }) => {
 	const postId = params.id;
 
 	if (!postId) {
@@ -17,7 +22,15 @@ export const DELETE: APIRoute = async ({ locals, params }) => {
 	}
 
 	try {
-		await locals.pbClient.collection("posts").delete(postId);
+		await imageProcessDelete(postId);
+		await deletePost(postId);
+
+		return new Response(
+			JSON.stringify({
+				message: "Success!",
+			}),
+			{ status: 200 }
+		);
 	} catch (error) {
 		return new Response(
 			JSON.stringify({
@@ -26,16 +39,9 @@ export const DELETE: APIRoute = async ({ locals, params }) => {
 			{ status: 500 }
 		);
 	}
-
-	return new Response(
-		JSON.stringify({
-			message: "Success!",
-		}),
-		{ status: 200 }
-	);
 };
 
-export const PATCH: APIRoute = async ({ locals, request, params }) => {
+export const PATCH: APIRoute = async ({ request, params }) => {
 	const formData = await request
 		.formData()
 		.then((data) => Object.fromEntries(data));
@@ -62,71 +68,27 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 		);
 	}
 
-	const { pbClient } = locals;
-
-	const tagIds = [];
-	if (data.tags) {
-		const allTags = await locals.pbClient.collection("tags").getFullList();
-		const { existingTagIds, newTagNames } = separateTags(
-			allTags,
-			data.tags.split(",")
-		);
-		tagIds.push(...existingTagIds);
-
-		/**
-		 * Create new tags if necessary
-		 */
-		try {
-			for (const tag of newTagNames) {
-				const newTag = await pbClient.collection("tags").create({ name: tag });
-				tagIds.push(newTag.id);
-			}
-		} catch (error) {
-			return new Response(
-				JSON.stringify({
-					message: "Failed to create new tags",
-				}),
-				{ status: 500 }
-			);
-		}
-	}
-
-	/**
-	 * Update the post
-	 * If the file is empty, do not update the field.
-	 * FIXME: Impossible to delete tags if length is 0. Published is not updated.
-	 */
 	try {
-		const { file, tags, ...rest } = data;
+		const payload: EditPostData = {
+			tags: data.tags?.split(",").filter((tag) => !!tag.length) ?? [],
+		};
 
-		/**
-		 * We are adding the width and height of the image to the existing type.
-		 * The W/H properties are part of the Post data type, but they are always
-		 * calculated by the backend so they are not accepted in the request body.
-		 */
-		const payload: PostFormUpdate & {
-			width?: number;
-			height?: number;
-		} = {};
-
-		// Process image if it exists
-		if (file && file.size > 0) {
-			const { file: resized, metaData } = await imgGetOptimized(file);
-
-			payload.file = resized;
-			payload.height = metaData.height;
-			payload.width = metaData.width;
+		if (data.shotOn) {
+			payload.shotOn = new Date(data.shotOn).toISOString();
 		}
 
-		// Include tags if there are any
-		if (tagIds.length > 0) {
-			payload.tags = tagIds;
+		if (data.file && data.file.size > 0) {
+			const { imageUrl, metadata } = await imageProcessUpload(data.file);
+			await imageProcessDelete(postId);
+
+			payload.imageUrl = imageUrl;
+			payload.width = metadata.width;
+			payload.height = metadata.height;
 		}
 
-		await pbClient.collection("posts").update(postId, {
-			...rest,
-			...payload,
-		});
+		const updatedPost = await updatePost(postId, payload);
+
+		return new Response(JSON.stringify(updatedPost), { status: 200 });
 	} catch (error) {
 		return new Response(
 			JSON.stringify({
@@ -135,11 +97,4 @@ export const PATCH: APIRoute = async ({ locals, request, params }) => {
 			{ status: 500 }
 		);
 	}
-
-	return new Response(
-		JSON.stringify({
-			message: "Success!",
-		}),
-		{ status: 200 }
-	);
 };
