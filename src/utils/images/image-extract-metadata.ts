@@ -6,7 +6,7 @@ type ExtractMetadataFromImgRes = {
 	tags: string[];
 };
 
-export default function extractMetadataFromImg(
+export default function imageExtractMetadata(
 	file: File
 ): Promise<ExtractMetadataFromImgRes> {
 	return new Promise((resolve, reject) => {
