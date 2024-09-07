@@ -23,22 +23,23 @@ export const MAX_FILE_SIZE = 1024 * 1024 * 20; // 20MB
  */
 export const IMAGE_FORMAT = ".jpg";
 
-export const UPLOAD_DIR = "storage/images";
-
+/**
+ * Sizes of the images to save.
+ */
 export const IMAGE_SIZES = {
 	SM: {
-		maxSideLength: 100,
-		quality: 75,
+		maxSideLength: 150,
+		quality: 85,
 		size: "SM",
 	},
 	MD: {
-		maxSideLength: 500,
+		maxSideLength: 800,
 		quality: 85,
 		size: "MD",
 	},
 	LG: {
-		maxSideLength: 1000,
-		quality: 90,
+		maxSideLength: 1200,
+		quality: 85,
 		size: "LG",
 	},
 } as const;

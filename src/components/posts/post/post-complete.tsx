@@ -23,7 +23,7 @@ function getPostDimension(post: Post) {
 	switch (true) {
 		// Landscape
 		case aspectRatio > 1:
-			style.width = '1000px'
+			style.width = '1200px'
 			break;
 		// Portrait
 		case aspectRatio < 1:
