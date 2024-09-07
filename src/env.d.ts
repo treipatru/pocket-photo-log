@@ -12,7 +12,6 @@ declare namespace App {
 declare global {
 	namespace NodeJS {
 		interface ProcessEnv {
-			DATABASE_URL: string;
 			ERROR_TRACKING_DSN: string;
 			NODE_ENV: "development" | "production";
 		}
