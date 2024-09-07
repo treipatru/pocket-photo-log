@@ -78,3 +78,11 @@ model Session {
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
+
+model Backup {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  fileName String
+  size     Int
+}
