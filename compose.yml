@@ -34,6 +34,7 @@ services:
     volumes:
       # In development mode we map the local storage folder to the container
       - ./storage:/app/storage
+      - ./backups:/app/backups
       # Mapped volume for PB migrations
       - ./prisma:/app/prisma:rw
 
@@ -58,6 +59,7 @@ services:
     volumes:
       # Persistent volume for storage
       - pocket-photo-storage:/app/storage
+      - pocket-photo-backups:/app/backups
 
 networks:
   pocket-photo-log:
@@ -65,3 +67,4 @@ networks:
 
 volumes:
   pocket-photo-storage:
+  pocket-photo-backups:
