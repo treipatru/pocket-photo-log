@@ -1,5 +1,7 @@
 import { Download } from "lucide-react";
 import type { Backup } from "@prisma/client";
+import BackupDeleteForm from "@/components/settings/backup/backup-delete-form";
+
 
 type Props = {
 	backups: Backup[];
@@ -36,6 +38,8 @@ export default function BackupTable({
 								>
 									<Download size="18" />
 								</a>
+
+								<BackupDeleteForm backup={backup} />
 							</td>
 						</tr>
 					))}

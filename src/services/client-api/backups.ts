@@ -18,3 +18,16 @@ export async function createBackup(body?: BackupCreate): Promise<Backup> {
 
 	return await res.json();
 }
+
+export async function deleteBackup(id: string) {
+	const res = await fetch(`/api/backups/${id}`, {
+		method: "DELETE",
+	});
+
+	if (!res.ok) {
+		const data = await res.json();
+		throw new Error(data.message);
+	}
+
+	return Promise.resolve({});
+}
