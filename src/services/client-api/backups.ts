@@ -31,3 +31,15 @@ export async function deleteBackup(id: string) {
 
 	return Promise.resolve({});
 }
+
+export async function restoreBackup(id: string) {
+	const res = await fetch(`/api/backups/${id}/restore`, {
+		method: "POST",
+	});
+
+	if (!res.ok) {
+		throw new Error("Failed to restore backup");
+	}
+
+	return Promise.resolve({});
+}

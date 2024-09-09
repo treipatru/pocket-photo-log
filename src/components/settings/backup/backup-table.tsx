@@ -1,7 +1,7 @@
 import { Download } from "lucide-react";
 import type { Backup } from "@prisma/client";
 import BackupDeleteForm from "@/components/settings/backup/backup-delete-form";
-
+import BackupRestoreForm from "@/components/settings/backup/backup-restore-form";
 
 type Props = {
 	backups: Backup[];
@@ -17,7 +17,7 @@ export default function BackupTable({
 					<tr>
 						<th>File</th>
 						<th className="w-44">Size</th>
-						<th className="w-20"></th>
+						<th className="w-44"></th>
 					</tr>
 				</thead>
 
@@ -31,7 +31,7 @@ export default function BackupTable({
 
 							<td>{(backup.size / 1024 / 1024).toFixed(2)} MB</td>
 
-							<td className="flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-75 ease-in ">
+							<td className="flex items-center justify-end gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-75 ease-in ">
 								<a
 									className="btn btn-sm btn-square btn-outline"
 									href={`/api/backups/${backup.id}`}
@@ -40,6 +40,8 @@ export default function BackupTable({
 								</a>
 
 								<BackupDeleteForm backup={backup} />
+
+								<BackupRestoreForm backup={backup} />
 							</td>
 						</tr>
 					))}

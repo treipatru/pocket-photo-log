@@ -23,7 +23,6 @@ export const POST: APIRoute = async ({ request }) => {
 			archiveName = backupFromFile.archiveName;
 			size = backupFromFile.totalBytes;
 		} else {
-			console.log("Creating default backup");
 			// Create backup
 			const newBackup = await createBackupDefault();
 			archiveName = newBackup.archiveName;
