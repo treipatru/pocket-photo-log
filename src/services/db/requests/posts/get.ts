@@ -51,6 +51,9 @@ export async function getPaginatedPosts({
 	});
 
 	// Get the total number of posts
+	const total = await dbClient.post.count({
+		where,
+	});
 
 	// Increment the view count for each post
 	if (total > 0) {
