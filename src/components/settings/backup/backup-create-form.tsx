@@ -2,7 +2,6 @@ import { createBackup } from "@/services/client-api/backups";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import Dialog from "@/components/ui/dialog";
-import Alert from "@/components/ui/alert";
 import QueryWrapper from "@/components/query-wrapper";
 import type { Backup } from "@prisma/client";
 
@@ -67,8 +66,13 @@ function Component({ onCreated }: Readonly<Props>) {
 				onClick={() => setShowModal(true)}
 				type='button'
 			>
-				{isPending && <span className="loading loading-spinner"></span>}
-				New
+				{isPending
+					? <>
+						<span className="loading loading-spinner"></span>
+						<span>Creating...</span>
+					</>
+					: <span>New</span>
+				}
 			</button>
 		</>
 
