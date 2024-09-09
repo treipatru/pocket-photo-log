@@ -4,7 +4,7 @@ import { deleteBackup, getBackup } from "@/services/db/requests/backups";
 import { join } from "path";
 import type { APIRoute } from "astro";
 
-export const GET: APIRoute = async ({ params, request }) => {
+export const GET: APIRoute = async ({ params }) => {
 	const id = params.id;
 
 	if (!id) {
@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 			JSON.stringify({
 				message: "Invalid data",
 			}),
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -39,7 +39,7 @@ export const GET: APIRoute = async ({ params, request }) => {
 			JSON.stringify({
 				message: "Failed to get backup file",
 			}),
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 };
@@ -52,7 +52,7 @@ export const DELETE: APIRoute = async ({ params }) => {
 			JSON.stringify({
 				message: "Invalid data",
 			}),
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
@@ -75,14 +75,14 @@ export const DELETE: APIRoute = async ({ params }) => {
 			JSON.stringify({
 				message: "Backup deleted",
 			}),
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (error) {
 		return new Response(
 			JSON.stringify({
 				message: "Failed to delete backup",
 			}),
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 };

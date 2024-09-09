@@ -16,10 +16,12 @@ function Component({ initialBackups }: Readonly<Props>) {
 	}
 
 	return (
-		<div className="flex items-center flex-col">
-			<BackupTable
-				backups={backups}
-			/>
+		<div className="flex items-center flex-col gap-y-4">
+			{backups.length > 0 && (
+				<BackupTable
+					backups={backups}
+				/>
+			)}
 
 			<BackupCreateForm onCreated={handleCreated} />
 		</div>
