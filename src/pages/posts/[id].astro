@@ -4,10 +4,8 @@ import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
 import { getPostById } from "@/services/db/requests/posts/get";
 import { type Post } from "@/entities/posts";
-import type { Stat } from "@prisma/client";
 import PostComplete from "@/components/posts/post/post-complete";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
-import { getStats } from "@/services/db/requests/stats";
 
 const postId = Astro.params.id;
 if (!postId) {
@@ -15,7 +13,6 @@ if (!postId) {
 }
 
 let post: Post | null = null;
-let stat: Stat | null = null;
 
 /**
  * Fetch the post and handle 404.
@@ -23,7 +20,6 @@ let stat: Stat | null = null;
 try {
 	// The fetch will throw if the post is not found.
 	post = await getPostById(postId);
-	stat = await getStats(postId);
 
 	if (!post) {
 		throw new Error();
@@ -53,10 +49,5 @@ const pageTitle = `${postDate} | ${siteSettings.TITLE}`;
 <SidebarLayout contentPadding={false}>
 	<span slot="collection-title">{`on ${postDate}`}</span>
 
-	<PostComplete
-		client:load
-		post={post}
-		showAdminMenu={!!Astro.locals.user}
-		stats={stat}
-	/>
+	<PostComplete client:load showAdminMenu={!!Astro.locals.user} {...post} />
 </SidebarLayout>

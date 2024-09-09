@@ -3,17 +3,17 @@ import { type Post } from "@/entities/posts"
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import Measure from 'react-measure';
 
-type PostListMasonryProps = Pick<APIPagination, "page" | "perPage"> & {
+type PostSet = Pick<APIPagination, "page" | "perPage"> & {
 	posts: Post[];
 	tagId: string;
 }
 
-export default function PostListMasonry({
+export default function PostSet({
 	page,
 	perPage,
 	posts,
 	tagId,
-}: Readonly<PostListMasonryProps>) {
+}: Readonly<PostSet>) {
 	return (
 		<ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 1024: 3, 1920: 5 }} >
 			<Masonry

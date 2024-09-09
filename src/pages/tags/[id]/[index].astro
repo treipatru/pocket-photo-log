@@ -4,10 +4,8 @@ import { getPaginatedPosts } from "@/services/db/requests/posts/get";
 import { getTagById } from "@/services/db/requests/tags";
 import { type Post } from "@/entities/posts";
 import { type Tag } from "@/entities/tags";
-import PostComplete from "@/components/posts/post/post-complete";
-import PostPagination from "@/components/posts/post/post-pagination";
+import PostInSet from "@/components/posts/posts-set/post-in-set";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
-import SidebarTagNav from "@/components/base/sidebar-tag-nav";
 
 /**
  * Check for tag id
@@ -68,24 +66,11 @@ try {
 <SidebarLayout contentPadding={false}>
 	<span slot="collection-title">{`on #${tagName}`}</span>
 
-	<SidebarTagNav
-		page={pagination.page}
-		slot="collection-navigation"
-		tagId={tagId}
-		totalItems={pagination.totalItems}
-		totalPages={pagination.totalPages}
-	/>
-
-	<PostComplete
+	<PostInSet
 		activeTagId={tagId}
+		client:load
+		pagination={pagination}
 		post={post}
 		showAdminMenu={!!Astro.locals.user}
-	/>
-
-	<PostPagination
-		className="block md:hidden"
-		page={pagination.page}
-		tagId={tagId}
-		totalPages={pagination.totalPages}
 	/>
 </SidebarLayout>

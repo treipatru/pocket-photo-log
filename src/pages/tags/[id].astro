@@ -1,13 +1,12 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
+import { getTagById } from "@/services/db/requests/tags";
 import { type Post } from "@/entities/posts";
 import { type Tag } from "@/entities/tags";
 import Pagination from "@/components/ui/pagination.astro";
-import PostListMasonry from "@/components/posts/post-list-masonry";
+import PostSet from "@/components/posts/posts-set/post-set";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
-import SidebarTagNav from "@/components/base/sidebar-tag-nav";
-import { getTagById } from "@/services/db/requests/tags";
-import { getPaginatedPosts } from "@/services/db/requests/posts/get";
 
 /**
  * Get tag and tag name
@@ -63,13 +62,7 @@ try {
 <SidebarLayout showFooter contentPadding={false}>
 	<span slot="collection-title">{`on #${tagName}`}</span>
 
-	<SidebarTagNav
-		slot="collection-navigation"
-		tagId={tagId}
-		totalItems={pagination.totalItems}
-	/>
-
-	<PostListMasonry
+	<PostSet
 		client:only="react"
 		page={page}
 		perPage={perPage}

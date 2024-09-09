@@ -30,7 +30,6 @@ const pages = await getPages();
 			class="hidden md:flex flex-col justify-between px-2 py-4 self-start sticky top-0 h-lvh w-1/4 max-w-64"
 		>
 			<SidebarDesktop pages={pages}>
-				<slot name="collection-navigation" slot="collection-navigation" />
 				<slot name="collection-title" slot="collection-title">
 					<span>
 						{Astro.locals.siteSettings.DESCRIPTION}
@@ -41,7 +40,6 @@ const pages = await getPages();
 
 		<main class="w-full grow">
 			<SidebarMobile pages={pages}>
-				<slot name="collection-navigation" slot="collection-navigation" />
 				<slot name="collection-title" slot="collection-title">
 					<span>
 						{Astro.locals.siteSettings.DESCRIPTION}
