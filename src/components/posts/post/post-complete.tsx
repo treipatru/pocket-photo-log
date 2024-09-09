@@ -4,13 +4,10 @@ import PostAdminMenu from "@/components/posts/post/post-admin-menu";
 import PostCaption from "@/components/posts/post/components/post-caption";
 import PostStats from "@/components/posts/post/components/post-stats";
 import TagBox from "@/components/tags/tag-box/tag-box";
-import type { Stat } from "@prisma/client";
 
-type PostCompleteProps = {
+type PostCompleteProps = Post & {
 	activeTagId?: string;
-	post: Post;
 	showAdminMenu?: boolean;
-	stats?: Stat | null;
 }
 
 function getPostDimension(post: Post) {
@@ -43,9 +40,8 @@ function getPostDimension(post: Post) {
 
 export default function PostComplete({
 	activeTagId,
-	post,
 	showAdminMenu = false,
-	stats,
+	...post
 }: Readonly<PostCompleteProps>) {
 	const { width } = getPostDimension(post)
 
@@ -74,9 +70,12 @@ export default function PostComplete({
 				tags={post.tags}
 			/>
 
-			{stats && (
-				<PostStats className="col-span-3 md:col-span-1" stats={stats} />
-			)}
+			<PostStats
+				className="col-span-3 md:col-span-1"
+				id={post.id}
+				likes={post.likes}
+				views={post.views}
+			/>
 		</article>
 	)
 }
