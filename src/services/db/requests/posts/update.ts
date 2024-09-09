@@ -6,7 +6,7 @@ export type EditPostData = Partial<CreatePostData>;
 
 export async function updatePost(
 	id: string,
-	data: EditPostData
+	data: EditPostData,
 ): Promise<Post> {
 	const { tags, ...updateData } = data;
 
@@ -25,7 +25,7 @@ export async function updatePost(
 									where: { name: tag },
 									create: { name: tag },
 								})),
-						  }
+							}
 						: {}),
 				},
 			},
@@ -42,3 +42,22 @@ export async function updatePost(
 		throw new Error(`Failed to update post: ${(error as Error).message}`);
 	}
 }
+
+export const incrementLikeCount = async (postId: string): Promise<Post> => {
+	return await dbClient.post.update({
+		where: { id: postId },
+		data: {
+			likes: {
+				increment: 1,
+			},
+		},
+		include: {
+			tags: {
+				select: {
+					id: true,
+					name: true,
+				},
+			},
+		},
+	});
+};

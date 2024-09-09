@@ -51,7 +51,14 @@ export async function getPaginatedPosts({
 	});
 
 	// Get the total number of posts
-	const total = await dbClient.post.count();
+
+	// Increment the view count for each post
+	if (total > 0) {
+		await dbClient.post.updateMany({
+			where: { id: { in: posts.map((post) => post.id) } },
+			data: { views: { increment: 1 } },
+		});
+	}
 
 	return {
 		items: posts,
@@ -72,27 +79,13 @@ export async function getPaginatedPosts({
  * @return {*}
  */
 export async function getPostById(id: string): Promise<Post | null> {
-	// Increment the view count or create the stats record if it doesn't exist
-	await dbClient.stat.upsert({
-		where: {
-			postId: id,
-		},
-		create: {
-			post: {
-				connect: {
-					id,
-				},
-			},
-		},
-		update: {
+	return await dbClient.post.update({
+		where: { id },
+		data: {
 			views: {
 				increment: 1,
 			},
 		},
-	});
-
-	return await dbClient.post.findUnique({
-		where: { id },
 		include: {
 			tags: {
 				select: {

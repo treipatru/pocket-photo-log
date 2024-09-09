@@ -1,19 +1,20 @@
 import { Eye, Heart } from "lucide-react";
 import { likePost } from "@/services/client-api/posts";
-import type { Stat } from "@prisma/client";
 import { useState } from "react";
 import clsx from "clsx";
+import type { Post } from "@/entities/posts";
 
-type PostStatsProps = {
-	stats: Stat;
+type PostStatsProps = Pick<Post, 'likes' | 'views' | 'id'> & {
 	className?: string;
 };
 
 export default function PostStats({
+	id,
 	className,
-	stats,
+	likes,
+	views,
 }: Readonly<PostStatsProps>) {
-	const [likes, setLikes] = useState(stats.likes);
+	const [displayLikes, setDisplayLikes] = useState(likes);
 	const [isFetching, setIsFetching] = useState(false);
 
 	const handleClick = async () => {
@@ -21,8 +22,8 @@ export default function PostStats({
 		setIsFetching(true);
 
 		try {
-			const res = await likePost(stats.postId);
-			setLikes(res.likes);
+			const res = await likePost(id);
+			setDisplayLikes(res.likes);
 		} catch (_) {
 			console.error(_);
 		} finally {
@@ -38,9 +39,8 @@ export default function PostStats({
 				data-tip="Post views"
 			>
 				<Eye size={18} />
-				<span>{stats.views}</span>
+				<span>{views}</span>
 			</div>
-
 
 			<button
 				className="flex flex-col items-center w-10 group tooltip tooltip-bottom"
@@ -49,7 +49,7 @@ export default function PostStats({
 				onClick={handleClick}
 			>
 				<Heart size={18} className="group-hover:text-warning group-hover:scale-150 duration-200 ease-in-out" />
-				<span>{likes}</span>
+				<span>{displayLikes}</span>
 			</button>
 
 		</div>

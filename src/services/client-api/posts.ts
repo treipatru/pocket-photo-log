@@ -4,7 +4,6 @@ import {
 	type PostFormUpdate,
 } from "@/entities/posts";
 import { sanitizeTagNames } from "@/entities/tags";
-import { type Stat } from "@/entities/stats";
 
 export async function createPost(body: PostFormCreate): Promise<Post> {
 	/**
@@ -100,7 +99,7 @@ export async function updatePost(id: string, body: PostFormUpdate) {
 	return Promise.resolve({});
 }
 
-export async function likePost(id: Stat["id"]) {
+export async function likePost(id: Post["id"]) {
 	const res = await fetch(`/api/posts/${id}/like`);
 
 	if (!res.ok) {

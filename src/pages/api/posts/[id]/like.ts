@@ -1,4 +1,4 @@
-import { incrementLikeCount } from "@/services/db/requests/stats";
+import { incrementLikeCount } from "@/services/db/requests/posts/update";
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ params }) => {
@@ -9,25 +9,26 @@ export const GET: APIRoute = async ({ params }) => {
 			JSON.stringify({
 				message: "Invalid post",
 			}),
-			{ status: 400 }
+			{ status: 400 },
 		);
 	}
 
 	try {
-		const updatedStats = await incrementLikeCount(postId);
+		const updatedPost = await incrementLikeCount(postId);
 
 		return new Response(
 			JSON.stringify({
-				likes: updatedStats.likes,
+				likes: updatedPost.likes,
+				views: updatedPost.views,
 			}),
-			{ status: 200 }
+			{ status: 200 },
 		);
 	} catch (_) {
 		return new Response(
 			JSON.stringify({
 				message: "Failed to like post",
 			}),
-			{ status: 500 }
+			{ status: 500 },
 		);
 	}
 };

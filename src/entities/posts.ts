@@ -10,9 +10,11 @@ export const postSchema = z.object({
 	caption: z.string(),
 	height: z.number(),
 	imageUrl: z.string(),
+	likes: z.number(),
 	published: z.boolean(),
 	shotOn: z.date(),
 	tags: z.array(tagSchema),
+	views: z.number(),
 	width: z.number(),
 });
 
