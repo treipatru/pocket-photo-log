@@ -1,6 +1,5 @@
 import { tagSchemaFormUpdate, type Tag, type TagFormUpdate } from "@/entities/tags"
 import { updateTag } from "@/services/client-api/tags";
-import { useEffect } from "react";
 import { useForm } from "@/hooks/use-form";
 import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
@@ -16,7 +15,7 @@ function Component({
 	onCancel,
 	tag
 }: Readonly<Props>) {
-	const { formData, isValid, updateField, validate } = useForm<TagFormUpdate>(tagSchemaFormUpdate, {
+	const { formData, updateField, validate } = useForm<TagFormUpdate>(tagSchemaFormUpdate, {
 		id: tag.id,
 		name: tag.name
 	});
@@ -30,14 +29,12 @@ function Component({
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		validate();
-	}
 
-	useEffect(() => {
+		const isValid = validate();
 		if (isValid) {
 			mutate();
 		}
-	}, [isValid])
+	}
 
 	return (
 		<form

@@ -2,19 +2,16 @@
 import { AstroSeo } from "@astrolib/seo";
 import { format } from "date-fns";
 import { getImgUrl } from "@/lib/get-img-url";
-import { pocketClient } from "@/services/pocket/pocket-client";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 import Pagination from "@/components/ui/pagination.astro";
 import PostTagUpdateForm from "@/components/posts/forms/post-tag-update-form";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
 
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 
-const posts = await pocketClient.collection("posts").getList(page, 10, {
-	expand: "tags",
-	sort: "-shot_on",
-});
+const posts = await getPaginatedPosts({ page, perPage: 10 });
 
-const { items, ...pagination } = posts;
+const { items, pagination } = posts;
 ---
 
 <AstroSeo title={`Posts | ${Astro.locals.siteSettings.TITLE}`} />
@@ -36,12 +33,12 @@ const { items, ...pagination } = posts;
 				{
 					items.map((post) => (
 						<tr>
-							<td>{format(post.shot_on, "yyyy.MM.dd")}</td>
+							<td>{format(post.shotOn, "yyyy.MM.dd")}</td>
 
 							<td class="text-xs">
 								<PostTagUpdateForm
 									client:load
-									tags={post.expand?.tags || []}
+									tags={post.tags}
 									postId={post.id}
 								/>
 							</td>
@@ -50,7 +47,7 @@ const { items, ...pagination } = posts;
 								<a href={`/posts/${post.id}`}>
 									<img
 										class="rounded-t-sm w-[100px]"
-										src={getImgUrl(post, "thumb")}
+										src={getImgUrl(post.imageUrl, "SM")}
 										alt={post.alt}
 										loading="lazy"
 									/>

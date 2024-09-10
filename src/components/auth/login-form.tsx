@@ -1,46 +1,32 @@
-import Input from "@/components/ui/input"
-import { useForm } from "@/hooks/use-form"
-import { userLoginSchema, type UserLogin } from "@/entities/users"
-import { useEffect } from "react"
-import Alert from "@/components/ui/alert";
-import QueryWrapper from "@/components/query-wrapper";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { logIn } from "@/services/client-api/auth";
+import { useForm } from "@/hooks/use-form"
+import { useMutation } from "@tanstack/react-query";
+import { userLoginSchema, type UserLogin } from "@/entities/users"
+import Alert from "@/components/ui/alert";
+import Input from "@/components/ui/input"
+import QueryWrapper from "@/components/query-wrapper";
 
 function Component() {
-	/**
-	 * Form
-	 */
-	const { formData, isValid, updateField, validate } = useForm<UserLogin>(userLoginSchema, {
-		email: '',
+	const { formData, updateField, validate } = useForm<UserLogin>(userLoginSchema, {
+		username: '',
 		password: '',
 	});
 
-	const handleSubmit = async (event: React.SyntheticEvent) => {
-		event.preventDefault();
-		validate();
-		queryClient.invalidateQueries({ queryKey: ['auth'] })
-	}
-
-	/**
-	 * Query
-	 */
-	const queryClient = useQueryClient();
-	const { isFetching, error, isSuccess } = useQuery({
-		enabled: isValid,
-		queryFn: () => logIn(formData.values),
-		queryKey: ['auth'],
-		retry: false,
+	const { mutate, isPending, error } = useMutation({
+		mutationFn: () => logIn(formData.values),
+		onSuccess: () => {
+			window.location.href = `/`;
+		}
 	})
 
-	/**
-	 * On success, redirect to home page.
-	 */
-	useEffect(() => {
-		if (isSuccess) {
-			window.location.href = '/'
+	const handleSubmit = async (event: React.SyntheticEvent) => {
+		event.preventDefault();
+
+		const isValid = validate();
+		if (isValid) {
+			mutate();
 		}
-	}, [isSuccess])
+	}
 
 	return (
 		<form
@@ -48,16 +34,14 @@ function Component() {
 			name="login"
 			onSubmit={handleSubmit}
 		>
-			{!!error && <Alert className="mb-4" type="error" content={error.message} />}
-
 			<Input
-				error={formData.errors.email}
-				label="Email"
-				name='email'
-				onInput={v => updateField('email', v.currentTarget.value)}
+				error={formData.errors.username}
+				label="Username"
+				name='username'
+				onInput={v => updateField('username', v.currentTarget.value)}
 				required
-				type="email"
-				value={formData.values.email}
+				type="text"
+				value={formData.values.username}
 			/>
 
 			<Input
@@ -70,7 +54,14 @@ function Component() {
 				value={formData.values.password}
 			/>
 
-			<button className="btn mt-4" disabled={isFetching}>Submit</button>
+			{error && <Alert className="my-4" type="error" content={error.message} />}
+
+			<button
+				className="btn mt-4"
+				disabled={isPending}
+			>
+				Submit
+			</button>
 		</form>
 	)
 }

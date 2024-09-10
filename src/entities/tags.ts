@@ -2,8 +2,8 @@ import z from "zod";
 
 export const tagSchema = z.object({
 	id: z.string(),
-	name: z.string(),
-	post_count: z.number().optional(),
+	name: z.string().min(1),
+	postCount: z.number().optional(),
 });
 
 export type Tag = z.infer<typeof tagSchema>;

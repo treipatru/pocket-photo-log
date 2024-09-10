@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../db/db.sqlite"
+}
+
+model Page {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  content String @default("")
+  name    String
+  slug    String @unique
+
+  @@index([slug])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  alt       String   @default("")
+  caption   String   @default("")
+  height    Int      @default(0)
+  imageUrl  String
+  likes     Int      @default(0)
+  published Boolean  @default(false)
+  shotOn    DateTime @default(now())
+  tags      Tag[]
+  views     Int      @default(0)
+  width     Int      @default(0)
+
+  @@index([shotOn])
+  @@index([published, shotOn])
+}
+
+model Setting {
+  name  String @unique
+  value String @default("")
+}
+
+model Tag {
+  id    String @id @default(cuid())
+  name  String @unique
+  Posts Post[]
+}
+
+model SeedFlag {
+  id        Int      @id @default(1)
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id        String   @id
+  createdAt DateTime @default(now())
+
+  password_hash String
+  sessions      Session[]
+  username      String    @unique
+}
+
+model Session {
+  id     String @id
+  userId String
+
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Backup {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  fileName String
+  size     Int
+}

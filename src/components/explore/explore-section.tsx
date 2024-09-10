@@ -1,11 +1,11 @@
 import ExploreTags from "@/components/explore/explore-tags";
 import ExploreYears from "@/components/explore/explore-years";
 import { type Tag } from "@/entities/tags"
-import { type PostsPerYear } from "@/entities/api-client";
+import { type YearlyPostCount } from "@/services/db/requests/posts/get";
 
 type ExploreSectionProps = {
 	tags: Tag[];
-	years: PostsPerYear[];
+	years: YearlyPostCount[];
 }
 
 export default function ExploreSection({

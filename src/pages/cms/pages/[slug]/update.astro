@@ -1,14 +1,18 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import PageUpdateForm from "@/components/pages/page-update-form";
+import { getPageBySlug } from "@/services/db/requests/pages";
+import PageUpdateForm from "@/components/pages/forms/page-update-form";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const slug = Astro.params.slug;
+if (!slug) {
+	return Astro.redirect("/404");
+}
 
-const page = await pocketClient
-	.collection("pages")
-	.getFirstListItem(`slug="${slug}"`);
+const page = await getPageBySlug(slug);
+if (!page) {
+	return Astro.redirect("/404");
+}
 ---
 
 <AstroSeo

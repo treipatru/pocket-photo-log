@@ -1,4 +1,4 @@
-import { pocketClient } from "@/services/pocket/pocket-client";
+import { searchTags } from "@/services/db/requests/search";
 import type { APIRoute } from "astro";
 import z from "zod";
 
@@ -20,16 +20,9 @@ export const POST: APIRoute = async ({ request }) => {
 	}
 
 	try {
-		const tags = await pocketClient.collection("tags").getList(1, 10, {
-			filter: `name ~ "${data.query}"`,
-		});
+		const tags = await searchTags({ query: data.query });
 
-		return new Response(
-			JSON.stringify({
-				...tags,
-			}),
-			{ status: 200 }
-		);
+		return new Response(JSON.stringify(tags), { status: 200 });
 	} catch (_) {
 		return new Response(
 			JSON.stringify({

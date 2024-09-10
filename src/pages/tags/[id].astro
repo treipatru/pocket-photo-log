@@ -1,24 +1,29 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import { type PaginatedCollection } from "@/entities/api-client";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
+import { getTagById } from "@/services/db/requests/tags";
 import { type Post } from "@/entities/posts";
 import { type Tag } from "@/entities/tags";
 import Pagination from "@/components/ui/pagination.astro";
-import PostListMasonry from "@/components/posts/post-list-masonry";
+import PostSet from "@/components/posts/posts-set/post-set";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
-import SidebarTagNav from "@/components/base/sidebar-tag-nav";
 
 /**
  * Get tag and tag name
  */
 const tagId = Astro.params.id;
+if (!tagId) {
+	return Astro.redirect("/404");
+}
 
-let tag: Tag = {} as Tag;
+let tag: Tag | null = null;
 let tagName = "";
 
 try {
-	tag = await pocketClient.collection("tags").getFirstListItem(`id="${tagId}"`);
+	tag = await getTagById(tagId);
+	if (!tag) {
+		return Astro.redirect("/404");
+	}
 
 	// Clear any categories from name
 	tagName = tag.name.replace(/^[^:]*: /, "");
@@ -32,19 +37,21 @@ try {
 const page = parseInt(Astro.url.searchParams.get("page") || "1");
 const perPage = 70;
 
-let posts: PaginatedCollection<Post> = {} as PaginatedCollection<Post>;
+let items: Post[] = [];
+let pagination: APIPagination | null = null;
 
 try {
-	posts = await pocketClient.collection("posts").getList(page, perPage, {
-		filter: `tags.id?="${tagId}"`,
-		sort: "-shot_on",
-		expand: "tags",
+	const res = await getPaginatedPosts({
+		page,
+		perPage,
+		tagId,
 	});
+
+	items = res.items;
+	pagination = res.pagination;
 } catch (_) {
 	return Astro.redirect("/500");
 }
-
-const { items, ...pagination } = posts;
 ---
 
 <AstroSeo
@@ -55,17 +62,11 @@ const { items, ...pagination } = posts;
 <SidebarLayout showFooter contentPadding={false}>
 	<span slot="collection-title">{`on #${tagName}`}</span>
 
-	<SidebarTagNav
-		slot="collection-navigation"
-		tagId={tagId}
-		totalItems={pagination.totalItems}
-	/>
-
-	<PostListMasonry
+	<PostSet
 		client:only="react"
 		page={page}
 		perPage={perPage}
-		posts={posts.items}
+		posts={items}
 		tagId={tag.id}
 	/>
 

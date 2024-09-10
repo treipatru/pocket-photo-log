@@ -1,11 +1,9 @@
 import {
 	type Post,
 	type PostFormCreate,
-	type PostFormDelete,
 	type PostFormUpdate,
 } from "@/entities/posts";
 import { sanitizeTagNames } from "@/entities/tags";
-import { type Stat } from "@/entities/stats";
 
 export async function createPost(body: PostFormCreate): Promise<Post> {
 	/**
@@ -20,8 +18,8 @@ export async function createPost(body: PostFormCreate): Promise<Post> {
 	formData.append("published", body.published.toString());
 	formData.append("tags", sanitizeTagNames(body.tags, "str"));
 
-	if (body.shot_on) {
-		formData.append("shot_on", body.shot_on);
+	if (body.shotOn) {
+		formData.append("shotOn", body.shotOn);
 	}
 
 	const res = await fetch("/api/posts", {
@@ -30,7 +28,7 @@ export async function createPost(body: PostFormCreate): Promise<Post> {
 	});
 
 	if (!res.ok) {
-		return Promise.reject({ message: "Failed to create post." });
+		throw new Error("Failed to create post.");
 	}
 
 	const data = await res.json();
@@ -38,13 +36,13 @@ export async function createPost(body: PostFormCreate): Promise<Post> {
 	return Promise.resolve(data);
 }
 
-export async function deletePost(body: PostFormDelete) {
-	const res = await fetch(`/api/posts/${body.id}`, {
+export async function deletePost(id: string) {
+	const res = await fetch(`/api/posts/${id}`, {
 		method: "DELETE",
 	});
 
 	if (!res.ok) {
-		return Promise.reject({ message: "Failed to delete post." });
+		throw new Error("Failed to delete post.");
 	}
 
 	return Promise.resolve({});
@@ -78,8 +76,8 @@ export async function updatePost(id: string, body: PostFormUpdate) {
 		formData.append("published", body.published.toString());
 	}
 
-	if (body.shot_on) {
-		formData.append("shot_on", body.shot_on.toString());
+	if (body.shotOn) {
+		formData.append("shotOn", body.shotOn.toString());
 	}
 
 	if (body.tags) {
@@ -95,17 +93,17 @@ export async function updatePost(id: string, body: PostFormUpdate) {
 	});
 
 	if (!res.ok) {
-		return Promise.reject({ message: "Failed to update post." });
+		throw new Error("Failed to update post.");
 	}
 
 	return Promise.resolve({});
 }
 
-export async function likePost(id: Stat["id"]) {
+export async function likePost(id: Post["id"]) {
 	const res = await fetch(`/api/posts/${id}/like`);
 
 	if (!res.ok) {
-		return Promise.reject({ message: "Failed to create post." });
+		throw new Error("Failed to create post.");
 	}
 
 	const data = await res.json();

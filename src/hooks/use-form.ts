@@ -11,7 +11,7 @@ type FormState<T> = {
 	hasErrors: boolean;
 	isValid: boolean;
 	updateField: <K extends keyof T>(field: K, value: T[K]) => void;
-	validate: () => void;
+	validate: () => boolean;
 };
 
 export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
@@ -62,7 +62,7 @@ export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 		if (validation.success) {
 			setFormErrors({});
 			setIsValid(true);
-			return;
+			return true;
 		}
 
 		const fieldErrors = validation.error.flatten().fieldErrors;
@@ -79,6 +79,7 @@ export function useForm<T>(schema: ZodSchema, initialData: T): FormState<T> {
 
 		setIsValid(false);
 		setFormErrors(errors);
+		return false;
 	};
 
 	/**

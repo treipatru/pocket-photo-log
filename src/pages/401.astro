@@ -1,0 +1,18 @@
+---
+import { AstroSeo } from "@astrolib/seo";
+import SimpleLayout from "@/layouts/simple-layout.astro";
+---
+
+<AstroSeo
+	title={`Not authorized | ${Astro.locals.siteSettings.TITLE}`}
+	description="Not authorized"
+/>
+
+<SimpleLayout title="401">
+	<p class="font-normal">You are not authorized to view this resource.</p>
+
+	<div class="flex gap-4 mt-6">
+		<a href="/" class="btn">Home</a>
+		<a href="/auth/login" class="btn btn-primary">Login</a>
+	</div>
+</SimpleLayout>

@@ -37,8 +37,8 @@ function Component({
 
 			<p>This will delete the tag <strong>{tag.name}</strong> permanently.</p>
 
-			{!!tag.post_count && tag.post_count > 0 && (
-				<p className="text-red-500">This tag is used in {tag.post_count} posts.</p>
+			{!!tag.postCount && tag.postCount > 0 && (
+				<p className="text-red-500">This tag is used in {tag.postCount} posts.</p>
 			)}
 
 			<p>This action cannot be undone.</p>

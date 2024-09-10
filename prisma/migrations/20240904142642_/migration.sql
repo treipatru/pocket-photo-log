@@ -1,0 +1,65 @@
+-- CreateTable
+CREATE TABLE "Page" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "content" TEXT NOT NULL DEFAULT '',
+    "name" TEXT NOT NULL,
+    "slug" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Post" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "alt" TEXT NOT NULL DEFAULT '',
+    "caption" TEXT NOT NULL DEFAULT '',
+    "file" TEXT NOT NULL,
+    "height" DECIMAL NOT NULL DEFAULT 0,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "shot_on" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "width" DECIMAL NOT NULL DEFAULT 0
+);
+
+-- CreateTable
+CREATE TABLE "Setting" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT NOT NULL,
+    "value" TEXT NOT NULL DEFAULT ''
+);
+
+-- CreateTable
+CREATE TABLE "Stat" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "likes" DECIMAL NOT NULL DEFAULT 0,
+    "post_id" TEXT NOT NULL,
+    "views" DECIMAL NOT NULL DEFAULT 0,
+    CONSTRAINT "Stat_post_id_fkey" FOREIGN KEY ("post_id") REFERENCES "Post" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Tag" (
+    "id" TEXT NOT NULL PRIMARY KEY,
+    "created" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "name" TEXT NOT NULL,
+    "postId" TEXT,
+    CONSTRAINT "Tag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE INDEX "Page_slug_idx" ON "Page"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Setting_name_key" ON "Setting"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Stat_post_id_key" ON "Stat"("post_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");

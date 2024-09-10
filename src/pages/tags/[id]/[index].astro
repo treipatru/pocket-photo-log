@@ -1,14 +1,11 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import { type PaginatedCollection } from "@/entities/api-client";
+import { getPaginatedPosts } from "@/services/db/requests/posts/get";
+import { getTagById } from "@/services/db/requests/tags";
 import { type Post } from "@/entities/posts";
-import { type Stat } from "@/entities/stats";
 import { type Tag } from "@/entities/tags";
-import PostComplete from "@/components/posts/post/post-complete";
-import PostPagination from "@/components/posts/post/post-pagination";
+import PostInSet from "@/components/posts/posts-set/post-in-set";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
-import SidebarTagNav from "@/components/base/sidebar-tag-nav";
 
 /**
  * Check for tag id
@@ -21,11 +18,14 @@ if (!tagId) {
 /**
  * Get tag and tag name
  */
-let tag: Tag = {} as Tag;
+let tag: Tag | null = null;
 let tagName = "";
 
 try {
-	tag = await pocketClient.collection("tags").getFirstListItem(`id="${tagId}"`);
+	tag = await getTagById(tagId);
+	if (!tag) {
+		return Astro.redirect("/404");
+	}
 
 	// Clear any categories from name
 	tagName = tag.name.replace(/^[^:]*: /, "");
@@ -37,62 +37,24 @@ try {
  * Get post
  */
 const postIndex = parseInt(Astro.params.index || "1");
-let post: Post = {} as Post;
-let pagination: Omit<PaginatedCollection<Post>, "items"> = {} as Omit<
-	PaginatedCollection<Post>,
-	"items"
->;
+let post: Post | null = null;
+let pagination: APIPagination | null = null;
 
 try {
-	const postList = await pocketClient
-		.collection("posts")
-		.getList(postIndex, 1, {
-			filter: `tags.id?="${tagId}"`,
-			sort: "-shot_on",
-			expand: "tags",
-		});
-	post = postList.items[0];
+	const posts = await getPaginatedPosts({
+		page: postIndex,
+		perPage: 1,
+		tagId,
+	});
 
-	const { items, ...rest } = postList;
-	pagination = rest;
-
-	if (!post) {
+	if (!posts.items.length) {
 		return Astro.redirect(`/tags/${tagId}`);
 	}
+
+	post = posts.items[0];
+	pagination = posts.pagination;
 } catch (_) {
 	return Astro.redirect("/500");
-}
-
-/**
- * Get post stats
- */
-let stats: Stat = {} as Stat;
-
-try {
-	try {
-		stats = await pocketClient
-			.collection("stats")
-			.getFirstListItem(`postId="${post.id}"`);
-	} catch (_) {
-		console.log("Stats not found");
-		// If the stats are not found we will ignore the error
-	}
-
-	// If there are no stats for the post we will create a new record
-	if (!stats.id) {
-		stats = await pocketClient.collection("stats").create({
-			likes: 0,
-			postId: post.id,
-			views: 1,
-		});
-		// Otherwise we will update the views count
-	} else {
-		stats = await pocketClient.collection("stats").update(stats.id, {
-			views: stats.views + 1,
-		});
-	}
-} catch (error) {
-	return Astro.redirect("/500", error);
 }
 ---
 
@@ -104,25 +66,11 @@ try {
 <SidebarLayout contentPadding={false}>
 	<span slot="collection-title">{`on #${tagName}`}</span>
 
-	<SidebarTagNav
-		page={pagination.page}
-		slot="collection-navigation"
-		tagId={tagId}
-		totalItems={pagination.totalItems}
-		totalPages={pagination.totalPages}
-	/>
-
-	<PostComplete
+	<PostInSet
 		activeTagId={tagId}
+		client:load
+		pagination={pagination}
 		post={post}
-		showAdminMenu={Astro.locals.isAuthenticated}
-		stats={stats}
-	/>
-
-	<PostPagination
-		className="block md:hidden"
-		page={pagination.page}
-		tagId={tagId}
-		totalPages={pagination.totalPages}
+		showAdminMenu={!!Astro.locals.user}
 	/>
 </SidebarLayout>

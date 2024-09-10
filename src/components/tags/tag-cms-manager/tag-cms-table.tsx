@@ -34,7 +34,7 @@ export default function TagCmsTable({
 								</a>
 							</td>
 
-							<td>{tag.post_count}</td>
+							<td>{tag.postCount}</td>
 
 							<th className="group-hover:opacity-100">
 

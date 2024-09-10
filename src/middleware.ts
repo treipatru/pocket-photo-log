@@ -1,56 +1,59 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { getUserApiClient } from "@/services/auth/get-user-api-client";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import { settingsArrayToObject } from "@/entities/settings";
-import { urlMatcher } from "@/utils/url-matcher";
+import { getSettings } from "@/services/db/requests/settings";
+import { lucia } from "./services/lucia";
+import { match } from "path-to-regexp";
 
 /**
- * Check if user is authenticated and set the pbClient in the context.
+ * Retrieve the session and store it in the context.
  */
 const authentication = defineMiddleware(async (context, next) => {
-	const jwt = context.cookies.get("pb_auth")?.value;
-
-	if (!jwt) {
-		context.locals.isAuthenticated = false;
+	const sessionId = context.cookies.get(lucia.sessionCookieName)?.value ?? null;
+	if (!sessionId) {
+		context.locals.user = null;
+		context.locals.session = null;
 		return next();
 	}
 
-	try {
-		const pbClient = await getUserApiClient(jwt);
-		context.locals.pbClient = pbClient;
-		context.locals.isAuthenticated = !!pbClient?.authStore.isValid;
-	} catch (error) {
-		context.locals.isAuthenticated = false;
+	const { session, user } = await lucia.validateSession(sessionId);
+	if (session?.fresh) {
+		const sessionCookie = lucia.createSessionCookie(session.id);
+		context.cookies.set(
+			sessionCookie.name,
+			sessionCookie.value,
+			sessionCookie.attributes
+		);
 	}
-
+	if (!session) {
+		const sessionCookie = lucia.createBlankSessionCookie();
+		context.cookies.set(
+			sessionCookie.name,
+			sessionCookie.value,
+			sessionCookie.attributes
+		);
+	}
+	context.locals.user = user;
+	context.locals.session = session;
 	return next();
 });
 
 /**
- * Check if the request is authorized to access the route.
+ * Verify if the request has proper authorization to access the route.
  */
-const privateRoutes = ["/auth/logout", "/cms/*"];
-const apiRoutes = [
-	// Auth routes are public
-	"!/api/auth",
-
-	// All other API routes are private by default
-	"/api/*",
-
-	// Except for these:
-	"!/api/posts/*/like",
-];
 const authorization = defineMiddleware(async (context, next) => {
-	const { isAuthenticated } = context.locals;
-	const isPrivateRoute = urlMatcher(context.url.pathname, privateRoutes);
-	const isApiRoute = urlMatcher(context.url.pathname, apiRoutes);
+	const allowedPatterns = ["/api/auth/:action"];
+	const privatePatterns = ["/api/*path", "/cms/*path"];
+	const { pathname } = context.url;
 
-	if (isPrivateRoute && !isAuthenticated) {
-		return context.redirect("/auth/login");
+	// Check if the URL is whitelisted first
+	const isAllowed = allowedPatterns.some((pattern) => match(pattern)(pathname));
+	if (isAllowed) {
+		return next();
 	}
 
-	if (isApiRoute && !isAuthenticated) {
-		return new Response("Unauthorized", { status: 401 });
+	// Then verify if private and has session
+	const isPrivate = privatePatterns.some((pattern) => match(pattern)(pathname));
+	if (isPrivate && !context.locals.user) {
+		return context.redirect("/auth/login");
 	}
 
 	return next();
@@ -62,10 +65,7 @@ const authorization = defineMiddleware(async (context, next) => {
 const siteSettings = defineMiddleware(async (context, next) => {
 	try {
 		// Fetch settings array from the database
-		const settingsArr = await pocketClient.collection("settings").getFullList();
-
-		// Transform the settings array into a key-value pairs
-		const settings = settingsArrayToObject(settingsArr);
+		const settings = await getSettings();
 
 		// Make data available to the context
 		context.locals.siteSettings = settings;

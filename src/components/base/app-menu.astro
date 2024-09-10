@@ -1,12 +1,12 @@
 ---
-import { type Page } from "@/entities/pages";
 import AppMenuLink from "@/components/base/app-menu-link.astro";
+import type { Page } from "@prisma/client";
 
 interface Props {
 	pages: Page[];
 }
 
-const { isAuthenticated } = Astro.locals;
+const { user } = Astro.locals;
 const pages = Astro.props.pages;
 ---
 
@@ -23,7 +23,7 @@ const pages = Astro.props.pages;
 		pages.map((page) => (
 			<li>
 				<AppMenuLink href={`/pages/${page.slug}`}>
-					<span class="capitalize">{page.name}</span>
+					<span>{page.name}</span>
 				</AppMenuLink>
 			</li>
 		))
@@ -32,7 +32,7 @@ const pages = Astro.props.pages;
 
 <ul class="menu gap-1">
 	{
-		isAuthenticated && (
+		!!user && (
 				<li>
 					<h2 class="menu-title">
 						Create
@@ -59,7 +59,7 @@ const pages = Astro.props.pages;
 	}
 
 	{
-		!isAuthenticated && import.meta.env.DEV && (
+		!user && import.meta.env.DEV && (
 			<AppMenuLink href="/auth/login">
 				Login
 			</AppMenuLink>
@@ -67,10 +67,12 @@ const pages = Astro.props.pages;
 	}
 
 	{
-		isAuthenticated && (
-			<AppMenuLink href="/auth/logout">
-				Logout
-			</AppMenuLink>
+		!!user && (
+			<li>
+				<form method="post" action="/api/auth/logout">
+					<button type="submit">LOGOUT</button>
+				</form>
+			</li>
 		)
 	}
 </ul>

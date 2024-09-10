@@ -3,18 +3,33 @@
 
 declare namespace App {
 	interface Locals {
-		isAuthenticated: boolean;
-		pbClient: import("@/entities/api-client").TypedPocketBase;
+		session: import("@lucia/session").Session;
 		siteSettings: import("@/entities/settings").Settings;
+		user: import("lucia").User | null;
 	}
 }
 
-declare var process: {
-	env: {
-		API_KEY: string;
-		API_USER: string;
-		ERROR_TRACKING_DSN: string;
-		PUBLIC_API_URL: string;
-		PUBLIC_SITE_URL: string;
-	};
+declare global {
+	namespace NodeJS {
+		interface ProcessEnv {
+			ERROR_TRACKING_DSN: string;
+			NODE_ENV: "development" | "production";
+		}
+	}
+}
+
+type APIPagination = {
+	page: number;
+	perPage: number;
+	totalItems: number;
+	totalPages: number;
+};
+
+type APIPaginationOptions = Pick<APIPagination, "page" | "perPage"> & {
+	query?: string;
+};
+
+type APIPaginatedResponse<T> = {
+	items: T[];
+	pagination: APIPagination;
 };

@@ -1,9 +1,12 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import SettingsUpdateForm from "@/components/settings/settings-update-form";
+import { getBackups } from "@/services/db/requests/backups";
+import SettingsPanel from "@/components/settings/settings-panel";
 import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const { siteSettings } = Astro.locals;
+
+const backups = await getBackups();
 ---
 
 <AstroSeo title={`Site settings | ${Astro.locals.siteSettings.TITLE}`} />
@@ -11,5 +14,5 @@ const { siteSettings } = Astro.locals;
 <SidebarLayout contentWidth="narrow">
 	<span slot="collection-title">Settings</span>
 
-	<SettingsUpdateForm settings={siteSettings} client:load />
+	<SettingsPanel backups={backups} client:load settings={siteSettings} />
 </SidebarLayout>

@@ -1,9 +1,28 @@
 FROM node:20-alpine AS base
-COPY . /app
+
+# Install PM2 for process management
+RUN npm install pm2 -g
+
+COPY \
+	.node-version \
+	.nvmrc \
+	astro.config.mjs \
+	license.txt \
+	package-lock.json \
+	package.json \
+	tailwind.config.mjs \
+	tsconfig.json \
+	/app/
+
+COPY public /app/public
+COPY src /app/src
+
 WORKDIR /app
 
 FROM base AS deps
-RUN npm ci
+# Mount the prisma directory so we can generate the client.
+RUN --mount=type=bind,source=prisma,target=/app/prisma \
+    npm ci --ignore-scripts
 
 FROM base AS pocket-photo-log-dev
 COPY --from=deps /app/node_modules /app/node_modules
@@ -16,4 +35,7 @@ RUN npm run build
 FROM base AS pocket-photo-log-prod
 COPY --from=deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
-CMD ["node", "./dist/server/entry.mjs"]
+# Copy the prisma sources so we can ship them with the image.
+COPY prisma ./prisma
+COPY ecosystem.config.cjs ./ecosystem.config.cjs
+CMD ["sh", "-c", "npx prisma migrate deploy && npx tsx prisma/seed.ts && pm2-runtime start ecosystem.config.cjs"]

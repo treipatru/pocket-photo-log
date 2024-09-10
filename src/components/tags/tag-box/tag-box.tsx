@@ -8,7 +8,7 @@ interface Props {
 	activeTagId?: string;
 	activeYear?: string;
 	className?: string;
-	date: string;
+	date: Date;
 	onlyDateTime?: boolean;
 	tags?: Tag[];
 }

@@ -1,5 +1,4 @@
-import { paginatedCollection } from "@/entities/api-client";
-import { tagSchema } from "@/entities/tags";
+import { type Tag } from "@/entities/tags";
 
 export async function searchTags({ query }: { query: string }) {
 	const res = await fetch("/api/search/tags", {
@@ -11,15 +10,9 @@ export async function searchTags({ query }: { query: string }) {
 	});
 
 	if (!res.ok) {
-		return Promise.reject({ message: "Failed to fetch tags data." });
+		throw new Error("Failed to fetch tags data.");
 	}
 
-	const json = await res.json();
-	const parsed = paginatedCollection(tagSchema).safeParse(json);
-
-	if (!parsed.success) {
-		return Promise.reject({ message: "Failed to validate tags data." });
-	}
-
-	return parsed.data;
+	const data = (await res.json()) as Tag[];
+	return data;
 }

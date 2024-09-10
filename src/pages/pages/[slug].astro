@@ -1,15 +1,20 @@
 ---
 import { AstroSeo } from "@astrolib/seo";
-import { pocketClient } from "@/services/pocket/pocket-client";
-import SidebarLayout from "@/layouts/sidebar-layout.astro";
+import { getPageBySlug } from "@/services/db/requests/pages";
 import PageAdminMenu from "@/components/pages/page-admin-menu";
+import SidebarLayout from "@/layouts/sidebar-layout.astro";
 
 const { siteSettings } = Astro.locals;
 
 const slug = Astro.params.slug;
-const page = await pocketClient
-	.collection("pages")
-	.getFirstListItem(`slug="${slug}"`);
+if (!slug) {
+	return Astro.redirect("/");
+}
+
+const page = await getPageBySlug(slug);
+if (!page) {
+	return Astro.redirect("/");
+}
 ---
 
 <AstroSeo
@@ -20,7 +25,7 @@ const page = await pocketClient
 <SidebarLayout contentWidth="narrow">
 	<span slot="collection-title">{page.name}</span>
 
-	{Astro.locals.isAuthenticated && <PageAdminMenu page={page} />}
+	{!!Astro.locals.user && <PageAdminMenu page={page} client:load />}
 
 	<div set:html={page.content} class="prose prose-slate container" />
 </SidebarLayout>

@@ -1,8 +1,8 @@
 import type { APIRoute } from "astro";
 import { settingsSchemaFormUpdate } from "@/entities/settings";
+import { updateSetting } from "@/services/db/requests/settings";
 
-export const PUT: APIRoute = async ({ locals, request }) => {
-	const { pbClient } = locals;
+export const PUT: APIRoute = async ({ request }) => {
 	const payload = await request.json();
 	/**
 	 * Parse and validate the data
@@ -25,17 +25,9 @@ export const PUT: APIRoute = async ({ locals, request }) => {
 	 */
 
 	try {
-		const settingsDb = await pbClient.collection("settings").getFullList();
-		const payloadKeys = Object.keys(data);
-
-		payloadKeys.forEach(async (key) => {
-			const settingId = settingsDb.find((setting) => setting.name === key)?.id;
-
-			if (!settingId) {
-				throw new Error("Setting not found");
-			}
-
-			await pbClient.collection("settings").update(settingId, {
+		Object.keys(data).forEach(async (key) => {
+			await updateSetting({
+				name: key,
 				value: data[key as keyof typeof data],
 			});
 		});

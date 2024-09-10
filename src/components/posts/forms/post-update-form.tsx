@@ -4,14 +4,13 @@ import { updatePost } from "@/services/client-api/posts";
 import { useForm } from "@/hooks/use-form";
 import { useMutation } from "@tanstack/react-query";
 import Alert from "@/components/ui/alert";
-import extractMetadataFromImg from "@/utils/extract-metadata-from-img";
+import imageExtractMetadata from "@/utils/images/image-extract-metadata";
 import FileInput from "@/components/ui/file-input";
 import Input from "@/components/ui/input";
 import QueryWrapper from "@/components/query-wrapper";
 import TagFormControl from "@/components/tags/tag-form-control/tag-form-control";
 import Textarea from "@/components/ui/textarea";
 import Toggle from "@/components/ui/toggle";
-import { useEffect } from "react";
 
 interface Props {
 	post: Post
@@ -21,20 +20,17 @@ function Component({ post }: Readonly<Props>) {
 	/**
 	 * Form
 	 */
-	const { formData, isValid, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
+	const { formData, updateField, validate } = useForm<PostFormUpdate>(postSchemaFormUpdate, {
 		alt: post.alt,
 		caption: post.caption,
 		file: new File([], ''),
 		published: post.published,
-		shot_on: post.shot_on,
-		tags: post.expand?.tags.map(tag => tag.name) || [],
+		shotOn: post.shotOn.toISOString(),
+		tags: post.tags.map(tag => tag.name) || [],
 	});
 
 	const { mutate, isPending, error } = useMutation({
-		mutationFn: ({
-			id,
-			payload
-		}: { id: string, payload: PostFormUpdate }) => updatePost(id, payload),
+		mutationFn: () => updatePost(post.id, formData.values),
 		onSuccess: () => {
 			window.location.href = `/posts/${post.id}`;
 		}
@@ -46,27 +42,20 @@ function Component({ post }: Readonly<Props>) {
 			updateField('file', file);
 
 			// Parse the image metadata and replace previous form values.
-			const { shotOn, tags } = await extractMetadataFromImg(file);
-			updateField('shot_on', shotOn ?? '');
+			const { shotOn, tags } = await imageExtractMetadata(file);
+			updateField('shotOn', shotOn ?? '');
 			updateField('tags', tags);
 		}
 	}
 
 	const handleSubmit = async (event: React.SyntheticEvent) => {
 		event.preventDefault();
-		validate();
+		const isValid = validate();
 
 		if (isValid) {
-			mutate({ id: post.id, payload: formData.values });
+			mutate();
 		}
 	}
-
-	useEffect(() => {
-		if (isValid) {
-			mutate({ id: post.id, payload: formData.values });
-		}
-	}, [isValid])
-
 
 	return (
 		<form
@@ -78,7 +67,7 @@ function Component({ post }: Readonly<Props>) {
 		>
 
 			<FileInput
-				defaultImgUrl={getImgUrl(post, 'medium')}
+				defaultImgUrl={getImgUrl(post.imageUrl, 'MD')}
 				error={formData.errors.file}
 				label="Image"
 				name='file'
@@ -109,16 +98,16 @@ function Component({ post }: Readonly<Props>) {
 				name="created_on"
 				onInput={() => { }}
 				type="date"
-				value={post.created.substring(0, 10)}
+				value={post.createdAt.toISOString().substring(0, 10)}
 			/>
 
 			<Input
-				error={formData.errors.shot_on}
+				error={formData.errors.shotOn}
 				label="Shot on"
-				name='shot_on'
-				onInput={v => updateField('shot_on', v.currentTarget.value)}
+				name='shotOn'
+				onInput={v => updateField('shotOn', v.currentTarget.value)}
 				type="date"
-				value={formData.values.shot_on?.substring(0, 10)}
+				value={formData.values.shotOn?.substring(0, 10)}
 			/>
 
 			<TagFormControl

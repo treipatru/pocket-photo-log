@@ -1,6 +1,6 @@
 ---
 import AppMenu from "@/components/base/app-menu.astro";
-import type { Page } from "@/entities/pages";
+import { type Page } from "@prisma/client";
 
 interface Props {
 	pages: Page[];
@@ -19,8 +19,4 @@ interface Props {
 	</div>
 
 	<AppMenu pages={Astro.props.pages} />
-</div>
-
-<div>
-	<slot name="collection-navigation" />
 </div>

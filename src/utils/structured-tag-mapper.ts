@@ -17,11 +17,6 @@ function getStructuredTag(
 	}
 }
 
-/**
- * TODO: This should be included into a mapper applied to the response of
- * API calls.
- */
-
 function tagCategoryTrimmer(tag: Tag, category: TagCategory): Tag {
 	return {
 		...tag,
