@@ -24,8 +24,6 @@ pnpm-debug.log*
 .idea/
 
 # Application data in development
-storage/*
-backups/*
-
-# Scripts for development
-scripts/*
+.storage/*
+.backups/*
+.db/*

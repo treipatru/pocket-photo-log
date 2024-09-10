@@ -3,9 +3,7 @@ import { getPostById } from "@/services/db/requests/posts/get";
 import fs from "fs";
 import path from "path";
 
-function deleteFile(fileName: string) {
-	const filePath = path.join(UPLOAD_DIR, fileName);
-
+function deleteFile(filePath: string) {
 	try {
 		fs.accessSync(filePath);
 		fs.unlinkSync(filePath);
@@ -20,14 +18,16 @@ function deleteFile(fileName: string) {
 }
 
 async function deleteImagesFromDisk(imageUrl: string) {
-	const fileId = imageUrl
-		.replace(UPLOAD_DIR, "")
-		.replace(IMAGE_FORMAT, "")
-		// Remove any remaining slashes
-		.replace(/\//g, "");
+	const fileName = imageUrl.split("/").pop();
+	if (!fileName) {
+		throw new Error("Failed to extract file name from image URL");
+	}
+
+	const fileId = fileName.split(".").shift();
 
 	Object.keys(IMAGE_SIZES).forEach(async (size) => {
-		deleteFile(`${fileId}-${size}${IMAGE_FORMAT}`);
+		const filePath = path.join(UPLOAD_DIR, `${fileId}-${size}${IMAGE_FORMAT}`);
+		deleteFile(filePath);
 	});
 }
 
