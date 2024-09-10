@@ -1,7 +1,7 @@
 /**
  * Database file path and name.
  */
-export const DATABASE_FILE = "storage/db.sqlite";
+export const DATABASE_FILE = "db/db.sqlite";
 
 /**
  * Directory where backups will be stored.
@@ -11,7 +11,7 @@ export const BACKUP_DIR = "/app/backups";
 /**
  * Directory where uploads will be saved.
  */
-export const UPLOAD_DIR = "/app/storage/images";
+export const UPLOAD_DIR = "/app/storage";
 
 /**
  * Maximum file size for accepted uploads.
