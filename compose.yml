@@ -60,7 +60,7 @@ services:
     volumes:
       # Persistent volume for storage
       - pocket-photo-backups:/app/backups
-      - pocket-photo-backups:/app/db
+      - pocket-photo-db:/app/db
       - pocket-photo-storage:/app/storage
 
 networks:
@@ -68,5 +68,6 @@ networks:
     driver: bridge
 
 volumes:
-  pocket-photo-storage:
   pocket-photo-backups:
+  pocket-photo-db:
+  pocket-photo-storage:
