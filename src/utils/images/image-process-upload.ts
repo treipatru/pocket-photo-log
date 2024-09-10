@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2";
 import { imageSaveToDisk } from "@/utils/images/image-save-to-disk";
-import { UPLOAD_DIR, IMAGE_FORMAT, IMAGE_SIZES } from "@/constants";
+import { IMAGE_FORMAT, IMAGE_SIZES } from "@/constants";
 
 export async function imageProcessUpload(file: File) {
 	// Generate a unique file id
@@ -14,13 +14,20 @@ export async function imageProcessUpload(file: File) {
 		const savedFiles = await Promise.all(
 			Object.values(IMAGE_SIZES).map(async (variant) => {
 				return imageSaveToDisk(buffer, fileId, variant);
-			})
+			}),
 		);
 
 		const largeImageMetadata = savedFiles[savedFiles.length - 1];
 
 		return {
-			imageUrl: `/${UPLOAD_DIR}/${fileId}${IMAGE_FORMAT}`,
+			/**
+			 * The image will be available publicly so it will be served from the
+			 * /public directory. However, astro abstracts that away so we only
+			 * reference the root of the site. Example:
+			 * - On disk 				/public/storage/1234-LG.jpg
+			 * - In the browser /storage/1234-LG.jpg
+			 **/
+			imageUrl: `/storage/${fileId}${IMAGE_FORMAT}`,
 			metadata: {
 				height: largeImageMetadata?.height!,
 				width: largeImageMetadata?.width!,
