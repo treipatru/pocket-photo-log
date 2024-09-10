@@ -1,5 +1,8 @@
 FROM node:20-alpine AS base
 
+# Install PM2 for process management
+RUN npm install pm2 -g
+
 COPY \
 	.node-version \
 	.nvmrc \
@@ -34,4 +37,5 @@ COPY --from=deps /app/node_modules /app/node_modules
 COPY --from=build /app/dist /app/dist
 # Copy the prisma sources so we can ship them with the image.
 COPY prisma ./prisma
-CMD ["sh", "-c", "npx prisma migrate deploy && npx tsx prisma/seed.ts && node ./dist/server/entry.mjs"]
+COPY ecosystem.config.cjs ./ecosystem.config.cjs
+CMD ["sh", "-c", "npx prisma migrate deploy && npx tsx prisma/seed.ts && pm2-runtime start ecosystem.config.cjs"]
